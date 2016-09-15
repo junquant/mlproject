@@ -1,1 +1,3 @@
-# This is the repo for the applied machine learning project. 
+# Applied Machine Learning Repo
+
+* Lets rock. I hope
