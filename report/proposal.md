@@ -13,8 +13,11 @@
 * run initial analysis on data set (eg. run PCA to look at data)
 * describe the problem and approach
 
+## What we Plan To Do With the Information
+* think ... 
 
 ## Potential Techniques
+* Potential techniques not required in proposal yet
 * Principle Component Analysis
 * Decision Trees (may some ensemble?)
 * SVM ?
