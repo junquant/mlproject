@@ -7,4 +7,5 @@
 # Ignore the data set files inside the /data folder
 # make sure the files copied over is in these paths
 data/optional/*.dat
+data/protocol/*.dat
 data/*.txt
