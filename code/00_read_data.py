@@ -24,7 +24,7 @@ print('------------------------------------------------------------')
 
 # Parameters
 inputDir  = '../data/protocol/'
-outputDir = 'data/'
+outputDir = '../data/'
 
 # Start Code
 try:
@@ -39,7 +39,18 @@ try:
             inputFileExt = os.path.splitext(file)[1]
 
             print('Reading data file : ', inputFilePath)  # Opening file ...
-            
+
+            # Open input file
+
+            # Check for .dat extension
+
+            # Open an output file with extension .txt
+
+            # read all protocol files 1 by 1 and append to output file
+
+            # save output file
+
+            # close input file
 except:
     error_type = sys.exc_info()[0]
     error_message = sys.exc_info()[1]
@@ -56,3 +67,8 @@ except:
     print('******************************************************')
 
 
+finally:
+    # close all input files
+    # close all output files
+
+    print('End Time : ',timer.getTime())
