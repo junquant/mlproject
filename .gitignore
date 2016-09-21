@@ -3,3 +3,8 @@
 
 # Ignore OSX files
 .DS_Store
+
+# Ignore the data set files inside the /data folder
+# make sure the files copied over is in these paths
+data/optional/*.dat
+data/*.txt
