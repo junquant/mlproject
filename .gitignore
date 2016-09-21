@@ -1,2 +1,5 @@
 # Ignore Pycharm files
 .idea/*.*
+
+# Ignore OSX files
+.DS_Store
