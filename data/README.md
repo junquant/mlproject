@@ -1,4 +1,5 @@
 # Data Directory
 
-* Do not put the whole data set here as Github has a file size limit. 
-* Only sample data (ie. subset of the full data set) should reside here. 
+* Anything with extension .txt will be ignored by Git. 
+* Safe to put .txt files here so that we dont have to change the path everytime we rerun the script. 
+* Use relative paths instead of absolute .. 
