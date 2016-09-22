@@ -42,8 +42,6 @@ for i in range(101,110,1):
     
     df.columns = columnNames
     df.to_csv(outputCSV, encoding='utf-8', chunksize=1)
-    
-    fileOut.close()
              
     
     
