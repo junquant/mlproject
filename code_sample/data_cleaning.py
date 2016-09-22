@@ -11,7 +11,7 @@ import pandas as pd
 
 # Set the correct working directory to detect the files
 currentDir = os.getcwd()
-inputDir = 'C:\\Users\\admin\\Google Drive\\SMU MITB\\AY2016-2017\\S1\\ISSS610 Applied Machine Learning\\ml-project\\PAMAP2_Dataset\\Protocol'
+inputDir = '../data/protocol'
 
 if currentDir != inputDir:
     os.chdir (inputDir)
@@ -41,7 +41,7 @@ for i in range(101,110,1):
             columnNames.append(imu)    
     
     df.columns = columnNames
-    df.to_csv(outputCSV, encoding='utf-8', chunksize=1)    # Create intermediate csv file
+    df.to_csv(outputCSV, encoding='utf-8', chunksize=1)
     
     fileOut.close()
              
