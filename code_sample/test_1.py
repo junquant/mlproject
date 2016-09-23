@@ -2,7 +2,7 @@
 """
 Created on Wed Sep 14 22:54:04 2016
 
-@author: thomasjiang
+@author: yizhang2013
 """
 
 import os
