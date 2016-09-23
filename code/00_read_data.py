@@ -58,10 +58,11 @@ includedRows = 0
 # Create column names
 columnNames = ['timestamp', 'activity_id', 'heartrate_bpm']
 
-imuColumns = ['%s_temp_c', '%s_3d_accel_16', '%s_3d_accel_16', '%s_3d_accel_16', '%s_3d_accel_6',
-              '%s_3d_accel_6', '%s_3d_accel_6', '%s_3d_gyroscope', '%s_3d_gyroscope', '%s_3d_gyroscope',
-              '%s_3d_magnetometer','%s_3d_magnetometer', '%s_3d_magnetometer', '%s_orientation', '%s_orientation',
-              '%s_orientation','%s_orientation']
+imuColumns = ['%s_temp_c', '%s_3d_accel_16_1', '%s_3d_accel_16_2', '%s_3d_accel_16_3',
+              '%s_3d_accel_6_1','%s_3d_accel_6_2', '%s_3d_accel_6_3',
+              '%s_3d_gyroscope_1', '%s_3d_gyroscope_2', '%s_3d_gyroscope_3',
+              '%s_3d_magnetometer_1','%s_3d_magnetometer_2', '%s_3d_magnetometer_3',
+              '%s_orientation_1', '%s_orientation_2','%s_orientation_3','%s_orientation_4']
 
 # Prefixes to be appended to imuColumns
 prefix = ['hand', 'chest', 'ankle']
@@ -109,6 +110,7 @@ try:
                 else:
                     line.append(inputFileName)
                     dataWriterOut.writerow(line)
+
                     includedRows += 1
 
                 if readRows % 100000 == 0:

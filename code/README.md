@@ -4,6 +4,8 @@ This is the directory for all data processing and learning codes. Below is a des
 
 ### 00_read_data.py
 * Create the labels for the columns based on the codebook provided together with the PAMAP2 dataset
+* Select the activities to be included in the main data set. 
+* Activities performed by at least 6 subjects for more than 1 minute is selected.
 * Read the .dat files for all 9 subjects from the protocol folder. Data from the optional folder are excluded as not all subjects performed the activities. 
 * Tag each record with the subject that perform the activity
 * Output subject 101-109 into a single file (../data/consolidate.txt)
