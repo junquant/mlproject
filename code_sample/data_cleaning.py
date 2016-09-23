@@ -19,18 +19,18 @@ if currentDir != inputDir:
 # Create list with non-repeated column names - to append repeated ones later
 """
 columnNames = ['timestamp(s)', 'activityID', 'heartRate(bpm)']
-    
+
 # Create list to be appended with body part
 rawIMU = ['%s-temp(C)', '%s-3D-accel-16', '%s-3D-accel-16', '%s-3D-accel-16', '%s-3D-accel-6', '%s-3D-accel-6', '%s-3D-accel-6', '%s-3D-gyroscope', '%s-3D-gyroscope', '%s-3D-gyroscope', '%s-3D-magnetometer', '%s-3D-magnetometer', '%s-3D-magnetometer', '%s-orientation', '%s-orientation', '%s-orientation', '%s-orientation']
-    
+
 # Prefixes to be appended to rawIMU
 prefix = ['hand','chest','ankle']
-    
+
 # Append prefixes
 for l in range(0,3):
     for imu in rawIMU:
         imu = str(imu) % prefix[l]
-        columnNames.append(imu) 
+        columnNames.append(imu)
 """
 # Begin extracting data from .dat to .csv from each .dat file
 activity_data = []
