@@ -1,11 +1,12 @@
 import numpy as np
 import pandas as pd
+from sklearn.decomposition import PCA
 from datetime import datetime
 import matplotlib.pyplot as plt
 
 # file properties
 # -----------------------------------------------------
-filePath = '../data/consolidated_101.txt'
+filePath = '../data/consolidated.txt'
 
 # Utility class for timing the script
 # --------------------------------------
@@ -118,6 +119,7 @@ x = plot_correlation(dfReadings.corr(),title='IMU readings')
 plt.show(x)
 
 # PCA
+
 
 # Print end time
 print('End Time : ',timer.getTime())
