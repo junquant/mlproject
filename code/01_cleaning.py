@@ -70,7 +70,7 @@ df = pd.DataFrame(activityData)
 # count missing values in df
 print('Number of missing values in data frame')
 print('--------------------------------------')
-print(df.isnull.sum())
+print(df.isnull().sum())
 
 # populate next missing value with last valid observation
 df = df.fillna(method='ffill')
