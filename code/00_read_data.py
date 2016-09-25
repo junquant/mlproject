@@ -108,8 +108,6 @@ try:
                     excludedRows += 1
                     continue
                 else:
-                    # Remove orientation (invalid in this PAMAP 2 data set)
-                    line = line[0:50]
 
                     # Append subject
                     subjectId = int(inputFileName[-3:])
