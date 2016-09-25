@@ -10,7 +10,7 @@ import numpy as np
 
 # Set the correct working directory to detect the files
 currentDir = os.getcwd()
-inputDir = '..\\data\\protocol'
+inputDir = '../data/protocol'
 
 if currentDir != inputDir:
     os.chdir (inputDir)

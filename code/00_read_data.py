@@ -108,16 +108,27 @@ try:
                     excludedRows += 1
                     continue
                 else:
-                    line.append(inputFileName)
+                    # Remove orientation (invalid in this PAMAP 2 data set)
+                    line = line[0:50]
+
+                    # Append subject
+                    subjectId = int(inputFileName[-3:])
+                    line.append(subjectId)
+
+                    # write line to file
                     dataWriterOut.writerow(line)
 
+                    # uncomment if only sampling 10 rows for testing
+                    # if includedRows == 10:
+                    #     break
+                    #
                     includedRows += 1
 
                 if readRows % 100000 == 0:
                     print('Read records : %s | Included records : %s | Excluded records : %s' %
                           (str(readRows), str(includedRows), str(excludedRows)))
 
-            # break just to read subject101 file
+            # uncomment break just to read subject101 file
             # break
 
             # close input file
