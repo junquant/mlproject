@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
 from datetime import datetime
 import matplotlib.pyplot as plt
 
@@ -100,8 +101,15 @@ print(correlationMatrix)
 
 # Visualization
 # ---------------------------------------------
-# Correlation Plot
+# Distribution
+
 plt.style.use('ggplot')
+
+for i in range(2,56):
+    df.ix[:,i].plot
+
+
+# Correlation Plot
 
 def plot_correlation(dataframe, title=''):
     lang_names = dataframe.columns.tolist()
