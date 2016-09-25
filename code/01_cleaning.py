@@ -2,7 +2,6 @@ import numpy as np
 import pandas as pd
 from datetime import datetime
 import matplotlib.pyplot as plt
-import seaborn as sns
 
 # file properties
 # -----------------------------------------------------
@@ -90,11 +89,18 @@ print('Summary of data frame')
 print('--------------------------------------')
 print(df.describe())
 
+# Correlation matrix
+print('--------------------------------------')
+print('Correlation Matrix')
+print('--------------------------------------')
+dfReadings = df.iloc[:,2:-1]
+correlationMatrix = dfReadings.corr()
+print(correlationMatrix)
+
 # Visualization
 # ---------------------------------------------
-# Correlation matrix
+# Correlation Plot
 plt.style.use('ggplot')
-dfReadings = df.iloc[:,2:-1]
 
 def plot_correlation(dataframe, title=''):
     lang_names = dataframe.columns.tolist()
