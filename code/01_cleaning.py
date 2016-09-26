@@ -1,7 +1,6 @@
 import numpy as np
 import pandas as pd
 from sklearn.decomposition import PCA
-from sklearn.preprocessing import StandardScaler
 from datetime import datetime
 import matplotlib.pyplot as plt
 
@@ -102,11 +101,15 @@ print(correlationMatrix)
 # Visualization
 # ---------------------------------------------
 # Distribution
+print('--------------------------------------')
+print('Plotting distribution charts...')
+print('--------------------------------------')
 
-plt.style.use('ggplot')
+    plt.style.use('ggplot')
 
-for i in range(2,56):
-    df.ix[:,i].plot
+    for i in range(2,56):
+        df.ix[:,i].plot
+
 
 
 # Correlation Plot
@@ -127,6 +130,34 @@ x = plot_correlation(dfReadings.corr(),title='IMU readings')
 plt.show(x)
 
 # PCA
+print('--------------------------------------')
+print('Conducting PCA...')
+print('--------------------------------------')
+pca = PCA()
+dftr = pca.fit_transform(df)
+
+evr = pca.explained_variance_ratio_
+
+print('Calculating which principal component(s) to keep based on explained variance score')
+print('--------------------------------------')
+total_exp_var = 0
+i = 0
+pcomp = []
+        
+while total_exp_var < 0.997:          # Takes principal component that explains at least 99.7% of variance, then stops loop
+    total_exp_var = total_exp_var + evr[i]
+    i += 1
+    pcomp.append('PC%d' % i)
+    
+
+print('Principal component(s) to keep: %s' % ','.join(pcomp))
+print('Principal component(s) explains %.2f percent of total variance' % float(total_exp_var * 100))
+
+pltcol = int((len(pcomp)/len(pcomp))-1)
+
+plt.figure(figsize=(12,12))
+plt.scatter(dftr[:,pltcol], dftr[:,(pltcol+1)])
+plt.show()
 
 
 # Print end time
