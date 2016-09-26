@@ -2,11 +2,11 @@ import numpy as np
 import pandas as pd
 from datetime import datetime
 import matplotlib.pyplot as plt
-import seaborn as sns
+#import seaborn as sns
 
 # file properties
 # -----------------------------------------------------
-filePath = '../data/consolidated_101.txt'
+filePath = '../data/consolidated.txt'
 
 # Utility class for timing the script
 # --------------------------------------
