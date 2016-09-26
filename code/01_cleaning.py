@@ -104,7 +104,9 @@ print(correlationMatrix)
 print('--------------------------------------')
 print('Plotting distribution charts...')
 print('--------------------------------------')
+dist_qn = input('Do you wish to plot all charts? (Y/N) ')
 
+if (dist_qn == 'Y') or (dist_qn == 'y'):
     plt.style.use('ggplot')
 
     for i in range(2,56):
