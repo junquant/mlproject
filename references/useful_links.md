@@ -1,8 +1,17 @@
-# Useful Links
+Useful Links
 
 ### Git workflow
 * Git Workflow [here] (https://www.atlassian.com/git/tutorials/comparing-workflows/centralized-workflow)
 * We are probably following the centralized workflow. 
+
+### Markdown (.md) to Microsoft Docx
+* [pandoc](http://pandoc.org/installing.html) - [Download Link](http://pandoc.org/installing.html)
+* Help command : pandoc --help
+* OSX command to convert md to docx : pandoc proposal.md -f markdown -t docx -o output.docx
+	* where -f is from
+	* -t is to
+	* -o is output file name
+* Windows command to convert : not very sure haha try and let me know 
 
 ### Handling Missing Data
 
