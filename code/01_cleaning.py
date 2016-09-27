@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 # file properties
 # -----------------------------------------------------
-filePath = '../data/consolidated.txt'
+filePath = '../data/consolidated_101.txt'
 
 # Utility class for timing the script
 # --------------------------------------
@@ -68,6 +68,7 @@ activityData = np.genfromtxt(filePath, delimiter = ',', skip_header = 1, dtype=d
 # convert to pandas data frame
 df = pd.DataFrame(activityData)
 
+print(df.shape)
 # count missing values in df
 print('--------------------------------------')
 print('Number of missing values in data frame')
@@ -100,19 +101,18 @@ print(correlationMatrix)
 
 # Visualization
 # ---------------------------------------------
+plt.style.use('ggplot')
+
 # Distribution
 print('--------------------------------------')
 print('Plotting distribution charts...')
 print('--------------------------------------')
 dist_qn = input('Do you wish to plot all charts? (Y/N) ')
 
-if (dist_qn == 'Y') or (dist_qn == 'y'):
-    plt.style.use('ggplot')
 
+if (dist_qn == 'Y') or (dist_qn == 'y'):
     for i in range(2,56):
         df.ix[:,i].plot
-
-
 
 # Correlation Plot
 
