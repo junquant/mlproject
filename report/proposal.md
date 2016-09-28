@@ -70,4 +70,6 @@ The following steps were taken to conduct PCA on the dataset:
 2.	Find out which columns affect the components the most
 3.	Normalize those columns
 4.	Re-run PCA with normalized columns 
+5.  Scree plot
 
+![Scree Plot](../report/img/screeplot.png)
