@@ -26,15 +26,12 @@ Source control will be done using Github.
 
 ## Data Set
 
-The Physical Activity Monitoring for Aging People (PAMAP) organisation collected the data of 9 subjects. The 9 subjects (8 males, 1 female) who participated were mainly employees or students at the German Research Center for Artificial Intelligence (Deutsches Forschungszentrum für Künstliche Intelligenz, DFKI). They are aged between 27 and 31 years old and have BMIs between 25kgm^-2 and 28kgm^-2. 
+AMAP collected the data of 9 subjects. The subjects (8 males, 1 female – ages: 27-31 years old) who participated were mainly employees or students at the German Research Center for Artificial Intelligence (DFKI).
+Subjects carried out 18 different physical activities in a controlled environment - all went through the exact same sequence of activities with optional activities performed by some of the subjects. Optional activities will not be in the scope of this project. The data collection was done by attaching 3 Colibri wireless inertial measurement units (IMUs) to 3 main parts of each subject's body - the wrist of the dominant arm, the chest, and the ankle of the dominant leg.
+The full data set exists in 9 separate .dat files, one for each subject, of 54 columns containing data such as Timestamps, Activity IDs, Heart Rate and IMU readings on the subjects' hand, chest and ankle.
+Each IMU sensory data (hand, chest and ankle) contains the temperature, 3D acceleration data, 3D gyroscope data, 3D magnetometer data. Orientation data is also included but invalid in this data set as mentioned in the code book available with the PAMAP2.
+The activities performeed by the subjects consist of daily activities such as sitting, lying, walking and running as well as other activities such as vacuum cleaning and ironing.
 
-The 9 subjects carried out 18 different physical activities in a controlled environment - all subjects went through the exact same sequence of activities with optional activities performed by some of the subjects. Optional activities will not be in the scope of this project. The data collection was done by attaching 3 [Colibri wireless inertial measurement units (IMUs)] (http://www.trivisio.com/index.php/products/motiontracking/colibriwireless) to 3 main parts of each subject's body - the wrist of the dominant arm, the chest, and the ankle of the dominant leg.
-
-The full data set exists in 9 separate .dat files, one for each subject, of 54 columns containing data such as Timestamps, Activity IDs, Heart Rate and IMU readings on the subjects' hand, chest and ankle. 
-
-Each IMU sensory data (hand, chest and ankle) contains the temperature, 3D acceleration data, 3D gyroscope data, 3D magnetometer data. Orientation data is also included but invalid in this data set as mentioned in the code book available with the PAMAP2. 
-
-The activities performeed by the subjects consist of daily activities such as sitting, lying, walking and running as well as other activities such as vacuum cleaning and ironing. 
 
 ## Initial Data Exploration & Preparation
 
@@ -64,3 +61,11 @@ Some of the attributes were also found to be highly correlated.
 3D Accelerators (16g) are highly correlated (postively) with 3D Acclerators (6g); 3D Magnetometer (Chest) highly correlated (negatively) with both 3D accelerometers (Chest)
 
 As such, further exploration will be needed and the data and any implications will need to be considered when constructing the models. 
+
+**Principal Component Analysis**
+The following steps were taken to conduct PCA on the dataset
+1.	Run an initial PCA on the dataset (excluding the timestamp and activityID)
+2.	Find out which columns affect the components the most
+3.	Normalize those columns
+4.	Re-run PCA with normalized columns 
+
