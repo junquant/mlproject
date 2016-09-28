@@ -63,6 +63,7 @@ Some of the attributes were also found to be highly correlated.
 As such, further exploration will be needed and the data and any implications will need to be considered when constructing the models. 
 
 **Principal Component Analysis**
+
 The following steps were taken to conduct PCA on the dataset
 1.	Run an initial PCA on the dataset (excluding the timestamp and activityID)
 2.	Find out which columns affect the components the most
