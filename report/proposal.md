@@ -20,18 +20,13 @@ The approach that we propose would be to first explore in detail to extract the 
 
 The most suitable model (in terms of accuracy, precision and recall) to classify an activity that is carried out by a unique individual will be selected. Supervised learning methods will explored and used to construct the model. The model will then be interpreted to extract insights on how are the actions and subjects classified. 
 
-Hold-out or k-fold cross validation will be used to avoid over-fitting the model. The final cross validation method will be decided later. 
-
-Source control will be done using Github. 
+Hold-out or k-fold cross validation will be used to avoid over-fitting the model. The final cross validation method will be decided later. Source control will be done using Github. 
 
 ## Data Set
 
-AMAP collected the data of 9 subjects. The subjects (8 males, 1 female – ages: 27-31 years old) who participated were mainly employees or students at the German Research Center for Artificial Intelligence (DFKI).
-Subjects carried out 18 different physical activities in a controlled environment - all went through the exact same sequence of activities with optional activities performed by some of the subjects. Optional activities will not be in the scope of this project. The data collection was done by attaching 3 Colibri wireless inertial measurement units (IMUs) to 3 main parts of each subject's body - the wrist of the dominant arm, the chest, and the ankle of the dominant leg.
-The full data set exists in 9 separate .dat files, one for each subject, of 54 columns containing data such as Timestamps, Activity IDs, Heart Rate and IMU readings on the subjects' hand, chest and ankle.
-Each IMU sensory data (hand, chest and ankle) contains the temperature, 3D acceleration data, 3D gyroscope data, 3D magnetometer data. Orientation data is also included but invalid in this data set as mentioned in the code book available with the PAMAP2.
-The activities performeed by the subjects consist of daily activities such as sitting, lying, walking and running as well as other activities such as vacuum cleaning and ironing.
+The PAMAP2 data set available from UCI Machine Learning Repository [(Link)](https://archive.ics.uci.edu/ml/datasets/PAMAP2+Physical+Activity+Monitoring) consist the data of 9 subjects performing 18 different physical activities such as sitting, lying, walking and running in a controlled environment - all went through the exact same sequence of activities with optional activities performed by some of the subjects. Optional activities performed but will not be in the scope of this project.  The subjects (8 males, 1 female – ages: 27-31 years old) who participated were mainly employees or students at the German Research Center for Artificial Intelligence (DFKI). The data collection was done by attaching 3 Colibri wireless inertial measurement units (IMUs) to each subject's body. 
 
+The full data set exists in 9 separate .dat files, one for each subject, of 54 columns containing data such as Timestamps, Activity IDs, Heart Rate and IMU readings on the subjects' hand, chest and ankle. Each IMU sensory data (hand, chest and ankle) contains the temperature, 3D acceleration data, 3D gyroscope data, 3D magnetometer data. Orientation data is also included in the data set but invalid in this data set as mentioned in the code book available with the PAMAP2.
 
 ## Initial Data Exploration & Preparation
 
@@ -53,23 +48,17 @@ The data set consists of a significant amount of NaN data | Cannot conduct PCA w
 Timestamps are available | Including the timestamp in the analysis will cause the model to be biased - it is possible to predict results solely based on timestamps as subjects performed the activities in a sequence. As such, we have to exclude timestamps.
 Some activities were only carried out by a few subjects (e.g. watching TV was only carried out by 1 subject) | Activities carried out by less than 6 out of 8 subjects should be left out in order to train the model properly. 
 
-Some of the attributes were also found to be highly correlated. 
-
-**Correlation Matrix of the variables**
-![Correlation Matrix](../report/img/correlation_matrix.png)
-
-3D Accelerators (16g) are highly correlated (postively) with 3D Acclerators (6g); 3D Magnetometer (Chest) highly correlated (negatively) with both 3D accelerometers (Chest)
-
-As such, further exploration will be needed and the data and any implications will need to be considered when constructing the models. 
-
-**Principal Component Analysis**
-
-The following steps were taken to conduct PCA on the dataset:
+Initial exploration also includes plotting the correlation of the variables and performing principal component analysis. The following steps were taken to conduct PCA on the data set as part of exploration. 
 
 1.	Run an initial PCA on the dataset (excluding the timestamp and activityID)
 2.	Find out which columns affect the components the most
 3.	Normalize those columns
-4.	Re-run PCA with normalized columns 
-5.  Scree plot
+4.	Re-run PCA with normalized columns and plotting the scree plot
 
+Both correlation and the scree plot are shown below. Further exploration will be needed to look at the data and in particular the principal components and the highly correlated variables. Any implications will then need to be considered when constructing the models. 
+
+**Correlation Matrix of the variables**
+![Correlation Matrix](../report/img/correlation_matrix.png)
+
+**Scree Plot of Principal Components**
 ![Scree Plot](../report/img/screeplot.png)
