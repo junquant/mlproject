@@ -1,15 +1,18 @@
 # Proposal
 
 ## Problem Description
+
 Wearable technologies are getting more and more common and machine learning plays an important role in enabling the machine to recognize a person's activity. While typical machine learning projects seeks to classify the activity performed, this project attempts to go a step further and aims to develop a method to best classify the activity and the person performing the activity. Using the T,P,E framework, the problem can be summarized into:
 
 * **Task** - Predict the activity *and* the person performing the activity
 * **Performance** - Number of actions *and* person performing the activity correctly classified
 * **Experience** - PAMAP2 data set of labeled IMU readings available from the UCI Machine Learning Repository 
 
+The constructed model may be deployed in a health care setting, to monitor a patient's activities. With the ability to differentiate the activities and the person performing it, it also opens up the possibility of sharing the wearable device. 
+
 ## Approach
 
-The approach undertaken by this project would be to compare 3 different models in the classification of human activity and the person performing it. The 3 models that will be compared are summarised as follows:
+The approach that we propose would be to first explore in detail to extract the features most representative of the activities and the subject. Next, 3 different models will be compared in the classification of human activity and the person performing it. The 3 models that will be compared are summarised as follows:
 
 1. **Model 1** - Classify Subject (Person) --> Feed subject back into model to classify action of the subject
 2. **Model 2** - Classify Action --> Feed action back into model to the classify subject
@@ -27,50 +30,14 @@ The Physical Activity Monitoring for Aging People (PAMAP) organisation collected
 
 The 9 subjects carried out 18 different physical activities in a controlled environment - all subjects went through the exact same sequence of activities with optional activities performed by some of the subjects. Optional activities will not be in the scope of this project. The data collection was done by attaching 3 [Colibri wireless inertial measurement units (IMUs)] (http://www.trivisio.com/index.php/products/motiontracking/colibriwireless) to 3 main parts of each subject's body - the wrist of the dominant arm, the chest, and the ankle of the dominant leg.
 
-The full data set exists in 9 separate .dat files of 54 columns, one for each subject and the data collected can be classified in the following categories:
+The full data set exists in 9 separate .dat files, one for each subject, of 54 columns containing data such as Timestamps, Activity IDs, Heart Rate and IMU readings on the subjects' hand, chest and ankle. 
 
-Column # | Data
---- | ---
-1 | Timestamp (s)
-2 | Activity ID
-3 | Heart rate (bpm)
-4 - 20 | IMU Hand
-21 - 37 | IMU Chest
-38 - 54 | IMU ankle
+Each IMU sensory data (hand, chest and ankle) contains the temperature, 3D acceleration data, 3D gyroscope data, 3D magnetometer data. Orientation data is also included but invalid in this data set as mentioned in the code book available with the PAMAP2. 
 
-Each IMU sensory data (hand, chest and ankle) contains the following:
-
-* Temperature
-* 3D acceleration data
-* 3D gyroscope data
-* 3D magnetometer data
-* Orientation (this is invalid in this dataset)
-
-These activities can be classified as follows:
-
-ID | Activity
---- | ---
-1 | Lying
-2 | Sitting
-3 | Standing
-4 | Walking
-5 | Running
-6 | Cycling
-7 | Nordic walking
-9 | Watching TV
-10 | Computer work
-11 | Car driving
-12 | Ascending stairs
-13 | Descending stairs
-16 | Vacuum cleaning
-17 | Ironing
-18 | Folding Laundry
-19 | House cleaning
-20 | Playing soccer
-24 | Rope Jumping
-0 | Other (Transient activities)
+The activities performeed by the subjects consist of daily activities such as sitting, lying, walking and running as well as other activities such as vacuum cleaning and ironing. 
 
 ## Initial Data Exploration & Preparation
+
 As the data set exists in 9 separate .dat files a script was prepared to read the data and consolidate it into one .txt file for easier processing. As an one-time filtering, activities that are performed by less than 6 subjects and activities performed for only a few seconds (i.e 24 - Rope Jumping) were removed. Optional activities resides in separate data files and are not read. Each of the record was also labeled with the subject performing the activity as part of the initial and consolidation. 
 
 A summary of the number of records and columns is provided below. 
@@ -78,7 +45,7 @@ A summary of the number of records and columns is provided below.
 * Total Records Read From Original Data Set:  2872533
 * Total Records Written to Consolidated Data Set:  1893512
 * Total Records Filtered:  979021
-* total Columns in Consolidated Data Set: 55
+* Total Columns in Consolidated Data Set: 55
 
 A summary of the data was performed using the Python pandas package and initial exploration of the data set reveals several important points that will provide the basis for training the models:
 
@@ -96,4 +63,4 @@ Some of the attributes were also found to be highly correlated.
 
 3D Accelerators (16g) are highly correlated (postively) with 3D Acclerators (6g); 3D Magnetometer (Chest) highly correlated (negatively) with both 3D accelerometers (Chest)
 
-As such, further exploration will be needed and the data and any implications will need to be considered wen constructing the models. 
+As such, further exploration will be needed and the data and any implications will need to be considered when constructing the models. 
