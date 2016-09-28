@@ -105,14 +105,14 @@ print(correlationMatrix)
 plt.style.use('ggplot')
 
 # Distribution
-print('Plotting distribution charts...')
-print('--------------------------------------')
-dist_qn = input('Do you wish to plot all charts? (Y/N) ')
-
-
-if (dist_qn == 'Y') or (dist_qn == 'y'):
-    for i in range(2,56):
-        df.ix[:,i].plot
+# print('Plotting distribution charts...')
+# print('--------------------------------------')
+# dist_qn = input('Do you wish to plot all charts? (Y/N) ')
+#
+#
+# if (dist_qn == 'Y') or (dist_qn == 'y'):
+#     for i in range(2,56):
+#         df.ix[:,i].plot
 
 # Correlation Plot
 
@@ -128,8 +128,7 @@ def plot_correlation(dataframe, title=''):
     plt.yticks(tick_indices, lang_names)
     plt.gcf().subplots_adjust(bottom=0.25, left=0.25)
 
-x = plot_correlation(dfReadings.corr(),title='IMU readings')
-plt.show(x)
+corrPlot = plot_correlation(dfReadings.corr(),title='IMU readings')
 
 #%%
 # PCA
@@ -163,7 +162,11 @@ df_norm = functools.reduce(lambda left,right: pd.merge(left,right,on='index'), d
 print('--------------------------------------')
 print('Normalizing data...')
 print('--------------------------------------')
-df_norm = (df_norm - df_norm.mean()) / (df_norm.max() - df_norm.min())
+# Quick fix for zero range records
+divisor = df_norm.max() - df_norm.min()
+divisor.replace(0.0,1,inplace=True)
+
+df_norm = (df_norm - df_norm.mean()) / 1
 
 left = df.ix[:,0:2]
 right = df_norm.ix[:,1:]
@@ -201,10 +204,21 @@ print('Principal component(s) explains %.2f percent of total variance' % float(t
 
 pltcol = int((len(pcomp)/len(pcomp))-1)
 
-plt.figure(figsize=(12,12))
-plt.scatter(dftr[:,pltcol], dftr[:,(pltcol+1)])
-plt.show()
 
+def plot_scree(explainedVarianceRatio, colsNumber, title=''):
+    pc = np.arange(colsNumber) + 1
+
+    plt.figure(figsize=(12,9))
+    plt.title(title)
+    plt.xlabel('Principal Component')
+    plt.ylabel('% of Variance Explained')
+    plt.plot(pc,explainedVarianceRatio)
+
+screePlot = plot_scree(evr,len(evr), 'Scree Plot')
 
 # Print end time
 print('End Time : ',timer.getTime())
+
+# Plotting the graphs
+
+plt.show()
