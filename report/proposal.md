@@ -64,7 +64,8 @@ As such, further exploration will be needed and the data and any implications wi
 
 **Principal Component Analysis**
 
-The following steps were taken to conduct PCA on the dataset
+The following steps were taken to conduct PCA on the dataset:
+
 1.	Run an initial PCA on the dataset (excluding the timestamp and activityID)
 2.	Find out which columns affect the components the most
 3.	Normalize those columns
