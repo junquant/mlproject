@@ -7,11 +7,16 @@ Useful Links
 ### Markdown (.md) to Microsoft Docx
 * [pandoc](http://pandoc.org/installing.html) - [Download Link](http://pandoc.org/installing.html)
 * Help command : pandoc --help
-* OSX command to convert md to docx : pandoc proposal.md -f markdown -t docx -o output.docx
+* Command to convert md to docx : pandoc proposal.md -f markdown -t docx -o output.docx (Works for OSX and Windows)
 	* where -f is from
 	* -t is to
 	* -o is output file name
-* Windows command to convert : not very sure haha try and let me know 
+* Command to convert md to html slides (reveal.js) : pandoc -s --mathjax -t revealjs sample_deck.md -o sample_deck.html
+	* where -s is standalone
+	* -t is to 
+	* sample_deck.md is source file name
+	* -o is output file name
+* For reveal.js, the folder reveal.js needs to be in the same folder as the html slide deck
 
 ### Handling Missing Data
 
