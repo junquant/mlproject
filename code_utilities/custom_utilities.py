@@ -115,6 +115,7 @@ class MetaData:
                     ('hand_3d_gyroscope_1', 'float'), ('hand_3d_gyroscope_2', 'float'),
                     ('hand_3d_gyroscope_3', 'float'),
                     ('hand_3d_magnetometer_1', 'float'), ('hand_3d_magnetometer_2', 'float'),
+                    ('hand_3d_magnetometer_3', 'float'),
                     # imu chest - accel
                     ('chest_temp_c', 'float'),
                     ('chest_3d_accel_16g_1', 'float'), ('chest_3d_accel_16g_2', 'float'),

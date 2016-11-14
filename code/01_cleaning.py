@@ -4,7 +4,7 @@ from code_utilities.custom_utilities import Timer, MetaData
 
 # file properties
 # -----------------------------------------------------
-filePath = '../data/consolidated_101.txt'
+filePath = '../data/consolidated_10.txt'
 outputFile = '../data/consolidated_clean.txt'
 
 metadata = MetaData()
@@ -19,16 +19,16 @@ print('Reading files ... ')
 print('------------------------------------------------------------')
 # Note that this is a numpy structured array as the data set contains both int and float
 # http://docs.scipy.org/doc/numpy/user/basics.rec.html
-activityData = np.genfromtxt(filePath, delimiter = ',', skip_header = 0, dtype=dataType)
+activityData = np.genfromtxt(filePath, delimiter = ',', skip_header = 1, dtype=dataType)
 
 # convert to pandas data frame
 df = pd.DataFrame(activityData)
 
-print(df.shape)
 # count missing values in df
 print('--------------------------------------')
 print('Number of missing values in data frame')
 print('--------------------------------------')
+print(df.describe())
 print(df.isnull().sum())
 
 # remove unnecessary columns
