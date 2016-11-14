@@ -7,19 +7,19 @@ from code_utilities.custom_utilities import Timer, MetaData
 filePath = '../data/consolidated_101.txt'
 outputFile = '../data/consolidated_clean.txt'
 
-print('------------------------------------------------------------')
-print('Reading files ... ')
-timer = Timer()
-startTime = timer.getTime()
-print('Start Time : ', timer.getTime())  # Get the start time for tracking purposes
-print('------------------------------------------------------------')
-
 metadata = MetaData()
 dataType = metadata.getOriginalColsDataType()
 
+timer = Timer()
+startTime = timer.getTime()
+print('Start Time : ', timer.getTime())  # Get the start time for tracking purposes
+
+print('------------------------------------------------------------')
+print('Reading files ... ')
+print('------------------------------------------------------------')
 # Note that this is a numpy structured array as the data set contains both int and float
 # http://docs.scipy.org/doc/numpy/user/basics.rec.html
-activityData = np.genfromtxt(filePath, delimiter = ',', skip_header = 1, dtype=dataType)
+activityData = np.genfromtxt(filePath, delimiter = ',', skip_header = 0, dtype=dataType)
 
 # convert to pandas data frame
 df = pd.DataFrame(activityData)
@@ -48,4 +48,4 @@ print('--------------------------------------')
 print(df.describe())
 print(df.isnull().sum())
 
-df.to_csv(outputFile, header=None, index=None,sep=',')
+df.to_csv(outputFile, header=True, index=None,sep=',')

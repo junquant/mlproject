@@ -5,34 +5,33 @@ import matplotlib.pyplot as plt
 import functools
 from code_utilities.custom_utilities import Timer, MetaData
 
-
 # file properties
 # -----------------------------------------------------
 filePath = '../data/consolidated_clean.txt'
 
-print('------------------------------------------------------------')
-print('Reading files ... ')
-timer = Timer()
-startTime = timer.getTime()
-print('Start Time : ', timer.getTime())  # Get the start time for tracking purposes
-print('------------------------------------------------------------')
-
 metadata = MetaData()
 dataType = metadata.getProcessedColsDataType()
 
+timer = Timer()
+startTime = timer.getTime()
+print('Start Time : ', timer.getTime())  # Get the start time for tracking purposes
+
+print('------------------------------------------------------------')
+print('Reading files ... ')
+print('------------------------------------------------------------')
 # Note that this is a numpy structured array as the data set contains both int and float
 # http://docs.scipy.org/doc/numpy/user/basics.rec.html
-activityData = np.genfromtxt(filePath, delimiter = ',', skip_header = 0, dtype=dataType)
+activityData = np.genfromtxt(filePath, delimiter = ',', skip_header = 1, dtype=dataType)
 
 # convert to pandas data frame
 df = pd.DataFrame(activityData)
 
+print(df.describe())
 # Visualization
 # ---------------------------------------------
 # Correlation matrix
 plt.style.use('ggplot')
 dfReadings = df.iloc[:, 2:-1]
-
 
 def plot_correlation(dataframe, title=''):
     lang_names = dataframe.columns.tolist()
