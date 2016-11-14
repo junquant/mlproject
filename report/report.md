@@ -5,6 +5,8 @@
 ## Data Set
 
 ## Data Preparation
+**Missing Values**
+The missing values were caused by lost of signals. As such, missing values are populated with the last valid value for the subject and if there is no valid value before, the first valid value after the record was used. 
 
 ## Methodology
 

@@ -9,3 +9,6 @@
 data/optional/*.dat
 data/protocol/*.dat
 data/*.txt
+
+#ignore jupyter notebook workings
+code/workings.ipynb
