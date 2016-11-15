@@ -22,5 +22,5 @@
 **results** - output of the individual models should come in here in this format
 
 model | score_a | score_b | score_a_b | train_dur_a | train_dur_b | train_dur_a_b (in min) | method
------ | ------- | --------| --------- | ----------- | ----------- | ---------------------- |
+----- | ------- | --------| --------- | ----------- | ----------- | ---------------------- | -----
 naive_bayes | 0.95 | 0.88 | 0.91 | 0.5 | 0.4 | 0.2 | a>b
