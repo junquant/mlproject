@@ -19,3 +19,7 @@
 
 **report** - proposal and report in md format
 
+**results** - output of the individual models should come in here in this format
+model|score|train_duration (in min)|method
+-----|-----|--------------|------
+naive_bayes|0.95|0.5|a>b
