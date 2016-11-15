@@ -3,6 +3,7 @@
 *Lets rock. I hope*
 
 **code** - This is the directory for all data processing and learning codes.
+
 **code_sample** - Use this directory to put sample codes you find or trying out
  
 **data** - 
@@ -11,6 +12,10 @@
 * Use relative paths instead of absolute .. 
 
 **data_codebook** - UCI data codebooks
+
 **presentation** - Use this directory to put our presentations
+
 **references** - cheatsheets and references
+
 **report** - proposal and report in md format
+
