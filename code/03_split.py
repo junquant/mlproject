@@ -26,6 +26,7 @@ random_state = np.random.seed(2016) # Set random seed
 strat_split = StratifiedShuffleSplit(n_splits=1,
                                      train_size=0.75,
                                      random_state=random_state)
+
 x = data.ix[:,:42] # Set input variables (all except 'subject')
 x = x.drop('activity_id', axis=1) # Drop 'activity_id' from input variables
 y = data.ix[:, 42] # Set output variable to be 'subject'

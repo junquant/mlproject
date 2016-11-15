@@ -9,7 +9,7 @@ from utilities import Timer, MetaData
 
 # file properties
 # -----------------------------------------------------
-filePath = '../data/consolidated_clean_all.txt'
+filePath = '../data/consolidated_clean_101.txt'
 
 metadata = MetaData()
 dataType = metadata.getProcessedColsDataType()
@@ -29,6 +29,7 @@ activityData = np.genfromtxt(filePath, delimiter = ',', skip_header = 1, dtype=d
 df = pd.DataFrame(activityData)
 
 print(df.describe())
+
 # Visualization
 # ---------------------------------------------
 # Correlation matrix
