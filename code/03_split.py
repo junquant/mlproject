@@ -44,7 +44,6 @@ print('x_test shape: ', x_test.shape)
 print('y_test shape: ', y_test.shape)
 print('Time taken: ', duration)
 print('--------------------------------------------------------------------')
-
 # Save output files - train_data.txt, test_data.txt
 print('Saving files...')
 # Merge input and target columns
