@@ -2,11 +2,9 @@ from datetime import datetime
 import numpy as np
 import pandas as pd
 
-
 # Load data
-print('Loading data via "consolidated_clean.txt"...')
 start_time = datetime.now()
-data = pd.read_csv('../data/consolidated_clean.txt', sep=',')
+data = pd.read_csv('../data/consolidated_clean_101.txt', sep=',')
 end_time = datetime.now()
 duration = end_time - start_time
 print('Date file loaded.')
