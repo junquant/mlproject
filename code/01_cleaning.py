@@ -5,7 +5,7 @@ from utilities import Timer, MetaData
 
 # file properties
 # -----------------------------------------------------
-filePath = '../data/consolidated.txt'
+filePath = '../data/consolidated_all.txt'
 outputFile = '../data/consolidated_clean_all.txt'
 
 metadata = MetaData()
@@ -29,6 +29,7 @@ df = pd.DataFrame(activityData)
 print('--------------------------------------')
 print('Number of missing values in data frame')
 print('--------------------------------------')
+print(df.shape)
 print(df.isnull().sum())
 
 # remove unnecessary columns
@@ -36,19 +37,26 @@ nonOrientationCols = [col for col in df.columns if 'orientation' not in col]
 df = df[nonOrientationCols]
 
 # for each subject, perform the following
+for subj in range(101,109):
+    print('Cleaning subj ', subj)
+    subj_df = df.loc[df['subject'] == subj]
 
+    # populate next missing value with last valid observation then
+    # populate previous missing values next valid observation
+    subj_df = subj_df.fillna(method='ffill')
+    subj_df = subj_df.fillna(method='bfill')
 
-# populate next missing value with last valid observation
-df = df.fillna(method='ffill')
-
-# populate previous missing values next valid observation
-df = df.fillna(method='bfill')
+    if subj == 101:
+        clean_df = subj_df
+    else:
+        clean_df = clean_df.append(subj_df)
 
 # Perform a summary of the data
 print('--------------------------------------')
 print('Summary of data frame after replacement')
 print('--------------------------------------')
-print(df.describe())
-print(df.isnull().sum())
+print(clean_df.shape)
+print(clean_df.describe())
+print(clean_df.isnull().sum())
 
-df.to_csv(outputFile, header=True, index=None,sep=',')
+clean_df.to_csv(outputFile, header=True, index=None, sep=',')
