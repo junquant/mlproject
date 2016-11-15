@@ -1,7 +1,10 @@
 # python3.5.2
-import os, sys, traceback
 import csv
-from code_utilities.custom_utilities import Timer, MetaData
+import os
+import sys
+import traceback
+
+from utilities import Timer, MetaData
 
 print('------------------------------------------------------------')
 print('Reading files ... ')
@@ -12,6 +15,7 @@ print('------------------------------------------------------------')
 # Parameters
 inputDir  = '../data/protocol/'
 outputDir = '../data/'
+outputFileName = 'consolidated.txt'
 
 # Get the data file stuff from DataFile object in custom_utilities:
 metadata = MetaData()
@@ -30,7 +34,7 @@ try:
     print('Start Time : ', timer.getTime())  # Get the start time for tracking purposes
 
     # Open output path for writing
-    outputFile = open(outputDir + 'consolidated.txt', 'wt')
+    outputFile = open(outputDir + outputFileName, 'wt')
     dataWriterOut = csv.writer(outputFile, delimiter=",", quoting=csv.QUOTE_NONE)
     dataWriterOut.writerow(columnNames)
 

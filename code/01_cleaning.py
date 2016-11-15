@@ -1,11 +1,12 @@
 import numpy as np
 import pandas as pd
-from code_utilities.custom_utilities import Timer, MetaData
+
+from utilities import Timer, MetaData
 
 # file properties
 # -----------------------------------------------------
-filePath = '../data/consolidated_10.txt'
-outputFile = '../data/consolidated_clean_10.txt'
+filePath = '../data/consolidated.txt'
+outputFile = '../data/consolidated_clean_all.txt'
 
 metadata = MetaData()
 dataType = metadata.getOriginalColsDataType()
@@ -28,12 +29,14 @@ df = pd.DataFrame(activityData)
 print('--------------------------------------')
 print('Number of missing values in data frame')
 print('--------------------------------------')
-print(df.describe())
 print(df.isnull().sum())
 
 # remove unnecessary columns
 nonOrientationCols = [col for col in df.columns if 'orientation' not in col]
 df = df[nonOrientationCols]
+
+# for each subject, perform the following
+
 
 # populate next missing value with last valid observation
 df = df.fillna(method='ffill')

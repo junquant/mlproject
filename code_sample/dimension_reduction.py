@@ -4,7 +4,7 @@ from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
-from code_utilities.custom_utilities import Timer, MetaData
+from utilities import Timer, MetaData
 
 # file properties
 # -----------------------------------------------------

@@ -1,13 +1,15 @@
+import functools
+
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from sklearn.decomposition import PCA
-import matplotlib.pyplot as plt
-import functools
-from code_utilities.custom_utilities import Timer, MetaData
+
+from utilities import Timer, MetaData
 
 # file properties
 # -----------------------------------------------------
-filePath = '../data/consolidated_clean.txt'
+filePath = '../data/consolidated_clean_all.txt'
 
 metadata = MetaData()
 dataType = metadata.getProcessedColsDataType()
