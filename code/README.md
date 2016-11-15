@@ -1,6 +1,6 @@
 # Code Directory
 
-This is the directory for all data processing and learning codes. Below is a description of what each file does. 
+Below is a description of what each file does. 
 
 ### 00_read_data.py
 * Create the labels for the columns based on the codebook provided together with the PAMAP2 dataset
