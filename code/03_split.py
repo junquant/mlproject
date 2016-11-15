@@ -28,7 +28,6 @@ strat_split = StratifiedShuffleSplit(n_splits=1,
                                      random_state=random_state)
 
 x = data.ix[:,:42] # Set input variables (all except 'subject')
-x = x.drop('activity_id', axis=1) # Drop 'activity_id' from input variables
 y = data.ix[:, 42] # Set output variable to be 'subject'
 
 for train_index, test_index in strat_split.split(x,y):
@@ -46,7 +45,6 @@ print('x_test shape: ', x_test.shape)
 print('y_test shape: ', y_test.shape)
 print('Time taken: ', duration)
 print('--------------------------------------------------------------------')
-
 # Save output files - train_data.txt, test_data.txt
 print('Saving files...')
 # Merge input and target columns
