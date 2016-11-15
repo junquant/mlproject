@@ -1,13 +1,26 @@
-# Read in CSV
-
-# Stratified sampling
+# Read in CSV - Stratified sampling
 
 # PCA
 
-# Predict A
+# ---------------------
+# Grid Search Predict A
 
 # Join Predict to result
 
-# Predict B
+# Grid Search Predict B
 
 # Calc score for A + B
+# ---------------------
+
+# ---------------------
+# Grid Search Predict B
+
+# Join Predict to result
+
+# Grid Search Predict A
+
+# Calc score for A + B
+# ---------------------
+
+# output to results folder
+
