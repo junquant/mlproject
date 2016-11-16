@@ -105,7 +105,7 @@ class MetaData:
                     ]
         return dataType
     def getProcessedColsDataType(self):
-        dataType = [('timestamp', 'float'), ('activity_id', 'float'), ('heartrate_bpm', 'float'),
+        dataType = [('heartrate_bpm', 'float'),
                     # imu hand - accel
                     ('hand_temp_c', 'float'),
                     ('hand_3d_accel_16g_1', 'float'), ('hand_3d_accel_16g_2', 'float'),
@@ -138,6 +138,7 @@ class MetaData:
                     ('ankle_3d_gyroscope_3', 'float'),
                     ('ankle_3d_magnetometer_1', 'float'), ('ankle_3d_magnetometer_2', 'float'),
                     ('ankle_3d_magnetometer_3', 'float'),
-                    ('subject', 'float')
+                    ('subject', 'float'),
+                    ('activity_id', 'float')
                     ]
         return dataType

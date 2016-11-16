@@ -5,8 +5,8 @@ from utilities import Timer, MetaData
 
 # file properties
 # -----------------------------------------------------
-filePath = '../data/consolidated_all.txt'
-outputFile = '../data/consolidated_clean_all.txt'
+filePath = '../data/consolidated_101.txt'
+outputFile = '../data/consolidated_clean_101.txt'
 
 metadata = MetaData()
 dataType = metadata.getOriginalColsDataType()
@@ -50,6 +50,11 @@ for subj in range(101,109):
         clean_df = subj_df
     else:
         clean_df = clean_df.append(subj_df)
+
+# rearrange the cols - subj, activity, readings ....
+cols = clean_df.columns.tolist()
+cols = cols[2:-1] + [cols[-1]] + [cols[1]]
+clean_df = clean_df[cols]
 
 # Perform a summary of the data
 print('--------------------------------------')

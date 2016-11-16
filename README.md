@@ -19,8 +19,13 @@
 
 **report** - proposal and report in md format
 
-**results** - output of the individual models should come in here in this format
+**results** - output of the individual models should come in here in this format using a dictionary
+* model: gaussian naive bayes
+* score_activity: 0.95
+* score_subject: 0.88
+* score_both: 0.91
+* dur_train_activity: 0.5
+* dur_train_subj: 0.4
+* dur_train_both: 0.9
+* method:activity then subject / subject then activity / both
 
-model | score_a | score_b | score_a_b | train_dur_a | train_dur_b | train_dur_a_b (in min) | method
------ | ------- | --------| --------- | ----------- | ----------- | ---------------------- | -----
-naive_bayes | 0.95 | 0.88 | 0.91 | 0.5 | 0.4 | 0.2 | a>b
