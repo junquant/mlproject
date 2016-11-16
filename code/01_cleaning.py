@@ -5,8 +5,8 @@ from utilities import Timer, MetaData
 
 # file properties
 # -----------------------------------------------------
-filePath = '../data/consolidated_101.txt'
-outputFile = '../data/consolidated_clean_101.txt'
+filePath = '../data/consolidated_all.txt'
+outputFile = '../data/consolidated_clean_all.txt'
 
 metadata = MetaData()
 dataType = metadata.getOriginalColsDataType()

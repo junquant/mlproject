@@ -4,13 +4,13 @@ from sklearn.model_selection import StratifiedShuffleSplit, GridSearchCV
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.decomposition import PCA
 from sklearn.naive_bayes import GaussianNB
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, accuracy_score
 
 from utilities import Timer, MetaData
 
 # file properties
 # -----------------------------------------------------
-filePath = '../data/consolidated_clean_101.txt'
+filePath = '../data/consolidated_clean_all.txt'
 
 metadata = MetaData()
 dataType = metadata.getProcessedColsDataType()
@@ -26,8 +26,6 @@ print('------------------------------------------------------------')
 # http://docs.scipy.org/doc/numpy/user/basics.rec.html
 data = np.genfromtxt(filePath, delimiter = ',', skip_header = 1, dtype=dataType)
 df = pd.DataFrame(data)
-
-
 
 subj = df.ix[:,-2]
 activity = df.ix[:,-1]
@@ -71,7 +69,7 @@ method_results = {} # to store individual method results
 
 # step 1.1 - get the readings data (from data stratified using activity)
 readings_train = df_train_a.ix[:,:-2]
-activity_train = df_train_a.ix[:,-2]
+activity_train = df_train_a.ix[:,-1]
 
 # step 1.2 - scale to min 0 max 1 and Perform PCA
 print('Performing PCA ...')
@@ -88,8 +86,8 @@ clf_activity.fit(readings_train, activity_train)
 
 # step 2.1 - get the readings data with activity
 readings_train = df_train_s.ix[:,:-1]
-activity_train = df_train_s.ix[:,-2]
-subj_train = df_train_s.ix[:,-1]
+activity_train = df_train_s.ix[:,-1]
+subj_train = df_train_s.ix[:,-2]
 
 # step 2.2 - scale to min 0 max 1 and Perform PCA
 print('Performing PCA ...')
@@ -117,34 +115,15 @@ readings_activity_test = np.column_stack((readings_test,predicted_activity))
 # step 3.4 - predict subject
 print('Predicting subject ... ')
 predicted_subject = clf_subject.predict(readings_activity_test)
-
+print(predicted_subject)
 # step 3.3 - join predicted activity to the
 actual_activity_test = df_test_s.ix[:,-1]
 actual_subject_test = df_test_s.ix[:,-2]
 
-actual_subj_activity = (100*actual_subject_test) + actual_activity_test
+# step 4 - printing results
+actual_subj_activity = np.array((100*actual_subject_test) + actual_activity_test)
 predicted_subj_activity = (100*predicted_subject) + predicted_activity
-print(type(actual_subj_activity))
-print(type(predicted_subj_activity))
 
-# print(score)
-# Join Predict to result
+print(classification_report(actual_subj_activity, predicted_subj_activity))
+print('accuracy score: ', accuracy_score(actual_subj_activity, predicted_subj_activity))
 
-# Grid Search Predict Subject
-
-# Calc score for A + B
-# ---------------------
-
-# ---------------------
-# Grid Search Predict Subject
-
-# Join Predict to result
-
-# Grid Search Predict Activity
-
-# Calc score for A + B
-# ---------------------
-
-# output to results folder
-
-# use this for report - sklearn.metrics.classification_report

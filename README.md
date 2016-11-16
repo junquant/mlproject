@@ -21,9 +21,9 @@
 
 **results** - output of the individual models should come in here in this format using a dictionary
 * model: gaussian naive bayes
-* score_activity: 0.95
-* score_subject: 0.88
-* score_both: 0.91
+* accuracy: 0.98
+* precision: 0.95
+* recall: 0.88
 * dur_train_activity: 0.5
 * dur_train_subj: 0.4
 * dur_train_both: 0.9
