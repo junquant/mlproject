@@ -33,9 +33,6 @@ subj_activity = (100*subj) + activity
 df = pd.concat([df,subj_activity],axis=1)
 df.rename(columns={0:'activity_subj'}, inplace=True)
 
-verify = df.ix[:,-2:].groupby('subject').count()
-print(verify)
-
 # split data set into test and train using stratification (for both subj and activity)
 # ---------------------
 strat_split = StratifiedShuffleSplit(n_splits=1, train_size=0.75, test_size=0.25, random_state=2016)
@@ -50,8 +47,11 @@ for train_index, test_index in strat_split.split(df,subj_activity):
 print('Verifying distribution ...')
 train_table = df_train.rename(index=str, columns={'subject':'training_count'})
 test_table = df_test.rename(index=str, columns={'subject':'test_count'})
-verify = pd.concat([train_table.ix[:,-2:].groupby('activity_id').count(),
-                    test_table.ix[:,-2:].groupby('activity_id').count()],axis = 1)
+verify = pd.concat([train_table.ix[:,-2:].groupby('activity_subj').count(),
+                    test_table.ix[:,-2:].groupby('activity_subj').count()],axis = 1)
+
+pd.options.display.max_rows = 150
+
 print(verify)
 
 # ---------------------
@@ -78,7 +78,7 @@ clf_both = GaussianNB()
 clf_both.fit(readings_train, subj_activity_train)
 
 # step 2.1 - get the readings data (from data stratified using subject)
-readings_test = df_test.ix[:,:-2]
+readings_test = df_test.ix[:,:-3]
 
 # step 2.2 - scale to min 0 max 1 and perform PCA
 readings_test = minmax_scaler.fit_transform(readings_test)
