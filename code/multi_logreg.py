@@ -5,13 +5,13 @@ from split import strat_split
 
 target_variable = 'subject' # Define target variable
 
-strat_split(target_variable)  # Split data
+importData = strat_split(target_variable)  # Split data
 
 # Load data
 print('Loading data...')
 start_time = datetime.now()
-train_data = pd.read_csv('../data/train_data_'+ target_variable +'.txt', sep=',')
-test_data = pd.read_csv('../data/test_data_' + target_variable + '.txt', sep=',')
+train_data = importData[0]
+test_data = importData[1]
 end_time = datetime.now()
 duration = end_time - start_time
 print('Date files loaded.')
@@ -35,7 +35,6 @@ parameters = [{
     'solver': ['newton-cg'],
     'max_iter': [100, 1000, 2500, 5000, 10000],
     }]
-
 lr_best = GridSearchCV(LogisticRegression(), parameters, cv=10)
 lr_best.fit(data[0], data[1])  # data[0] = x_train, data[1] = y_train
 print('GridSearchCV Run #1 complete.')

@@ -42,13 +42,12 @@ def strat_split(target_variable):
         print('Time taken: ', duration)
         print('--------------------------------------------------------------------')
         # Save output files - train_data.txt, test_data.txt
-        print('Saving files...')
+        print('Merging input and target columns...')
         # Merge input and target columns
         train_data = x_train.join(y_train)
         test_data = x_test.join(y_test)
-        train_data.to_csv('../data/train_data_' + target_variable + '.txt')
-        test_data.to_csv('../data/test_data_' + target_variable + '.txt')
-        print('Files saved as "train_data.txt" & "test_data.txt"')
+        print('Data saved in list [train_data, test_data]')
+        return [train_data, test_data]
     else:
         message = 'Invalid target variable.'
         raise InputError(message)
