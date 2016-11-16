@@ -4,7 +4,7 @@ import pandas as pd
 
 # Load data
 start_time = datetime.now()
-data = pd.read_csv('../data/consolidated_clean_101.txt', sep=',')
+data = pd.read_csv('../data/consolidated_clean_all.txt', sep=',')
 end_time = datetime.now()
 duration = end_time - start_time
 print('Date file loaded.')
@@ -22,12 +22,13 @@ random_state = np.random.seed(2016) # Set random seed
 
 # Instantiate Stratified Shuffle Split
 strat_split = StratifiedShuffleSplit(n_splits=1,
-                                     train_size=0.75,
+                                     train_size=0.75, test_size=0.25
                                      random_state=random_state)
 
 x = data.ix[:,:42] # Set input variables (all except 'subject')
 y = data.ix[:, 42] # Set output variable to be 'subject'
 
+print(len(x))
 for train_index, test_index in strat_split.split(x,y):
     print('TRAIN indices: ', train_index)
     print('TEST indices: ', test_index)

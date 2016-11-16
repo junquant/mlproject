@@ -138,6 +138,6 @@ class MetaData:
                     ('ankle_3d_gyroscope_3', 'float'),
                     ('ankle_3d_magnetometer_1', 'float'), ('ankle_3d_magnetometer_2', 'float'),
                     ('ankle_3d_magnetometer_3', 'float'),
-                    ('subject', 'int')
+                    ('subject', 'float')
                     ]
         return dataType
