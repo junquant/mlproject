@@ -1,22 +1,25 @@
 from datetime import datetime
 import pandas as pd
 from methods import MethodClass
+from split import strat_split
+
+target_variable = 'subject' # Define target variable
+
+strat_split(target_variable)  # Split data
 
 # Load data
-print('Loading data via "train_data.txt", "test_data.txt"...')
+print('Loading data...')
 start_time = datetime.now()
-train_data = pd.read_csv('../data/train_data.txt', sep=',')
-test_data = pd.read_csv('../data/test_data.txt', sep=',')
+train_data = pd.read_csv('../data/train_data_'+ target_variable +'.txt', sep=',')
+test_data = pd.read_csv('../data/test_data_' + target_variable + '.txt', sep=',')
 end_time = datetime.now()
 duration = end_time - start_time
 print('Date files loaded.')
 print('Time taken: ', duration)
 print('--------------------------------------------------------------------')
-
 # Multinomial Logistic Regression
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import GridSearchCV
-
 print('Preparing data...')
 start_time = datetime.now()
 method = MethodClass()  # Instantiate MethodClass()
@@ -32,7 +35,7 @@ parameters = [{
     'solver': ['newton-cg'],
     'max_iter': [100, 1000, 2500, 5000, 10000],
     }]
-#%%
+
 lr_best = GridSearchCV(LogisticRegression(), parameters, cv=10)
 lr_best.fit(data[0], data[1])  # data[0] = x_train, data[1] = y_train
 print('GridSearchCV Run #1 complete.')
