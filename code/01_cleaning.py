@@ -49,7 +49,14 @@ for subj in range(101,109):
     if subj == 101:
         clean_df = subj_df
     else:
+        if subj == 104: # fix that 1 record
+            subj_df = subj_df[subj_df.activity_id != 5]
+
         clean_df = clean_df.append(subj_df)
+
+    # uncomment to write individual subj files
+    # subj_df.to_csv(str(subj) + '.txt', header=True, index=None, sep=',')
+    print(subj_df.shape)
 
 # rearrange the cols - subj, activity, readings ....
 cols = clean_df.columns.tolist()
