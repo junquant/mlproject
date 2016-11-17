@@ -24,16 +24,18 @@ print('Preparing data...')
 start_time = datetime.now()
 method = MethodClass()  # Instantiate MethodClass()
 target_variables = method.target_variables  #  Load variables ['subject', 'activity_id']
-A = target_variables[0]   # Set A as 'subject'
+target_subject = target_variables[0]
+target_activity = target_variables[1]
+A = target_activity   # Set A
 data = method.init_class(train_data, A)
 print('Multinomial Logistic Regressions over c = 0.01, 0.1, 1, 10, 100')
 print('--------------------------------------------------------------------')
+c = [0.01, 0.1, 1, 10, 100]
 print('Execute GridSearchCV with cv=10...')
 parameters = [{
     'multi_class': ['multinomial'],
     'C': [0.01, 0.1, 1, 10, 100],
-    'solver': ['newton-cg'],
-    'max_iter': [100, 1000, 2500, 5000, 10000],
+    'solver': ['newton-cg']
     }]
 lr_best = GridSearchCV(LogisticRegression(), parameters, cv=10)
 lr_best.fit(data[0], data[1])  # data[0] = x_train, data[1] = y_train
@@ -48,7 +50,7 @@ lr = LogisticRegression(multi_class='multinomial',
                         solve='newton-cg',
                         c=lr_best.best_params_['C'])
 lr.fit(data[0], data[1])  # Fit x_train, y_train
-x_test = test_data.drop(['subject','activity_id'], axis=1)
+x_test = test_data.drop(target_variables, axis=1)
 print('Predicted classes for %s: ' % A)
 y_pred = lr.predict(x_test)  # Predict using x_test
 second_data = method.second_class(test_data, y_pred)

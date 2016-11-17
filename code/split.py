@@ -8,7 +8,8 @@ def strat_split(target_variable):
     if target_variable in ['subject', 'activity_id']:
         # Load data
         start_time = datetime.now()
-        data = pd.read_csv('../data/consolidated_clean_101.txt', sep=',')
+        data = pd.read_csv('../data/consolidated_clean_all.txt', sep=',')
+        # data = pd.read_csv('../code/101.txt', sep=',')
         end_time = datetime.now()
         duration = end_time - start_time
         print('Date file loaded.')
