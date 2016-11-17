@@ -36,9 +36,10 @@ df.rename(columns={0:'activity_subj'}, inplace=True)
 # split data set into test and train using stratification (for both subj and activity)
 # ---------------------
 strat_split = StratifiedShuffleSplit(n_splits=1, train_size=0.75, test_size=0.25, random_state=2016)
+readings_train = df.ix[:,:-3]
 
 # stratify based on subj_activity
-for train_index, test_index in strat_split.split(df,subj_activity):
+for train_index, test_index in strat_split.split(readings_train,subj_activity):
     df_train, df_test = df.ix[train_index], df.ix[test_index]
     print('Size of data set: ', len(df))
     print('Size of training data set: ', len(train_index))
@@ -78,7 +79,7 @@ print('Fitting model to predict subject ...')
 c = [0.01, 0.1, 1, 10, 100]
 print('Execute GridSearchCV with cv=2 ...')
 parameters = [
-    {'multi_class': 'multinomial','C': c}
+    {'multi_class': ['multinomial'],'C': c, 'solver': ['newton-cg']}
 ]
 clf_both = GridSearchCV(LogisticRegression(), parameters, cv=2)
 clf_both.fit(readings_train, subj_activity_train)
