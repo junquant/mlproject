@@ -3,7 +3,7 @@ import pandas as pd
 from sklearn.model_selection import StratifiedShuffleSplit, GridSearchCV
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.decomposition import PCA
-from sklearn.svm import LinearSVC
+from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report, accuracy_score
 
 from utilities import Timer, MetaData
@@ -73,13 +73,14 @@ readings_train = minmax_scaler.fit_transform(readings_train)
 readings_train = pca.fit_transform(readings_train)
 
 # step 1.3 - fit the model to predict subject
+
 print('Fitting model to predict subject ...')
 c = [0.01, 0.1, 1, 10, 100]
 print('Execute GridSearchCV with cv=2 ...')
 parameters = [
-    {'multi_class':['ovr'], 'C': c}
+    {'multi_class': 'multinomial','C': c}
 ]
-clf_both = GridSearchCV(LinearSVC(), parameters, cv=2)
+clf_both = GridSearchCV(LogisticRegression(), parameters, cv=2)
 clf_both.fit(readings_train, subj_activity_train)
 print('Model fit complete.')
 print('--------------------------------------------------------------------')
