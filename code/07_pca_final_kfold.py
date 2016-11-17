@@ -35,11 +35,11 @@ df.rename(columns={0:'activity_subj'}, inplace=True)
 
 # split data set into test and train using K-Fold (for both subj and activity)
 # ---------------------
-kf = KFold(n_splits=3, shuffle=False, random_state=2016)
-readings_train = df.ix[:,:-3]
+kf = KFold(n_splits=5, shuffle=True, random_state=2016)
+readings = df.ix[:,:-3]
 
 # K-Fold split based on subj_activity
-for train_index, test_index in kf.split(readings_train,subj_activity):
+for train_index, test_index in kf.split(readings,subj_activity):
     df_train, df_test = df.ix[train_index], df.ix[test_index]
     print('Size of data set: ', len(df))
     print('Size of training data set: ', len(train_index))
