@@ -1,12 +1,13 @@
 import numpy as np
 import pandas as pd
-from sklearn.model_selection import GridSearchCV, KFold
+import time
+from sklearn.model_selection import StratifiedKFold
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.decomposition import PCA
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import classification_report, accuracy_score
 
-from utilities import Timer, MetaData
+from utilities import Timer, MetaData, ResultsWriter
 
 # file properties
 # -----------------------------------------------------
@@ -35,11 +36,11 @@ df.rename(columns={0:'activity_subj'}, inplace=True)
 
 # split data set into test and train using K-Fold (for both subj and activity)
 # ---------------------
-kf = KFold(n_splits=5, shuffle=True, random_state=2016)
+skf = StratifiedKFold(n_splits=3, shuffle=False, random_state=2016)
 readings = df.ix[:,:-3]
 
 # K-Fold split based on subj_activity
-for train_index, test_index in kf.split(readings,subj_activity):
+for train_index, test_index in skf.split(readings,subj_activity):
     df_train, df_test = df.ix[train_index], df.ix[test_index]
     print('Size of data set: ', len(df))
     print('Size of training data set: ', len(train_index))
@@ -76,7 +77,9 @@ readings_train = pca.fit_transform(readings_train)
 # step 1.3 - fit the model to predict subject
 print('Fitting model to predict subject ...')
 clf_both = GaussianNB() # TODO: Replace with final model
+time_bgn = time.time()
 clf_both.fit(readings_train, subj_activity_train)
+dur_train_both = time.time() - time_bgn
 
 # step 2.1 - get the readings data (from data stratified using subject)
 readings_test = df_test.ix[:,:-3]
@@ -95,3 +98,7 @@ actual_subj_activity = df_test.ix[:,-1]
 print(classification_report(actual_subj_activity, predicted_subj_activity))
 print('accuracy score: ', accuracy_score(actual_subj_activity, predicted_subj_activity))
 
+ResultsWriter.write_to_file('results_thomas.txt',model='pca_gnb',
+                            y_actual=actual_subj_activity,y_predicted=predicted_subj_activity,
+                            dur_train_activity=0, dur_train_subj=0, dur_train_both=dur_train_both,
+                            method='both')

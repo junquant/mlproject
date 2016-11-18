@@ -36,7 +36,7 @@ df.rename(columns={0:'activity_subj'}, inplace=True)
 
 # split data set into test and train using stratification (for both subj and activity)
 # ---------------------
-strat_split = StratifiedShuffleSplit(n_splits=1, train_size=0.75, test_size=0.25, random_state=2016)
+strat_split = StratifiedShuffleSplit(n_splits=1, train_size=0.75, test_size=0.25, random_state=2016)    # TODO: Replace with LogisticCV?
 readings_train = df.ix[:,:-3]
 
 # stratify based on subj_activity
@@ -73,12 +73,12 @@ pca = PCA(n_components=10)
 
 readings_train = minmax_scaler.fit_transform(readings_train)
 readings_train = pca.fit_transform(readings_train)
-
+#%%
 # step 1.3 - fit the model to predict subject
 print('Fitting model to predict subject ...')
 print('Execute GridSearchCV with cv=2 ...')
 parameters = [
-    {'multi_class': ['multinomial'],'C': [0.01, 0.1, 1, 10, 100], 'solver': ['newton-cg']}
+    {'multi_class': ['multinomial'],'C': [1000,5000,10000], 'solver': ['newton-cg']}
 ]
 clf_both = GridSearchCV(LogisticRegression(), parameters, cv=2)
 time_bgn = time.time()
@@ -106,7 +106,7 @@ predicted_subj_activity = clf_both.predict(readings_test)
 # step 3 - printing results
 actual_subj_activity = df_test.ix[:,-1]
 
-ResultsWriter.write_to_file('results_junquan.txt',model='pca_gnb',
+ResultsWriter.write_to_file('results_thomas.txt',model='pca_gnb',
                             y_actual=actual_subj_activity,y_predicted=predicted_subj_activity,
                             dur_train_activity=0, dur_train_subj=0, dur_train_both=dur_train_both,
                             method='both') # method = both / as / sa
