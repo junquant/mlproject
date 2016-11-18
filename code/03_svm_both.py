@@ -1,12 +1,13 @@
 import numpy as np
 import pandas as pd
+import time
 from sklearn.model_selection import StratifiedShuffleSplit, GridSearchCV
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.decomposition import PCA
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import classification_report, accuracy_score
 
-from utilities import Timer, MetaData
+from utilities import Timer, MetaData, ResultsWriter
 
 # file properties
 # -----------------------------------------------------
@@ -67,7 +68,9 @@ subj_activity_train = df_train.ix[:,-1]
 # step 1.2 - fit the model to predict subject
 print('Fitting model to predict subject ...')
 clf_both = SVC(C=1, kernel='linear', gamma='auto')
+time_bgn = time.time()
 clf_both.fit(readings_train, subj_activity_train)
+dur_train_both = time.time() - time_bgn
 
 # step 2.1 - get the readings data (from data stratified using subject)
 readings_test = df_test.ix[:,:-3]
@@ -79,6 +82,7 @@ predicted_subj_activity = clf_both.predict(readings_test)
 # step 3 - printing results
 actual_subj_activity = df_test.ix[:,-1]
 
-print(classification_report(actual_subj_activity, predicted_subj_activity))
-print('accuracy score: ', accuracy_score(actual_subj_activity, predicted_subj_activity))
-
+ResultsWriter.write_to_file('results_junquan.txt',model='pca_gnb',
+                            y_actual=actual_subj_activity,y_predicted=predicted_subj_activity,
+                            dur_train_activity=0, dur_train_subj=0, dur_train_both=dur_train_both,
+                            method='both') # method = both / as / sa

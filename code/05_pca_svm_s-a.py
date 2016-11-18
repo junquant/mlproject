@@ -1,12 +1,13 @@
 import numpy as np
 import pandas as pd
+import time
 from sklearn.model_selection import StratifiedShuffleSplit, GridSearchCV
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.decomposition import PCA
 from sklearn.svm import SVC
 from sklearn.metrics import classification_report, accuracy_score
 
-from utilities import Timer, MetaData
+from utilities import Timer, MetaData, ResultsWriter
 
 # file properties
 # -----------------------------------------------------
@@ -82,7 +83,9 @@ readings_train = pca.fit_transform(readings_train)
 # step 1.3 - fit the model to predict subject
 print('Fitting model to predict subject ...')
 clf_subject = SVC(C=1, kernel='linear', gamma='auto')
+time_bgn = time.time()
 clf_subject.fit(readings_train, subj_train)
+dur_train_subj = time.time() - time_bgn
 
 # step 2.1 - get the readings data with subject
 readings_train = df_train_s.ix[:,:-1]
@@ -98,7 +101,9 @@ readings_train = pca.fit_transform(readings_train)
 print('Fitting model to predict activity ...')
 readings_subj_train = np.column_stack((readings_train, subj_train))
 clf_activity = SVC(C=1, kernel='linear', gamma='auto')
+time_bgn = time.time()
 clf_activity.fit(readings_subj_train, activity_train)
+dur_train_activity = time.time() - time_bgn
 
 # step 3.1 - get the readings data (from data stratified using subject)
 readings_test = df_test_s.ix[:,:-2]
@@ -120,9 +125,8 @@ predicted_activity = clf_activity.predict(readings_subject_test)
 actual_activity_test = df_test_s.ix[:,-1]
 actual_subject_test = df_test_s.ix[:,-2]
 
-actual_subj_activity = np.array((100*actual_subject_test) + actual_activity_test)
-predicted_subj_activity = (100*predicted_subject) + predicted_activity
-
-print(classification_report(actual_subj_activity, predicted_subj_activity))
-print('accuracy score: ', accuracy_score(actual_subj_activity, predicted_subj_activity))
-
+ResultsWriter.write_to_file('results_junquan.txt',model='pca_svm',
+                            y_actual=actual_subj_activity,y_predicted=predicted_subj_activity,
+                            dur_train_activity=dur_train_activity, dur_train_subj=dur_train_subj,
+                            dur_train_both=0,
+                            method='sa') # method = both / as / sa

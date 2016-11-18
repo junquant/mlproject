@@ -1,4 +1,6 @@
+import csv, os
 from datetime import datetime
+from sklearn.metrics import precision_score,recall_score, accuracy_score, classification_report
 
 class Timer:
     def __init__(self):
@@ -9,6 +11,57 @@ class Timer:
 
     def getTime(self):
         return datetime.now()
+
+    def getFormattedTime():
+        return str(datetime.now().strftime('%Y-%m-%d %H:%M'))
+
+class ResultsWriter:
+
+    _methods_dict = {'sa':'subject then activity',
+               'as':'activity then subject',
+               'both':'both at the same time'}
+
+    def write_to_file(results_file, model, y_actual, y_predicted,
+                      dur_train_activity, dur_train_subj, dur_train_both, method):
+        precision = precision_score(y_actual, y_predicted, average='weighted')
+        recall = recall_score(y_actual, y_predicted, average='weighted')
+        accuracy = accuracy_score(y_actual, y_predicted)
+
+        method = ResultsWriter._methods_dict[method]
+
+        dur_train_activity = '{0:.2f}'.format(dur_train_activity)
+        dur_train_subj = '{0:.2f}'.format(dur_train_subj)
+        dur_train_both = '{0:.2f}'.format(dur_train_both)
+        precision = '{0:.2f}'.format(precision)
+        recall = '{0:.2f}'.format(recall)
+        accuracy = '{0:.2f}'.format(accuracy)
+
+        record = [Timer.getFormattedTime(), model, dur_train_activity, dur_train_subj, dur_train_both,
+                  precision, recall, accuracy, method]
+
+        if not os.path.isfile('../result/'+results_file):
+            output_file = open('../result/' + results_file, 'a')
+            data_writer = csv.writer(output_file, delimiter=",", quoting=csv.QUOTE_NONE)
+
+            header = ['record_time','model','dur_train_activity','dur_train_subj','dur_train_both',
+                      'precision','recall','accuracy','method']
+            data_writer.writerow(header)
+            data_writer.writerow(record)
+
+        else:
+            output_file = open('../result/' + results_file, 'a')
+            data_writer = csv.writer(output_file, delimiter=",", quoting=csv.QUOTE_NONE)
+            data_writer.writerow(record)
+
+        output_file.close()
+
+        print(classification_report(y_actual, y_predicted))
+        print('accuracy score: ', accuracy)
+        print('duration train activity: ', dur_train_activity,'seconds')
+        print('duration train subject: ', dur_train_subj,'seconds')
+        print('duration train both: ', dur_train_both ,'seconds')
+
+
 
 class MetaData:
     def __init__(self):

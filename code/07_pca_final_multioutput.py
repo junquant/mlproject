@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import time
 from sklearn.model_selection import StratifiedShuffleSplit, GridSearchCV
 from sklearn.multioutput import MultiOutputClassifier
 from sklearn.preprocessing import MinMaxScaler
@@ -7,7 +8,7 @@ from sklearn.decomposition import PCA
 from sklearn.svm import LinearSVC
 from sklearn.metrics import classification_report, accuracy_score
 
-from utilities import Timer, MetaData
+from utilities import Timer, MetaData, ResultsWriter
 
 # file properties
 # -----------------------------------------------------
@@ -80,7 +81,10 @@ readings_train = pca.fit_transform(readings_train)
 print('Fitting model to predict subject ...')
 clf = LinearSVC(multi_class='ovr', C=1) # TODO: Replace with real model
 clf_multi = MultiOutputClassifier(clf)
+time_bgn = time.time()
 clf_multi.fit(readings_train, subj_activity_train)
+dur_train_both = time.time() - time_bgn
+
 print('Model fit complete.')
 
 # step 2.1 - get the readings data (from data stratified using subject)
@@ -106,7 +110,7 @@ actual_subj = df_test.ix[:,-3]
 actual_activity = df_test.ix[:,-2]
 actual_subj_activity = (100*actual_subj) + actual_activity
 
-print(classification_report(actual_subj_activity, predicted_subj_activity))
-print('accuracy score: ', accuracy_score(actual_subj_activity, predicted_subj_activity))
-print('multi-output, multi-class score: ', clf_multi.score(readings_test, subj_activity_test))  # Same as accuracy_score
-
+ResultsWriter.write_to_file('results_junquan.txt',model='pca_gnb',
+                            y_actual=actual_subj_activity,y_predicted=predicted_subj_activity,
+                            dur_train_activity=0, dur_train_subj=0, dur_train_both=dur_train_both,
+                            method='both') # method = both / as / sa
