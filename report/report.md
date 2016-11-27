@@ -27,18 +27,18 @@ These 9 subjects are:
 Each subject performs 12 different physical activities such as sitting, lying, walking and running in a controlled environment - all went through the exact same sequence of activities. In addition, 6 optional activities were performed by some of the subjects. In this project optional activities will be out of the scope.
 
 The 12 activities studied in this projects are:
-*Lying
-*Sitting
-*Standing
-*Ironing
-*Vacuuming
-*Walking upstairs
-*Walking downstairs
-*Normal walk
-*Nordic walk
-*Cycling
-*Running
-*Rope Jumping
+* Lying
+* Sitting
+* Standing
+* Ironing
+* Vacuuming
+* Walking upstairs
+* Walking downstairs
+* Normal walk
+* Nordic walk
+* Cycling
+* Running
+* Rope Jumping
 
 It is noted that all above 12 activities are the most commonly daily activities, except Nordic walk which requires a person to walk with specially designed walking poles.
 
