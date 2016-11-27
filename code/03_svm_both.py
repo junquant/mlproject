@@ -3,16 +3,16 @@ import pandas as pd
 import time
 from sklearn.model_selection import StratifiedShuffleSplit
 from sklearn.preprocessing import MinMaxScaler
-from sklearn import svm
 from sklearn.decomposition import PCA
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import classification_report, accuracy_score
+from sklearn.svm import SVC
 
 from utilities import Timer, MetaData, ResultsWriter
 
 # file properties
 # -----------------------------------------------------
-filePath = '../data/consolidated_clean_all.txt'
+filePath = '../data/consolidated_clean_101.txt'
 
 metadata = MetaData()
 dataType = metadata.getProcessedColsDataType()
@@ -86,7 +86,7 @@ predicted_subj_activity = clf_both.predict(readings_test)
 # step 3 - printing results
 actual_subj_activity = df_test.ix[:,-1]
 
-ResultsWriter.write_to_file('results_austin.txt',model='pca_gnb',
+ResultsWriter.write_to_file('results_junquan.txt',model='svm_both',
                             y_actual=actual_subj_activity,y_predicted=predicted_subj_activity,
                             dur_train_activity=0, dur_train_subj=0, dur_train_both=dur_train_both,
                             method='both') # method = both / as / sa

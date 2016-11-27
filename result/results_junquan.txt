@@ -1,6 +1,2 @@
 record_time,model,dur_train_activity,dur_train_subj,dur_train_both,precision,recall,accuracy,method
-2016-11-18 11:52,pca_gnb,0.00,0.00,0.06,0.61,0.62,0.62,both at the same time
-2016-11-18 11:53,pca_gnb,0.00,0.00,0.06,0.61,0.62,0.62,both at the same time
-2016-11-18 12:41,pca_gnb,0.07,0.06,0.00,0.71,0.69,0.69,both at the same time
-2016-11-18 13:41,pca_gnb,0.07,0.06,0.00,0.75,0.72,0.72,both at the same time
-2016-11-18 13:41,pca_gnb,0.00,0.00,0.07,0.61,0.62,0.62,both at the same time
+2016-11-27 22:39,pca_gnb,0.00,0.00,0.06,0.92,0.92,0.92,both at the same time
