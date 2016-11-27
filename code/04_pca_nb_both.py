@@ -12,7 +12,7 @@ from utilities import Timer, MetaData, ResultsWriter
 
 # file properties
 # -----------------------------------------------------
-filePath = '../data/consolidated_clean_101.txt'
+filePath = '../data/consolidated_clean_all.txt'
 
 metadata = MetaData()
 dataType = metadata.getProcessedColsDataType()
@@ -26,7 +26,7 @@ print('Reading files ... ')
 print('------------------------------------------------------------')
 # Note that this is a numpy structured array as the data set contains both int and float
 # http://docs.scipy.org/doc/numpy/user/basics.rec.html
-data = np.genfromtxt(filePath, delimiter = ',', skip_header = 1, dtype=dataType)
+data = np.loadtxt(filePath, delimiter = ',', skiprows = 1, dtype=dataType)
 df = pd.DataFrame(data)
 
 subj = df.ix[:,-2]

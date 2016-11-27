@@ -163,7 +163,6 @@ class MetaData:
                     ('hand_temp_c', 'float'),
                     ('hand_3d_accel_16g_1', 'float'), ('hand_3d_accel_16g_2', 'float'),
                     ('hand_3d_accel_16g_3', 'float'),
-                    ('hand_3d_accel_6g_1', 'float'), ('hand_3d_accel_6g_2', 'float'), ('hand_3d_accel_6g_3', 'float'),
                     # imu hand - gyro, magneto
                     ('hand_3d_gyroscope_1', 'float'), ('hand_3d_gyroscope_2', 'float'),
                     ('hand_3d_gyroscope_3', 'float'),
@@ -173,8 +172,6 @@ class MetaData:
                     ('chest_temp_c', 'float'),
                     ('chest_3d_accel_16g_1', 'float'), ('chest_3d_accel_16g_2', 'float'),
                     ('chest_3d_accel_16g_3', 'float'),
-                    ('chest_3d_accel_6g_1', 'float'), ('chest_3d_accel_6g_2', 'float'),
-                    ('chest_3d_accel_6g_3', 'float'),
                     # imu chest - gyro, magneto
                     ('chest_3d_gyroscope_1', 'float'), ('chest_3d_gyroscope_2', 'float'),
                     ('chest_3d_gyroscope_3', 'float'),
@@ -184,8 +181,6 @@ class MetaData:
                     ('ankle_temp_c', 'float'),
                     ('ankle_3d_accel_16g_1', 'float'), ('ankle_3d_accel_16g_2', 'float'),
                     ('ankle_3d_accel_16g_3', 'float'),
-                    ('ankle_3d_accel_6g_1', 'float'), ('ankle_3d_accel_6g_2', 'float'),
-                    ('ankle_3d_accel_6g_3', 'float'),
                     # imu ankle - gyro, magneto
                     ('ankle_3d_gyroscope_1', 'float'), ('ankle_3d_gyroscope_2', 'float'),
                     ('ankle_3d_gyroscope_3', 'float'),

@@ -34,7 +34,8 @@ print(df.isnull().sum())
 
 # remove unnecessary columns
 nonOrientationCols = [col for col in df.columns if 'orientation' not in col]
-df = df[nonOrientationCols]
+nonSaturationCols = [col for col in nonOrientationCols if '_accel_6g_' not in col]
+df = df[nonSaturationCols]
 
 # for each subject, perform the following
 for subj in range(101,109):
@@ -49,7 +50,7 @@ for subj in range(101,109):
     if subj == 101:
         clean_df = subj_df
     else:
-        if subj == 104: # fix that 1 record
+        if subj == 104: # fix that 1 record with error
             subj_df = subj_df[subj_df.activity_id != 5]
 
         clean_df = clean_df.append(subj_df)
