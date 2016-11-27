@@ -48,7 +48,7 @@ The heart rate monitor has sampling rate of 9Hz and each IMU generate following 
 
 * 1 temperature (°C)
 * 2-4 3D-acceleration data (ms<sup>-2</sup>), scale: ±16g, resolution: 13-bit
-* 5-7 3D-acceleration data (ms<sup>-2</sup>), scale: ±6g, resolution: 13-bit*
+* 5-7 3D-acceleration data (ms<sup>-2</sup>), scale: ±6g, resolution: 13-bit
 * 8-10 3D-gyroscope data (rad/s)
 * 11-13 3D-magnetometer data (μT)
 * 14-17 orientation (invalid in this data collection)
