@@ -70,13 +70,9 @@ readings_train = df_train.ix[:,:-3]
 subj_activity_train = df_train.ix[:,-1]
 
 # step 1.2 - fit the model to predict subject
-<<<<<<< HEAD
 print('Fitting model to predict subject and activity...')
 clf_both = SVC(C=1, kernel='linear', gamma='auto')
-=======
-print('Fitting model to predict subject ...')
-clf_both = svm.SVC(C=1, kernel='linear', gamma='auto')
->>>>>>> 21211545024a6904641f1db125363b7675e38e00
+
 time_bgn = time.time()
 clf_both.fit(readings_train, subj_activity_train)
 dur_train_both = time.time() - time_bgn

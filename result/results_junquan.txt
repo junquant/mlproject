@@ -11,3 +11,4 @@ record_time,model,dur_train_activity,dur_train_subj,dur_train_both,precision,rec
 2016-11-27 23:18,svm_both,0.00,0.00,290.91,0.02,0.01,0.01,both at the same time
 2016-11-27 23:31,svm_both,0.00,0.00,218.73,0.01,0.02,0.02,both at the same time
 2016-11-27 23:38,svm_both,0.00,0.00,223.53,0.01,0.01,0.01,both at the same time
+2016-11-27 23:48,svm_both,0.00,0.00,113.28,0.71,0.65,0.65,both at the same time
