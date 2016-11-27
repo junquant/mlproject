@@ -13,6 +13,18 @@ Wearable technologies are getting more and more common and machine learning play
 
 The objective of this project is to evaluate empirically the performance of various machine learning algorithms in terms of the time taken to train the model, accuracy, precision and recall. The project also aims to empirically evaluate the performance of methodology used to predict both the activity and subject. For the above objectives, a few classifier models have been built and compared. They are namely, the Naive Bayes classifier, Support Vector Machine classifier, Logistic Regression classifier.
 
+## Approach
+
+The approach that we propose would be to first explore in detail to extract the features most representative of the activities and the subject. Next, 3 different models will be compared in the classification of human activity and the person performing it. The 3 models that will be compared are summarised as follows:
+
+1. **Model 1** - Classify Subject (Person) --> Feed subject back into model to classify action of the subject
+2. **Model 2** - Classify Action --> Feed action back into model to the classify subject
+3. **Model 3** - Classify both subject and action simultaneously
+
+The most suitable model (in terms of accuracy, precision and recall) to classify an activity that is carried out by a unique individual will be selected. Supervised learning methods will explored and used to construct the model. The model will then be interpreted to extract insights on how are the actions and subjects classified. 
+
+Hold-out and k-fold cross validation were used for model validation. Source control will be done using Github. 
+
 ## About the Data Set
 
 The PAMAP2 data set available from UCI Machine Learning Repository [(Link)](https://archive.ics.uci.edu/ml/datasets/PAMAP2+Physical+Activity+Monitoring) consist the data collected from 9 subjects(persons).
@@ -53,25 +65,17 @@ The full data set exists in 9 separate .dat files, one for each subject, of 54 c
 
 ## Data Preparation
 
-**Missing Values**
-The missing values were caused by lost of signals. As such, missing values are populated with the last valid value for the subject and if there is no valid value before, the first valid value after the record was used. This was done for each subject's data. 
+**Missing Values** - The missing values were caused by lost of signals. As such, missing values are populated with the last valid value for the subject and if there is no valid value before, the first valid value after the record was used. This was done for each subject's data. 
 
-**Invalid Data**
-Orientation is not valid in this data set as stated in the codebook and was removed. Accelerometer data for with the scale of ±6g was also removed from the data set as recommended by the codebook as readings are saturated for high impact movements such as running. 
+**Invalid Data** - Orientation is not valid in this data set as stated in the code book and was removed. Accelerometer data for with the scale of ±6g was also removed from the data set as recommended by the code book as readings are saturated for high impact movements such as running. 
 
-## Approach
+## Data Exploration
 
-The approach that we propose would be to first explore in detail to extract the features most representative of the activities and the subject. Next, 3 different models will be compared in the classification of human activity and the person performing it. The 3 models that will be compared are summarised as follows:
 
-1. **Model 1** - Classify Subject (Person) --> Feed subject back into model to classify action of the subject
-2. **Model 2** - Classify Action --> Feed action back into model to the classify subject
-3. **Model 3** - Classify both subject and action simultaneously
+## Model Comparison
 
-The most suitable model (in terms of accuracy, precision and recall) to classify an activity that is carried out by a unique individual will be selected. Supervised learning methods will explored and used to construct the model. The model will then be interpreted to extract insights on how are the actions and subjects classified. 
 
-Hold-out and k-fold cross validation were used for model validation. Source control will be done using Github. 
-
-## Interpreting the Results
+## Results Interpretation
 
 
 ## Conclusion
