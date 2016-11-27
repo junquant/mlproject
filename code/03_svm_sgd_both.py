@@ -2,13 +2,13 @@ import numpy as np
 import pandas as pd
 import time
 from sklearn.model_selection import StratifiedShuffleSplit
-from sklearn.svm import SVC
+from sklearn.linear_model import SGDClassifier
 
 from utilities import Timer, MetaData, ResultsWriter
 
 # file properties
 # -----------------------------------------------------
-filePath = '../data/consolidated_clean_101.txt'
+filePath = '../data/consolidated_clean_all.txt'
 
 metadata = MetaData()
 dataType = metadata.getProcessedColsDataType()
@@ -53,7 +53,7 @@ pd.options.display.max_rows = 150
 print(verify)
 
 # ---------------------
-# Subject and then Activity
+# Subject and Activity
 # ---------------------
 all_results = [] # to store all method results
 method_results = {} # to store individual method results
@@ -64,7 +64,7 @@ subj_activity_train = df_train.ix[:,-1]
 
 # step 1.2 - fit the model to predict subject
 print('Fitting model to predict subject and activity...')
-clf_both = SVC(C=1, kernel='linear', gamma='auto')
+clf_both = SGDClassifier(alpha=0.1)
 time_bgn = time.time()
 clf_both.fit(readings_train, subj_activity_train)
 dur_train_both = time.time() - time_bgn

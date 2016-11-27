@@ -105,7 +105,6 @@ time_bgn = time.time()
 clf_subject.fit(readings_act_train, subj_train)
 dur_train_subj = time.time() - time_bgn
 
-
 # step 3.1 - get the readings data (from data stratified using subject)
 readings_test = df_test_s.ix[:,:-2]
 
