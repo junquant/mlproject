@@ -20,8 +20,9 @@ print('Reading files ... ')
 print('------------------------------------------------------------')
 # Note that this is a numpy structured array as the data set contains both int and float
 # http://docs.scipy.org/doc/numpy/user/basics.rec.html
-activityData = np.genfromtxt(filePath, delimiter = ',', skip_header = 1, dtype=dataType)
-
+#activityData = np.genfromtxt(filePath, delimiter = ',', skip_header = 1, dtype=dataType)
+activityData = np.loadtxt(filePath, delimiter = ',', skiprows=1, dtype=dataType)
+print('loading Time : ', timer.getTime())
 # convert to pandas data frame
 df = pd.DataFrame(activityData)
 
@@ -73,3 +74,5 @@ print(clean_df.describe())
 print(clean_df.isnull().sum())
 
 clean_df.to_csv(outputFile, header=True, index=None, sep=',')
+
+print('Finish Time : ', timer.getTime())

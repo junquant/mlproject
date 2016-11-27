@@ -2,6 +2,10 @@ import numpy as np
 import pandas as pd
 import time
 from sklearn.model_selection import StratifiedShuffleSplit
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.decomposition import PCA
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import classification_report, accuracy_score
 from sklearn.svm import SVC
 
 from utilities import Timer, MetaData, ResultsWriter
@@ -22,8 +26,11 @@ print('Reading files ... ')
 print('------------------------------------------------------------')
 # Note that this is a numpy structured array as the data set contains both int and float
 # http://docs.scipy.org/doc/numpy/user/basics.rec.html
-data = np.genfromtxt(filePath, delimiter = ',', skip_header = 1, dtype=dataType)
+#data = np.genfromtxt(filePath, delimiter = ',', skip_header = 1, dtype=dataType)
+data = np.loadtxt(filePath, delimiter = ',', skiprows=1, dtype=dataType)
+print('data loading finished. Time : ', timer.getTime())
 df = pd.DataFrame(data)
+print('pd.DataFrame finished. Time : ', timer.getTime())
 
 subj = df.ix[:,-2]
 activity = df.ix[:,-1]
@@ -63,8 +70,13 @@ readings_train = df_train.ix[:,:-3]
 subj_activity_train = df_train.ix[:,-1]
 
 # step 1.2 - fit the model to predict subject
+<<<<<<< HEAD
 print('Fitting model to predict subject and activity...')
 clf_both = SVC(C=1, kernel='linear', gamma='auto')
+=======
+print('Fitting model to predict subject ...')
+clf_both = svm.SVC(C=1, kernel='linear', gamma='auto')
+>>>>>>> 21211545024a6904641f1db125363b7675e38e00
 time_bgn = time.time()
 clf_both.fit(readings_train, subj_activity_train)
 dur_train_both = time.time() - time_bgn
