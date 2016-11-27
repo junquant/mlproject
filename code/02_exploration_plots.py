@@ -86,7 +86,6 @@ dftr = np.column_stack((dftr[:,0:3],df.activity_id))
 # dftr = pltdata[idx,:]
 
 # Plot 2d PCA
-
 # fig = plt.figure(figsize=(12,12))
 # ax = fig.add_subplot(1,1,1)
 # ax.set_xlabel('principal component 1')
@@ -95,14 +94,18 @@ dftr = np.column_stack((dftr[:,0:3],df.activity_id))
 # plt.scatter(dftr[:,0], dftr[:,1], c=dftr[:,3], alpha=0.5)
 
 # Plot 3d PCA
+# Sample 500 points from each class and plot it
+# ----------------------------------------------
+# dftr = xxxx
 
-fig = plt.figure(1, figsize=(12,12))
-ax = fig.add_subplot(1,1,1, projection='3d')
-ax.set_xlabel('principal component 1')
-ax.set_ylabel('principal component 2')
-ax.set_zlabel('principal component 3')
-plt.title('Top 3 Principal components')
-plt.scatter(dftr[:,0], dftr[:,1], dftr[:,2], c=dftr[:,3], marker='x', cmap=plt.cm.Accent)
+# ----------------------------------------------
+# fig = plt.figure(1, figsize=(12,12))
+# ax = fig.add_subplot(1,1,1, projection='3d')
+# ax.set_xlabel('principal component 1')
+# ax.set_ylabel('principal component 2')
+# ax.set_zlabel('principal component 3')
+# plt.title('Top 3 Principal components')
+# plt.scatter(dftr[:,0], dftr[:,1], dftr[:,2], c=dftr[:,3], marker='x', cmap=plt.cm.Accent)
 
 # Get principal components and explained variance ration
 comp = pca.components_
