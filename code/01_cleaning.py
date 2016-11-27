@@ -5,7 +5,7 @@ from utilities import Timer, MetaData
 
 # file properties
 # -----------------------------------------------------
-filePath = '../data/consolidated_all.txt'
+filePath = '../data/consolidated.txt'
 outputFile = '../data/consolidated_clean_all.txt'
 
 metadata = MetaData()
