@@ -24,7 +24,17 @@ The full data set exists in 9 separate .dat files, one for each subject, of 54 c
 **Missing Values**
 The missing values were caused by lost of signals. As such, missing values are populated with the last valid value for the subject and if there is no valid value before, the first valid value after the record was used. 
 
-## Methodology
+## Approach
+
+The approach that we propose would be to first explore in detail to extract the features most representative of the activities and the subject. Next, 3 different models will be compared in the classification of human activity and the person performing it. The 3 models that will be compared are summarised as follows:
+
+1. **Model 1** - Classify Subject (Person) --> Feed subject back into model to classify action of the subject
+2. **Model 2** - Classify Action --> Feed action back into model to the classify subject
+3. **Model 3** - Classify both subject and action simultaneously
+
+The most suitable model (in terms of accuracy, precision and recall) to classify an activity that is carried out by a unique individual will be selected. Supervised learning methods will explored and used to construct the model. The model will then be interpreted to extract insights on how are the actions and subjects classified. 
+
+Hold-out or k-fold cross validation will be used to avoid over-fitting the model. The final cross validation method will be decided later. Source control will be done using Github. 
 
 ## Results
 
