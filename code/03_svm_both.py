@@ -1,8 +1,9 @@
 import numpy as np
 import pandas as pd
 import time
-from sklearn.model_selection import StratifiedShuffleSplit, GridSearchCV
+from sklearn.model_selection import StratifiedShuffleSplit
 from sklearn.preprocessing import MinMaxScaler
+from sklearn import svm
 from sklearn.decomposition import PCA
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import classification_report, accuracy_score
@@ -25,8 +26,11 @@ print('Reading files ... ')
 print('------------------------------------------------------------')
 # Note that this is a numpy structured array as the data set contains both int and float
 # http://docs.scipy.org/doc/numpy/user/basics.rec.html
-data = np.genfromtxt(filePath, delimiter = ',', skip_header = 1, dtype=dataType)
+#data = np.genfromtxt(filePath, delimiter = ',', skip_header = 1, dtype=dataType)
+data = np.loadtxt(filePath, delimiter = ',', skiprows=1, dtype=dataType)
+print('data loading finished. Time : ', timer.getTime())
 df = pd.DataFrame(data)
+print('pd.DataFrame finished. Time : ', timer.getTime())
 
 subj = df.ix[:,-2]
 activity = df.ix[:,-1]
@@ -67,7 +71,7 @@ subj_activity_train = df_train.ix[:,-1]
 
 # step 1.2 - fit the model to predict subject
 print('Fitting model to predict subject ...')
-clf_both = SVC(C=1, kernel='linear', gamma='auto')
+clf_both = svm.SVC(C=1, kernel='linear', gamma='auto')
 time_bgn = time.time()
 clf_both.fit(readings_train, subj_activity_train)
 dur_train_both = time.time() - time_bgn
@@ -82,7 +86,7 @@ predicted_subj_activity = clf_both.predict(readings_test)
 # step 3 - printing results
 actual_subj_activity = df_test.ix[:,-1]
 
-ResultsWriter.write_to_file('results_junquan.txt',model='pca_gnb',
+ResultsWriter.write_to_file('results_austin.txt',model='pca_gnb',
                             y_actual=actual_subj_activity,y_predicted=predicted_subj_activity,
                             dur_train_activity=0, dur_train_subj=0, dur_train_both=dur_train_both,
                             method='both') # method = both / as / sa
