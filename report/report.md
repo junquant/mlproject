@@ -2,6 +2,12 @@
 
 ## Problem Description
 
+With the recent progress of wearable technology, monitoring of human activity becomes much more convenient. One of the important techniques in human activity monitoring is the activity recognition. With some physical parameters measurement of human body, a computer is smart enough to tell the activity carried out by a person,i.e. whether a person is sitting, running or climbing up stairs. 
+
+This project works on an interesting problem to recognize human activities. It uses a dataset and predict the activities carried out by a person. To make the task more challenging, the person who carried out the activity is also predicted.
+
+A few classifier models have been built: Naive Bayes classifier, Support Vector Machine classifier, Logistic Regression classifier
+
 ## Data Set
 
 ## Data Preparation
