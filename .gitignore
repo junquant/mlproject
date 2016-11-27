@@ -12,5 +12,4 @@ data/*.txt
 
 #ignore jupyter notebook workings
 code/workings.ipynb
-
 code/__pycache__/*.pyc

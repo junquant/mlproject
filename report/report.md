@@ -1,20 +1,17 @@
 # Report
 
-## Problem Description
 
-* Human Activity Recognition using Machine Learning techniques
-
-Wearable technologies are getting more and more common and machine learning plays an important role in enabling the machine to recognize a person's activity. With some physical parameters measurement of human body, a computer is smart enough to tell the activity carried out by a person,i.e. sitting, running or climbing up stairs. While typical machine learning projects seeks to classify the activity performed, this project attempts to go a step further and aims to develop a method to best classify the activity and the person performing the activity. Using the T,P,E framework, the problem can be summarized into:
+## Introduction
+Wearable technologies are getting more and more common and machine learning plays an important role in enabling the machine to recognize a person's activity. With some physical parameters measurement of human body, a computer is smart enough to tell the activity carried out by a person,i.e. sitting, running or climbing up stairs. The constructed model may be deployed in a health care setting, to monitor a patient's activities. With the ability to differentiate the activities and the person performing it, it also opens up the possibility of sharing the wearable device. Typical machine learning projects seeks to classify the activity performed, this project attempts to go a step further and aims to develop a method to best classify the activity and the person performing the activity. Using the T,P,E framework, the problem can be summarized into:
 
 * **Task** - Predict the activity *and* the person performing the activity
-* **Performance** - Number of actions *and* person performing the activity correctly classified
+* **Performance** - Percentage of actions *and* person performing the activity correctly classified
 * **Experience** - PAMAP2 data set of labeled IMU readings available from the UCI Machine Learning Repository 
 
-A few classifier models have been built and compared: Naive Bayes classifier, Support Vector Machine classifier, Logistic Regression classifier.
+## Objective
+The objective of this project is to evaluate empirically the performance of various machine learning algorithms in terms of the time taken to train the model, accuracy, precision and recall. The project also aims to empirically evaluate the performance of methodology used to predict both the activity and subject. For the above objectives, a few classifier models have been built and compared. They are namely, the Naive Bayes classifier, Support Vector Machine classifier, Logistic Regression classifier.
 
-The constructed model may be deployed in a health care setting, to monitor a patient's activities. With the ability to differentiate the activities and the person performing it, it also opens up the possibility of sharing the wearable device.
-
-## Data Set
+## About the Data Set
 
 The PAMAP2 data set available from UCI Machine Learning Repository [(Link)](https://archive.ics.uci.edu/ml/datasets/PAMAP2+Physical+Activity+Monitoring) consist the data collected from 9 subjects(persons).
 
