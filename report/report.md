@@ -42,9 +42,18 @@ The 12 activities studied in this projects are:
 
 It is noted that all above 12 activities are the most commonly daily activities, except Nordic walk which requires a person to walk with specially designed walking poles.
 
-The data collection was done by attaching 3 Colibri wireless inertial measurement units (IMUs) to each subject's body. 
+The data are collected via a heart rate monitor and 3 Colibri wireless inertial measurement units (IMUs) attached to each subject's body: one over the wrist, one on the chest and one on ankle.
 
-The full data set exists in 9 separate .dat files, one for each subject, of 54 columns containing data such as Timestamps, Activity IDs, Heart Rate and IMU readings on the subjects' hand, chest and ankle. Each IMU sensory data (hand, chest and ankle) contains the temperature, 3D acceleration data, 3D gyroscope data, 3D magnetometer data. Orientation data is also included in the data set but invalid in this data set as mentioned in the code book available with the PAMAP2.
+The heart rate monitor has sampling rate of 9Hz and each IMU generate following data with 17 columns:
+
+* 1 temperature (°C)
+* 2-4 3D-acceleration data (ms-2), scale: ±16g, resolution: 13-bit
+* 5-7 3D-acceleration data (ms-2), scale: ±6g, resolution: 13-bit*
+* 8-10 3D-gyroscope data (rad/s)
+* 11-13 3D-magnetometer data (μT)
+* 14-17 orientation (invalid in this data collection)
+
+The full data set exists in 9 separate .dat files, one for each subject, of 54 columns (17 columns x 3 IMU + Heart Rate + Activity ID + Time Stamp). Orientation data is also included in the data set but invalid in this data set as mentioned in the code book available with the PAMAP2.
 
 ## Data Preparation
 **Missing Values**
