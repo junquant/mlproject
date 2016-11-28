@@ -2,9 +2,7 @@ import numpy as np
 import pandas as pd
 import time
 from sklearn.model_selection import StratifiedShuffleSplit
-from sklearn.preprocessing import MinMaxScaler
-from sklearn.decomposition import PCA
-from sklearn.naive_bayes import GaussianNB
+from sklearn.linear_model import SGDClassifier
 
 from utilities import Timer, MetaData, ResultsWriter
 
@@ -62,59 +60,41 @@ verify = pd.concat([train_table.ix[:,-2:].groupby('subject').count(),
 print(verify)
 
 # ---------------------
-# Activity and then Subject
+# Subject and then Activity
 # ---------------------
 # step 1.1 - get the readings data (from data stratified using activity)
 readings_train = df_train_a.ix[:,:-2]
-activity_train = df_train_a.ix[:,-1]
+subj_train = df_train_a.ix[:,-2]
 
-# step 1.2 - scale to min 0 max 1 and Perform PCA
-print('Performing PCA ...')
-minmax_scaler = MinMaxScaler()
-pca = PCA(n_components=10)
-
-readings_train = minmax_scaler.fit_transform(readings_train)
-readings_train = pca.fit_transform(readings_train)
-
-# step 1.3 - fit the model to predict activity
-print('Fitting model to predict activity ...')
-clf_activity = GaussianNB()
+# step 1.2 - fit the model to predict subject
+print('Fitting model to predict subject ...')
+clf_subject = SGDClassifier(alpha=0.1)
 time_bgn = time.time()
-clf_activity.fit(readings_train, activity_train)
-dur_train_activity = time.time() - time_bgn
+clf_subject.fit(readings_train, subj_train)
+dur_train_subj = time.time() - time_bgn
 
-# step 2.1 - get the readings data with activity
+# step 2.1 - get the readings data with subject
 readings_train = df_train_s.ix[:,:-2]
 activity_train = df_train_s.ix[:,-1]
 subj_train = df_train_s.ix[:,-2]
 
-# step 2.2 - scale to min 0 max 1 and Perform PCA
-print('Performing PCA ...')
-readings_train = minmax_scaler.fit_transform(readings_train)
-readings_train = pca.fit_transform(readings_train)
-
-# step 2.3 - join activity for training and fit the model to predict subject
-print('Fitting model to predict subject ...')
-readings_act_train = np.column_stack((readings_train, activity_train))
-clf_subject = GaussianNB()
+# step 2.2 - join subject for training and fit the model to predict activity
+print('Fitting model to predict activity ...')
+readings_subj_train = np.column_stack((readings_train, subj_train))
+clf_activity = SGDClassifier(alpha=0.1)
 time_bgn = time.time()
-clf_subject.fit(readings_act_train, subj_train)
-dur_train_subj = time.time() - time_bgn
+clf_activity.fit(readings_subj_train, activity_train)
+dur_train_activity = time.time() - time_bgn
 
-# step 3.1 - get the readings data (from data stratified using subject) and do PCA
-readings_test = df_test_s.ix[:,:-2]
-readings_test = minmax_scaler.fit_transform(readings_test)
-readings_test = pca.fit_transform(readings_test)
-
-# step 3.2 - predict activity and join it to the readings data
-print('Predicting activity ... ')
-predicted_activity = clf_activity.predict(readings_test)
-readings_activity_test = np.column_stack((readings_test,predicted_activity))
-
-# step 3.3 - predict subject
+# step 3.1 - predict subject and join it to the readings data
 print('Predicting subject ... ')
-predicted_subject = clf_subject.predict(readings_activity_test)
-print(predicted_subject)
+readings_test = df_test_s.ix[:,:-2]
+predicted_subject = clf_subject.predict(readings_test)
+readings_subject_test = np.column_stack((readings_test,predicted_subject))
+
+# step 3.2 - predict subject
+print('Predicting activity ... ')
+predicted_activity = clf_activity.predict(readings_subject_test)
 
 # step 4 - printing results
 actual_activity_test = df_test_s.ix[:,-1]
@@ -122,8 +102,8 @@ actual_subject_test = df_test_s.ix[:,-2]
 actual_subj_activity = np.array((100*actual_subject_test) + actual_activity_test)
 predicted_subj_activity = (100*predicted_subject) + predicted_activity
 
-ResultsWriter.write_to_file('results_junquan.txt',model='pca_gnb',
+ResultsWriter.write_to_file('results_junquan.txt',model='svm_sgd',
                             y_actual=actual_subj_activity,y_predicted=predicted_subj_activity,
                             dur_train_activity=dur_train_activity, dur_train_subj=dur_train_subj,
                             dur_train_both=0,
-                            method='as') # method = both / as / sa
+                            method='sa') # method = both / as / sa

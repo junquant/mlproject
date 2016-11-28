@@ -11,7 +11,7 @@ from utilities import Timer, MetaData, ResultsWriter
 
 # file properties
 # -----------------------------------------------------
-filePath = '../data/consolidated_clean_101.txt'
+filePath = '../data/consolidated_clean_all.txt'
 
 metadata = MetaData()
 dataType = metadata.getProcessedColsDataType()
@@ -65,9 +65,6 @@ print(verify)
 # ---------------------
 # Subject and then Activity
 # ---------------------
-all_results = [] # to store all method results
-method_results = {} # to store individual method results
-
 # step 1.1 - get the readings data (from data stratified using activity)
 readings_train = df_train_a.ix[:,:-2]
 subj_train = df_train_a.ix[:,-2]
@@ -88,7 +85,7 @@ clf_subject.fit(readings_train, subj_train)
 dur_train_subj = time.time() - time_bgn
 
 # step 2.1 - get the readings data with subject
-readings_train = df_train_s.ix[:,:-1]
+readings_train = df_train_s.ix[:,:-2]
 activity_train = df_train_s.ix[:,-1]
 subj_train = df_train_s.ix[:,-2]
 
@@ -117,17 +114,15 @@ print('Predicting subject ... ')
 predicted_subject = clf_subject.predict(readings_test)
 readings_subject_test = np.column_stack((readings_test,predicted_subject))
 
-# step 3.4 - predict subject
+# step 3.4 - predict activity
 print('Predicting activity ... ')
 predicted_activity = clf_activity.predict(readings_subject_test)
 
 # step 4 - printing results
 actual_activity_test = df_test_s.ix[:,-1]
 actual_subject_test = df_test_s.ix[:,-2]
-
 actual_subj_activity = np.array((100*actual_subject_test) + actual_activity_test)
 predicted_subj_activity = (100*predicted_subject) + predicted_activity
-
 
 ResultsWriter.write_to_file('results_junquan.txt',model='pca_gnb',
                             y_actual=actual_subj_activity,y_predicted=predicted_subj_activity,
