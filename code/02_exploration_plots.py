@@ -84,7 +84,7 @@ dftr = np.column_stack((dftr[:,0:3],df.activity_id))
 
 # Code to sample 2000 points (uncomment to sample 2000 pts
 # ---------------------------------------------
- idx = np.random.randint(len(df.activity_id), size=20000)
+idx = np.random.randint(len(df.activity_id), size=20000)
 # dftr = pltdata[idx,:]
 
 # Plot 2d PCA
