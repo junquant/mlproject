@@ -5,7 +5,7 @@ from sklearn.model_selection import StratifiedShuffleSplit, GridSearchCV
 from sklearn.multioutput import MultiOutputClassifier
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.decomposition import PCA
-from sklearn.svm import LinearSVC
+from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import classification_report, accuracy_score
 
 from utilities import Timer, MetaData, ResultsWriter
@@ -79,7 +79,7 @@ readings_train = pca.fit_transform(readings_train)
 
 # step 1.3 - fit the model to predict subject
 print('Fitting model to predict subject ...')
-clf = LinearSVC(multi_class='ovr', C=1) # TODO: Replace with real model
+clf = GaussianNB()
 clf_multi = MultiOutputClassifier(clf)
 time_bgn = time.time()
 clf_multi.fit(readings_train, subj_activity_train)
