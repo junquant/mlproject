@@ -57,11 +57,11 @@ print('np.loadtxt finish, Time : ', timer.getTime())
 # convert to pandas data frame
 df = pd.DataFrame(activityData)
 
-print(df.describe())
+#print(df.describe())
 
 # Correlation matrix
 # ---------------------------------------------
-plt.style.use('ggplot')
+#plt.style.use('ggplot')
 dfReadings = df.iloc[:, :-2]
 corrPlot = plot_correlation(dfReadings.corr(), title='IMU readings')
 
@@ -69,14 +69,15 @@ corrPlot = plot_correlation(dfReadings.corr(), title='IMU readings')
 # PCA
 # ---------------------------------------------
 # scale to min 0 max 1
-minmax_scaler = MinMaxScaler()
-scaled_data = minmax_scaler.fit_transform(df.ix[:, :-2])
+#minmax_scaler = MinMaxScaler()
+#scaled_data = minmax_scaler.fit_transform(df.ix[:, :-2])
 
 
 # Perform PCA and explore first 3 components
 print('Performing PCA ...')
 pca = PCA()
-dftr = pca.fit_transform(scaled_data)
+#dftr = pca.fit_transform(scaled_data)
+dftr = pca.fit_transform(df.ix[:, :-2])
 
 print('Visualizing ... ')
 plt.style.use("ggplot")
@@ -109,8 +110,8 @@ plt.title('Top 3 Principal components')
 #for i in MetaData.activities:
 #    np.random.choice(np.indices)
 #plt.scatter(dftr[:,0], dftr[:,1], dftr[:,2], c=dftr[:,3], marker='x', cmap=plt.cm.Accent)
-plt.scatter(dftr[idx,0], dftr[idx,1], dftr[idx,2], c=dftr[idx,3], marker='x', cmap=plt.cm.Accent)
-
+plt.scatter(dftr[idx,0], dftr[idx,1], dftr[idx,2], c=dftr[idx,3],marker='x', cmap=plt.cm.prism)
+#plt.scatter(dftr[idx,0], dftr[idx,1], dftr[idx,2], c=dftr[idx,3], cmap=plt.cm.rainbow)
 # Get principal components and explained variance ration
 comp = pca.components_
 evr = pca.explained_variance_ratio_
