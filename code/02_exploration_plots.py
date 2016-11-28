@@ -16,7 +16,7 @@ filePath = '../data/consolidated_clean_all.txt'
 def plot_correlation(dataframe, title=''):
     lang_names = dataframe.columns.tolist()
     tick_indices = np.arange(0.5, len(lang_names) + 0.5)
-    plt.figure(figsize=(12, 9))
+    plt.figure(figsize=(12, 12))
     plt.pcolor(dataframe.values, cmap='RdBu', vmin=-1, vmax=1)
     colorbar = plt.colorbar()
     colorbar.set_label('Correlation')
