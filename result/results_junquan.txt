@@ -13,3 +13,4 @@ record_time,model,dur_train_activity,dur_train_subj,dur_train_both,precision,rec
 2016-11-28 21:52,gnb_no_pca,0.00,0.00,1.52,0.96,0.96,0.96,both at the same time
 2016-11-28 22:02,svm_sgd_gridsearch,0.00,0.00,120.90,0.69,0.66,0.66,both at the same time
 2016-11-28 22:31,svm_sgd_gridsearch,0.00,0.00,455.01,0.69,0.65,0.65,both at the same time
+2016-11-28 22:59,gnb_no_pca,0.00,0.00,1.51,0.96,0.96,0.96,both at the same time

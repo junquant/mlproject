@@ -68,6 +68,7 @@ time_bgn = time.time()
 clf_both.fit(readings_train, subj_activity_train)
 dur_train_both = time.time() - time_bgn
 
+print(clf_both.get_params())
 # step 2.1 - get the readings data (from data stratified using subject)
 readings_test = df_test.ix[:,:-3]
 
