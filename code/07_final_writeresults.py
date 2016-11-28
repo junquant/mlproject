@@ -10,7 +10,8 @@ from utilities import Timer, MetaData, ResultsWriter
 
 # file properties
 # -----------------------------------------------------
-filePath = '../data/consolidated_clean_all.txt'
+filePath = '../data/consolidated_clean_101.txt'
+resultsPath = '../data/results.txt'
 
 metadata = MetaData()
 dataType = metadata.getProcessedColsDataType()
@@ -29,7 +30,7 @@ subj = df.ix[:,-2]
 activity = df.ix[:,-1]
 subj_activity = (100*subj) + activity
 df = pd.concat([df,subj_activity],axis=1)
-df.rename(columns={0:'activity_subj'}, inplace=True)
+df.rename(columns={0:'subj_activity'}, inplace=True)
 
 # split data set into test and train using stratification (for both subj and activity)
 # ---------------------
@@ -45,8 +46,8 @@ for train_index, test_index in strat_split.split(df,subj_activity):
 print('Verifying distribution ...')
 train_table = df_train.rename(index=str, columns={'subject':'training_count'})
 test_table = df_test.rename(index=str, columns={'subject':'test_count'})
-verify = pd.concat([train_table.ix[:,-2:].groupby('activity_subj').count(),
-                    test_table.ix[:,-2:].groupby('activity_subj').count()],axis = 1)
+verify = pd.concat([train_table.ix[:,-2:].groupby('subj_activity').count(),
+                    test_table.ix[:,-2:].groupby('subj_activity').count()],axis = 1)
 
 pd.options.display.max_rows = 150
 
@@ -76,9 +77,11 @@ print('Predicting subject activity ... ')
 predicted_subj_activity = clf_both.predict(readings_test)
 
 # step 3 - printing results and writing to results to file
-actual_subj_activity = df_test.ix[:,-1]
+df_test = df_test.reset_index()
+predicted_subj_activity = pd.DataFrame(predicted_subj_activity)
+predicted_subj_activity.rename(columns={0:'predicted_activity_subj'}, inplace=True)
 
-ResultsWriter.write_to_file('results_junquan.txt',model='gnb_no_pca',
-                            y_actual=actual_subj_activity,y_predicted=predicted_subj_activity,
-                            dur_train_activity=0, dur_train_subj=0, dur_train_both=dur_train_both,
-                            method='both') # method = both / as / sa
+result = pd.concat([df_test.ix[:,1:], predicted_subj_activity],axis=1)
+
+result.to_csv(resultsPath, header=True, index=None, sep=',')
+

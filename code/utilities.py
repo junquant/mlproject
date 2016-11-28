@@ -190,3 +190,39 @@ class MetaData:
                     ('activity_id', 'float')
                     ]
         return dataType
+
+    def getResultColsDataType(self):
+        dataType = [('heartrate_bpm', 'float'),
+                    # imu hand - accel
+                    ('hand_temp_c', 'float'),
+                    ('hand_3d_accel_16g_1', 'float'), ('hand_3d_accel_16g_2', 'float'),
+                    ('hand_3d_accel_16g_3', 'float'),
+                    # imu hand - gyro, magneto
+                    ('hand_3d_gyroscope_1', 'float'), ('hand_3d_gyroscope_2', 'float'),
+                    ('hand_3d_gyroscope_3', 'float'),
+                    ('hand_3d_magnetometer_1', 'float'), ('hand_3d_magnetometer_2', 'float'),
+                    ('hand_3d_magnetometer_3', 'float'),
+                    # imu chest - accel
+                    ('chest_temp_c', 'float'),
+                    ('chest_3d_accel_16g_1', 'float'), ('chest_3d_accel_16g_2', 'float'),
+                    ('chest_3d_accel_16g_3', 'float'),
+                    # imu chest - gyro, magneto
+                    ('chest_3d_gyroscope_1', 'float'), ('chest_3d_gyroscope_2', 'float'),
+                    ('chest_3d_gyroscope_3', 'float'),
+                    ('chest_3d_magnetometer_1', 'float'), ('chest_3d_magnetometer_2', 'float'),
+                    ('chest_3d_magnetometer_3', 'float'),
+                    # imu ankle - accel
+                    ('ankle_temp_c', 'float'),
+                    ('ankle_3d_accel_16g_1', 'float'), ('ankle_3d_accel_16g_2', 'float'),
+                    ('ankle_3d_accel_16g_3', 'float'),
+                    # imu ankle - gyro, magneto
+                    ('ankle_3d_gyroscope_1', 'float'), ('ankle_3d_gyroscope_2', 'float'),
+                    ('ankle_3d_gyroscope_3', 'float'),
+                    ('ankle_3d_magnetometer_1', 'float'), ('ankle_3d_magnetometer_2', 'float'),
+                    ('ankle_3d_magnetometer_3', 'float'),
+                    ('subject', 'float'),
+                    ('activity_id', 'float'),
+                    ('actual_subj_activity', 'float'),
+                    ('predicted_subj_activity','float')
+                    ]
+        return dataType

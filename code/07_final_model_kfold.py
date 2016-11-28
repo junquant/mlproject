@@ -36,10 +36,12 @@ df.rename(columns={0:'activity_subj'}, inplace=True)
 # split data set into test and train using K-Fold (for both subj and activity)
 # ---------------------
 skf = StratifiedKFold(n_splits=3, shuffle=False, random_state=2016)
-readings = df.ix[:,:-3]
 
 # Scale data
+readings = df.ix[:,:-3]
 readings = scale(readings)
+
+accuracy = []
 
 # K-Fold split based on subj_activity
 for train_index, test_index in skf.split(readings,subj_activity):
@@ -48,44 +50,40 @@ for train_index, test_index in skf.split(readings,subj_activity):
     print('Size of training data set: ', len(train_index))
     print('Size of test data set: ', len(test_index))
 
-print('Verifying distribution ...')
-train_table = df_train.rename(index=str, columns={'subject':'training_count'})
-test_table = df_test.rename(index=str, columns={'subject':'test_count'})
-verify = pd.concat([train_table.ix[:,-2:].groupby('activity_subj').count(),
-                    test_table.ix[:,-2:].groupby('activity_subj').count()],axis = 1)
+    print('Verifying distribution ...')
+    train_table = df_train.rename(index=str, columns={'subject':'training_count'})
+    test_table = df_test.rename(index=str, columns={'subject':'test_count'})
+    verify = pd.concat([train_table.ix[:,-2:].groupby('activity_subj').count(),
+                        test_table.ix[:,-2:].groupby('activity_subj').count()],axis = 1)
 
-pd.options.display.max_rows = 150
+    pd.options.display.max_rows = 150
 
-print(verify)
+    print(verify)
 
-# ---------------------
-# Subject and then Activity
-# ---------------------
-# step 1.1 - get the readings data (from data stratified using activity)
-readings_train = df_train.ix[:,:-3]
-subj_activity_train = df_train.ix[:,-1]
+    # ---------------------
+    # Predict both subject and activity
+    # ---------------------
+    # step 1.1 - get the readings data (from data stratified using activity)
+    readings_train = df_train.ix[:,:-3]
+    subj_activity_train = df_train.ix[:,-1]
 
-# step 1.2 - fit the model to predict subject
-print('Fitting model to predict subject ...')
-clf_both = GaussianNB()
-time_bgn = time.time()
-clf_both.fit(readings_train, subj_activity_train)
-dur_train_both = time.time() - time_bgn
+    # step 1.2 - fit the model to predict subject
+    print('Fitting model to predict subject and activity ...')
+    clf_both = GaussianNB()
+    time_bgn = time.time()
+    clf_both.fit(readings_train, subj_activity_train)
+    dur_train_both = time.time() - time_bgn
 
-# step 2.1 - get the readings data (from data stratified using subject)
-readings_test = df_test.ix[:,:-3]
+    # step 2.1 - predict subject activity
+    print('Predicting subject and activity ... ')
+    readings_test = df_test.ix[:,:-3]
+    predicted_subj_activity = clf_both.predict(readings_test)
 
-# step 2.2 - predict subject activity
-print('Predicting subject activity ... ')
-predicted_subj_activity = clf_both.predict(readings_test)
+    # step 3 - printing results
+    actual_subj_activity = df_test.ix[:,-1]
+    print(classification_report(actual_subj_activity, predicted_subj_activity))
+    print('accuracy score: ', accuracy_score(actual_subj_activity, predicted_subj_activity))
 
-# step 3 - printing results
-actual_subj_activity = df_test.ix[:,-1]
+    accuracy.append(accuracy_score(actual_subj_activity, predicted_subj_activity))
 
-print(classification_report(actual_subj_activity, predicted_subj_activity))
-print('accuracy score: ', accuracy_score(actual_subj_activity, predicted_subj_activity))
-
-#ResultsWriter.write_to_file('results_thomas.txt',model='pca_gnb',
-#                            y_actual=actual_subj_activity,y_predicted=predicted_subj_activity,
-#                            dur_train_activity=0, dur_train_subj=0, dur_train_both=dur_train_both,
-#                            method='both')
+print('average accuracy:' , np.average(accuracy))

@@ -4,7 +4,6 @@ import time
 from sklearn.model_selection import StratifiedShuffleSplit
 from sklearn.multioutput import MultiOutputClassifier
 from sklearn.naive_bayes import GaussianNB
-from sklearn.metrics import classification_report, accuracy_score
 from sklearn.preprocessing import scale
 
 from utilities import Timer, MetaData, ResultsWriter
@@ -37,9 +36,9 @@ df.rename(columns={0:'activity_subj'}, inplace=True)
 # split data set into test and train using stratification (for both subj and activity)
 # ---------------------
 strat_split = StratifiedShuffleSplit(n_splits=1, train_size=0.75, test_size=0.25, random_state=2016)
-readings = df.ix[:,:-3]
 
 # Scale data
+readings = df.ix[:,:-3]
 readings = scale(readings)
 
 # stratify based on subj_activity

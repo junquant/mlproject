@@ -8,3 +8,6 @@ record_time,model,dur_train_activity,dur_train_subj,dur_train_both,precision,rec
 2016-11-28 21:33,pca_gnb,0.06,0.08,0.00,0.58,0.62,0.62,subject then activity
 2016-11-28 21:35,pca_gnb,0.53,0.56,0.00,0.42,0.40,0.40,subject then activity
 
+2016-11-28 23:41,gnb_no_pca,0.00,0.00,1.51,0.00,0.01,0.01,both at the same time
+2016-11-28 23:42,gnb_no_pca_multioutput,0.00,0.00,2.31,0.59,0.54,0.54,both at the same time
+2016-11-28 23:44,gnb_no_pca,0.00,0.00,1.58,0.96,0.96,0.96,both at the same time
