@@ -111,6 +111,12 @@ plt.title('Top 3 Principal components')
 #    np.random.choice(np.indices)
 #plt.scatter(dftr[:,0], dftr[:,1], dftr[:,2], c=dftr[:,3], marker='x', cmap=plt.cm.Accent)
 plt.scatter(dftr[idx,0], dftr[idx,1], dftr[idx,2], c=dftr[idx,3],marker='x', cmap=plt.cm.prism)
+fig2 = plt.figure(figsize=(12,12))
+ax.set_xlabel('principal component 1')
+ax.set_ylabel('principal component 2')
+plt.title('Top 2 Principal components')
+plt.scatter(dftr[idx,0], dftr[idx,1], c=dftr[idx,3],marker='x', cmap=plt.cm.prism)
+
 #plt.scatter(dftr[idx,0], dftr[idx,1], dftr[idx,2], c=dftr[idx,3], cmap=plt.cm.rainbow)
 # Get principal components and explained variance ration
 comp = pca.components_
