@@ -3,11 +3,11 @@
 
 ## Introduction
 
-Wearable technologies are getting more and more common and machine learning plays an important role in enabling the machine to recognize a person's activity. With some physical parameters measurement of human body, a computer is smart enough to tell the activity carried out by a person,i.e. sitting, running or climbing up stairs. The constructed model may be deployed in a health care setting, to monitor a patient's activities. With the ability to differentiate the activities and the person performing it, it also opens up the possibility of sharing the wearable device. Typical machine learning projects seeks to classify the activity performed, this project attempts to go a step further and aims to develop a method to best classify the activity and the person performing the activity. Using the T,P,E framework, the problem can be summarized into:
+Wearable technologies are getting more and more common and machine learning plays an important role in enabling the machine to recognize a person's activity. With some physical parameters measurement of human body, a computer is smart enough to tell the activity carried out by a person, i.e. sitting, running or climbing up stairs. The constructed model may be deployed in a health care setting, to monitor a patient's activities. With the ability to differentiate the activities and the person performing it, it also opens up the possibility of sharing the wearable device. Typical machine learning projects seeks to classify the activity performed, this project attempts to go a step further and aims to develop a method to best classify the activity and the person performing the activity. Using the T,P,E framework, the problem can be summarized into:
 
 * **Task** - Predict the activity *and* the person performing the activity
 * **Performance** - Percentage of actions *and* person performing the activity correctly classified
-* **Experience** - PAMAP2 data set of labeled IMU readings available from the UCI Machine Learning Repository 
+* **Experience** - PAMAP2 data set of labeled IMU readings available from the UCI Machine Learning Repository
 
 ## Objective
 
@@ -21,9 +21,9 @@ The approach that we propose would be to first explore in detail to extract the 
 2. **Model 2** - Classify Action --> Feed action back into model to the classify subject
 3. **Model 3** - Classify both subject and action simultaneously
 
-The most suitable model (in terms of accuracy, precision and recall) to classify an activity that is carried out by a unique individual will be selected. Supervised learning methods will explored and used to construct the model. The model will then be interpreted to extract insights on how are the actions and subjects classified. 
+The most suitable model (in terms of accuracy, precision and recall) to classify an activity that is carried out by a unique individual will be selected. Supervised learning methods will explored and used to construct the model. The model will then be interpreted to extract insights on how are the actions and subjects classified.
 
-Hold-out and k-fold cross validation were used for model validation. Source control will be done using Github. 
+Hold-out and k-fold cross validation were used for model validation. Source control will be done using Github.
 
 ## About the Data Set
 
@@ -65,15 +65,28 @@ The full data set exists in 9 separate .dat files, one for each subject, of 54 c
 
 ## Data Preparation
 
-**Missing Values** - The missing values were caused by lost of signals. As such, missing values are populated with the last valid value for the subject and if there is no valid value before, the first valid value after the record was used. This was done for each subject's data. 
+**Missing Values** - The missing values were caused by lost of signals. As such, missing values are populated with the last valid value for the subject and if there is no valid value before, the first valid value after the record was used. This was done for each subject's data.
 
-**Invalid Data** - Orientation is not valid in this data set as stated in the code book and was removed. Accelerometer data for with the scale of ±6g was also removed from the data set as recommended by the code book as readings are saturated for high impact movements such as running. 
+**Invalid Data** - Orientation is not valid in this data set as stated in the code book and was removed. Accelerometer data for with the scale of ±6g was also removed from the data set as recommended by the code book as readings are saturated for high impact movements such as running.
 
 ## Data Exploration
 
 
 ## Model Comparison
 
+### Initial Comparison
+* SGD SVM
+  * StratifiedShuffleSplit
+* PCA GNB
+  * StratifiedShuffleSplit
+* GNB with scaling
+  * StratifiedShuffleSplit
+
+### Final Comparison
+* GNB MultiOutputClassifier with scaling
+  * StratifiedShuffleSplit
+* GNB with scaling
+  * StratifiedKFold
 
 ## Results Interpretation
 
@@ -94,12 +107,12 @@ Potential Techniques
 * Decision Trees (may some ensemble?)
 * SVM ?
 
-Things to do 
+Things to do
 * Predict the person
 * Predict the activity
-* Make the prediction 2 layers 
+* Make the prediction 2 layers
 * first layer to classify the person
 * second layer to classify the activity
-* can also do a joint classifier 
+* can also do a joint classifier
 * Need to interpret classifier (eg. speed to determine whether person is walking or running)
-* for eg. what dimension needs to 
+* for eg. what dimension needs to
