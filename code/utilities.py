@@ -6,7 +6,7 @@ class Plotter:
     def __init__(self):
         pass
 
-    def plot_correlation(dataframe, title=''):
+    def plot_correlation(self,dataframe, title=''):
         lang_names = dataframe.columns.tolist()
         tick_indices = np.arange(0.5, len(lang_names) + 0.5)
         plt.figure(figsize=(12, 12))
@@ -18,7 +18,7 @@ class Plotter:
         plt.yticks(tick_indices, lang_names)
         plt.gcf().subplots_adjust(bottom=0.25, left=0.25)
 
-    def plot_scree(explainedVarianceRatio, colsNumber, title=''):
+    def plot_scree(self,explainedVarianceRatio, colsNumber, title=''):
         pc = np.arange(colsNumber) + 1
         plt.figure(figsize=(12, 9))
         plt.title(title)
