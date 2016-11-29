@@ -99,7 +99,7 @@ plt.scatter(dftr[idx,0], dftr[idx,1], c=dftr[idx,3],marker='x', cmap=plt.cm.pris
 comp = pca.components_
 evr = pca.explained_variance_ratio_
 
-screePlot = plot_scree(evr, len(evr), 'Scree Plot')
+screePlot = plotter.plot_scree(evr, len(evr), 'Scree Plot')
 
 # Show the graphs
 plt.show()
