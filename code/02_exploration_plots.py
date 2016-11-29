@@ -39,7 +39,7 @@ df.rename(columns={0:'activity_subj'}, inplace=True)
 # ---------------------------------------------
 plt.style.use('ggplot')
 
-dfReadings = df.iloc[:, :-2]
+dfReadings = df.iloc[:, :-3]
 corrPlot = plotter.plot_correlation(dfReadings.corr(), title='IMU readings')
 
 
@@ -54,7 +54,7 @@ corrPlot = plotter.plot_correlation(dfReadings.corr(), title='IMU readings')
 print('Performing PCA ...')
 pca = PCA()
 #dftr = pca.fit_transform(scaled_data)
-dftr = pca.fit_transform(df.ix[:, :-2])
+dftr = pca.fit_transform(df.ix[:, :-3])
 
 print('Visualizing ... ')
 plt.style.use("ggplot")
