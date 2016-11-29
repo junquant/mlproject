@@ -59,7 +59,7 @@ Initial exploration also includes plotting the correlation of the variables and 
 Both correlation and the scree plot are shown below. Further exploration will be needed to look at the data and in particular the principal components and the highly correlated variables. Any implications will then need to be considered when constructing the models. 
 
 **Correlation Matrix of the variables**
-![Correlation Matrix](../report/img/correlation_matrix.png)
+![Correlation Matrix](../plots/correlation_matrix.png)
 
 **Scree Plot of Principal Components**
-![Scree Plot](../report/img/screeplot.png)
+![Scree Plot](../plots/screeplot.png)

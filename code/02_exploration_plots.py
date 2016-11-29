@@ -1,42 +1,20 @@
 import numpy as np
 import pandas as pd
 from sklearn.decomposition import PCA
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import scale
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
-from utilities import Timer, MetaData
+from utilities import Timer, MetaData, Plotter
 
 # file properties
 # -----------------------------------------------------
 filePath = '../data/consolidated_clean_all.txt'
+plotDir = '../plots/'
 
-# Plot functions
+# Plots
 # -----------------------------------------------------
-def plot_correlation(dataframe, title=''):
-    lang_names = dataframe.columns.tolist()
-    tick_indices = np.arange(0.5, len(lang_names) + 0.5)
-    plt.figure(figsize=(12, 12))
-    plt.pcolor(dataframe.values, cmap='RdBu', vmin=-1, vmax=1)
-    colorbar = plt.colorbar()
-    colorbar.set_label('Correlation')
-    plt.title(title)
-    plt.xticks(tick_indices, lang_names, rotation='vertical')
-    plt.yticks(tick_indices, lang_names)
-    plt.gcf().subplots_adjust(bottom=0.25, left=0.25)
-
-def plot_scree(explainedVarianceRatio, colsNumber, title=''):
-    pc = np.arange(colsNumber) + 1
-
-    plt.figure(figsize=(12, 9))
-    plt.title(title)
-    plt.xlabel('Principal Component')
-    plt.ylabel('% of Variance Explained')
-    plt.plot(pc, explainedVarianceRatio)
-
-
-# Code Start
-# -----------------------------------------------------
+plotter = Plotter()
 
 metadata = MetaData()
 dataType = metadata.getProcessedColsDataType()
@@ -48,22 +26,21 @@ print('Start Time : ', timer.getTime())  # Get the start time for tracking purpo
 print('------------------------------------------------------------')
 print('Reading files ... ')
 print('------------------------------------------------------------')
-# Note that this is a numpy structured array as the data set contains both int and float
-# http://docs.scipy.org/doc/numpy/user/basics.rec.html
-#activityData = np.genfromtxt(filePath, delimiter = ',', skip_header = 1, dtype=dataType)
-activityData = np.loadtxt(filePath, delimiter = ',', skiprows=1, dtype=dataType)
-print('np.loadtxt finish, Time : ', timer.getTime())
+data = np.loadtxt(filePath, delimiter = ',', skiprows=1, dtype=dataType)
+df = pd.DataFrame(data)
 
-# convert to pandas data frame
-df = pd.DataFrame(activityData)
-
-#print(df.describe())
+subj = df.ix[:,-2]
+activity = df.ix[:,-1]
+subj_activity = (100*subj) + activity
+df = pd.concat([df,subj_activity],axis=1)
+df.rename(columns={0:'activity_subj'}, inplace=True)
 
 # Correlation matrix
 # ---------------------------------------------
-#plt.style.use('ggplot')
+plt.style.use('ggplot')
+
 dfReadings = df.iloc[:, :-2]
-corrPlot = plot_correlation(dfReadings.corr(), title='IMU readings')
+corrPlot = plotter.plot_correlation(dfReadings.corr(), title='IMU readings')
 
 
 # PCA
