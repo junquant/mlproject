@@ -4,31 +4,6 @@ import matplotlib.pyplot as plt
 from datetime import datetime
 from sklearn.metrics import precision_score,recall_score, accuracy_score, classification_report
 
-class Plotter:
-    def __init__(self):
-        pass
-
-    def plot_correlation(self,dataframe, title=''):
-        lang_names = dataframe.columns.tolist()
-        tick_indices = np.arange(0.5, len(lang_names) + 0.5)
-        plt.figure(figsize=(12, 12))
-        plt.pcolor(dataframe.values, cmap='RdBu', vmin=-1, vmax=1)
-        colorbar = plt.colorbar()
-        colorbar.set_label('Correlation')
-        plt.title(title)
-        plt.xticks(tick_indices, lang_names, rotation='vertical')
-        plt.yticks(tick_indices, lang_names)
-        plt.gcf().subplots_adjust(bottom=0.25, left=0.25)
-
-    def plot_scree(self,explainedVarianceRatio, colsNumber, title=''):
-        pc = np.arange(colsNumber) + 1
-        plt.figure(figsize=(12, 9))
-        plt.title(title)
-        plt.xlabel('Principal Component')
-        plt.ylabel('% of Variance Explained')
-        plt.plot(pc, explainedVarianceRatio)
-
-
 class Timer:
     def __init__(self):
         pass

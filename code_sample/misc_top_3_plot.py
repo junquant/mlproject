@@ -38,7 +38,7 @@ print('Performing PCA ...')
 minmax_scaler = MinMaxScaler()
 pca = PCA(n_components=10)
 
-rescaled_df = minmax_scaler.fit_transform(df)
+rescaled_df = minmax_scaler.fit_transform(df.ix[:,-3])
 pca.fit_transform(rescaled_df)
 
 print('PCA Components: ', pca.components_[0])

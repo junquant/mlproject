@@ -38,7 +38,7 @@ print('Performing PCA ...')
 minmax_scaler = MinMaxScaler()
 pca = PCA(n_components=10)
 
-minmax_df = minmax_scaler.fit_transform(df)
+minmax_df = minmax_scaler.fit_transform(df.ix[:,:-3])
 pca_df = pca.fit_transform(minmax_df)
 
 print('PCA Components: ', pca.components_)
@@ -46,7 +46,7 @@ print('PCA Components: ', pca.components_)
 select = pca_df[:,:3]
 select = pd.DataFrame(select)
 df = pd.concat([select, subj_activity], axis=1)
-#%%
+
 # Get a subset of the data
 strat_split = StratifiedShuffleSplit(n_splits=1, train_size=0.999, test_size=0.001, random_state=2016)
 

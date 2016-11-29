@@ -1,20 +1,21 @@
 import numpy as np
 import pandas as pd
 from sklearn.decomposition import PCA
-from sklearn.preprocessing import scale
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.model_selection import StratifiedShuffleSplit
+
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
-from utilities import Timer, MetaData, Plotter
+from utilities import Timer, MetaData
 
-# file properties
+# File properties
 # -----------------------------------------------------
 filePath = '../data/consolidated_clean_all.txt'
 plotDir = '../plots/'
 
-# Plots
+# Read Data
 # -----------------------------------------------------
-plotter = Plotter()
 
 metadata = MetaData()
 dataType = metadata.getProcessedColsDataType()
@@ -35,75 +36,107 @@ subj_activity = (100*subj) + activity
 df = pd.concat([df,subj_activity],axis=1)
 df.rename(columns={0:'activity_subj'}, inplace=True)
 
-# Correlation matrix
+readings = df.iloc[:,:-3]
+
+# Correlation Matrix
 # ---------------------------------------------
 plt.style.use('ggplot')
 
-dfReadings = df.iloc[:, :-3]
-corrPlot = plotter.plot_correlation(dfReadings.corr(), title='IMU readings')
+print('Plotting correlation ...')
+plotdata = readings.corr()
+lang_names = plotdata.columns.tolist()
+tick_indices = np.arange(0.5, len(lang_names) + 0.5)
 
+plt.figure(1,figsize=(10, 10))
+plt.pcolor(plotdata.values, cmap='RdBu', vmin=-1, vmax=1)
+colorbar = plt.colorbar()
+colorbar.set_label('Correlation')
+plt.title('IMU Readings')
+plt.xticks(tick_indices, lang_names, rotation='vertical')
+plt.yticks(tick_indices, lang_names)
+plt.xlim(0,len(lang_names))
+plt.ylim(0,len(lang_names))
+plt.gcf().subplots_adjust(bottom=0.25, left=0.25)
 
-# PCA
+plt.savefig('../plots/correlation.png', format='png', bbox_inches='tight', pad_inches=0.1,dpi=150)
+
+# Sample Data for Exploration
 # ---------------------------------------------
-# scale to min 0 max 1
-#minmax_scaler = MinMaxScaler()
-#scaled_data = minmax_scaler.fit_transform(df.ix[:, :-2])
 
+strat_split = StratifiedShuffleSplit(n_splits=1, train_size=0.99, test_size=0.01, random_state=2016)
 
-# Perform PCA and explore first 3 components
-print('Performing PCA ...')
+# stratify based on subj_activity
+for big_index, small_index in strat_split.split(df,subj_activity):
+    df_big, df_small = df.ix[big_index], df.ix[small_index]
+    print('Size of data set: ', len(df))
+    print('Size of training data set: ', len(big_index))
+    print('Size of test data set: ', len(small_index))
+
+df_small_readings = df_small.iloc[:,:-3]
+df_small_subject = df_small.iloc[:,-2]
+df_small_activity = df_small.iloc[:,-1]
+
+# PCA Exploration
+# ---------------------------------------------
+minmax_scaler = MinMaxScaler()
+scaled_data = minmax_scaler.fit_transform(df_small_readings)
+
+print('Plotting PCA 2 components ...')
+
 pca = PCA()
-#dftr = pca.fit_transform(scaled_data)
-dftr = pca.fit_transform(df.ix[:, :-3])
 
-print('Visualizing ... ')
-plt.style.use("ggplot")
-dftr = np.column_stack((dftr[:,0:3],df.activity_id))
+dftr = pca.fit_transform(scaled_data)
+dftr = np.column_stack((dftr[:,0:3],df_small_activity))
 
-# Code to sample 2000 points (uncomment to sample 2000 pts
-# ---------------------------------------------
-idx = np.random.randint(len(df.activity_id), size=20000)
-# dftr = pltdata[idx,:]
+fig = plt.figure(2, figsize=(10,10))
+ax = fig.add_subplot(1,1,1)
+ax.set_xlabel('Principal Component 1')
+ax.set_ylabel('Principal Component 2')
+plt.title('Top 2 Principal Components')
+plt.scatter(dftr[:,0], dftr[:,1], c=dftr[:,3], alpha=0.5, cmap=plt.cm.prism)
 
-# Plot 2d PCA
-# fig = plt.figure(figsize=(12,12))
-# ax = fig.add_subplot(1,1,1)
-# ax.set_xlabel('principal component 1')
-# ax.set_ylabel('principal component 2')
-# plt.title('Top 2 Principal compoments')
-# plt.scatter(dftr[:,0], dftr[:,1], c=dftr[:,3], alpha=0.5)
 
-# Plot 3d PCA
-# Sample 500 points from each class and plot it
-# ----------------------------------------------
-# dftr = xxxx
+plt.savefig('../plots/pca_2components.png', format='png', bbox_inches='tight', pad_inches=0.1,dpi=150)
 
-fig = plt.figure(figsize=(12,12))
+print('Plotting PCA 3 components ...')
+
+fig = plt.figure(3, figsize=(10,10))
 ax = fig.add_subplot(1,1,1, projection='3d')
-ax.set_xlabel('principal component 1')
-ax.set_ylabel('principal component 2')
-ax.set_zlabel('principal component 3')
-plt.title('Top 3 Principal components')
-#for i in MetaData.activities:
-#    np.random.choice(np.indices)
-#plt.scatter(dftr[:,0], dftr[:,1], dftr[:,2], c=dftr[:,3], marker='x', cmap=plt.cm.Accent)
-plt.scatter(dftr[idx,0], dftr[idx,1], dftr[idx,2], c=dftr[idx,3],marker='x', cmap=plt.cm.prism)
-fig2 = plt.figure(figsize=(12,12))
-ax.set_xlabel('principal component 1')
-ax.set_ylabel('principal component 2')
-plt.title('Top 2 Principal components')
-plt.scatter(dftr[idx,0], dftr[idx,1], c=dftr[idx,3],marker='x', cmap=plt.cm.prism)
+ax.set_xlabel('Principal Component 1')
+ax.set_ylabel('Principal Component 2')
+ax.set_zlabel('Principal Component 3')
+plt.title('Top 3 Principal Components')
+ax.scatter(dftr[:,0], dftr[:,1], dftr[:,2], c=dftr[:,3],marker='o', cmap=plt.cm.prism)
 
-#plt.scatter(dftr[idx,0], dftr[idx,1], dftr[idx,2], c=dftr[idx,3], cmap=plt.cm.rainbow)
-# Get principal components and explained variance ration
+plt.savefig('../plots/pca_3components.png', format='png', bbox_inches='tight', pad_inches=0.1,dpi=150)
+
+print('Plotting Scree Plot ...')
+
 comp = pca.components_
 evr = pca.explained_variance_ratio_
 
-screePlot = plotter.plot_scree(evr, len(evr), 'Scree Plot')
+pc = np.arange(len(comp)) + 1
+plt.figure(4, figsize=(12, 9))
+plt.title('Scree Plot')
+plt.xlabel('Principal Component')
+plt.ylabel('% of Variance Explained')
+plt.plot(pc, evr)
 
-# Show the graphs
-plt.show()
+plt.savefig('../plots/screeplot.png', format='png', bbox_inches='tight', pad_inches=0.1,dpi=150)
 
-# Print end time
+# Variable Exploration
+# ---------------------------------------------
+fig = plt.figure(5, figsize=(14,14))
+fig.suptitle('Histogram of all readings')
+for i in range(0,len(df_small_readings.columns)):
+    ax = fig.add_subplot(6, 6, i+1)
+    ax.tick_params(axis='both', which='major', labelsize=8)
+    ax.hist(df_small_readings.iloc[:, i], bins=15 , color='#ffd700')
+    ax.annotate(df_small_readings.iloc[:, i].name, xy=(0.05, 0.05), xycoords='axes fraction', fontsize=8)
+
+plt.figure(5)
+plt.savefig('../plots/var_distribution.png', format='png', bbox_inches='tight', pad_inches=0.1,dpi=150)
+
 print('End Time : ', timer.getTime())
 
+plt.show()
