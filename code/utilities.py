@@ -7,16 +7,7 @@ class Plotter:
         pass
 
     def plot_correlation(dataframe, title=''):
-        lang_names = dataframe.columns.tolist()
-        tick_indices = np.arange(0.5, len(lang_names) + 0.5)
-        plt.figure(figsize=(12, 12))
-        plt.pcolor(dataframe.values, cmap='RdBu', vmin=-1, vmax=1)
-        colorbar = plt.colorbar()
-        colorbar.set_label('Correlation')
-        plt.title(title)
-        plt.xticks(tick_indices, lang_names, rotation='vertical')
-        plt.yticks(tick_indices, lang_names)
-        plt.gcf().subplots_adjust(bottom=0.25, left=0.25)
+        pass
 
     def plot_scree(explainedVarianceRatio, colsNumber, title=''):
         pc = np.arange(colsNumber) + 1
