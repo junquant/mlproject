@@ -84,8 +84,8 @@ scaled_data = minmax_scaler.fit_transform(df_small_readings)
 print('Plotting PCA 2 components ...')
 
 pca = PCA()
-dftr = pca.fit_transform(scaled_data)
 
+dftr = pca.fit_transform(scaled_data)
 dftr = np.column_stack((dftr[:,0:3],df_small_activity))
 
 fig = plt.figure(2, figsize=(10,10))
