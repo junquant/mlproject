@@ -72,12 +72,12 @@ for big_index, small_index in strat_split.split(df,subj_activity):
     print('Size of training data set: ', len(big_index))
     print('Size of test data set: ', len(small_index))
 
-# PCA Exploration
-# ---------------------------------------------
 df_small_readings = df_small.iloc[:,:-3]
 df_small_subject = df_small.iloc[:,-2]
 df_small_activity = df_small.iloc[:,-1]
 
+# PCA Exploration
+# ---------------------------------------------
 minmax_scaler = MinMaxScaler()
 scaled_data = minmax_scaler.fit_transform(df_small_readings)
 
@@ -116,7 +116,7 @@ comp = pca.components_
 evr = pca.explained_variance_ratio_
 
 pc = np.arange(len(comp)) + 1
-plt.figure(figsize=(12, 9))
+plt.figure(4, figsize=(12, 9))
 plt.title('Scree Plot')
 plt.xlabel('Principal Component')
 plt.ylabel('% of Variance Explained')
@@ -126,6 +126,16 @@ plt.savefig('../plots/screeplot.png', format='png', bbox_inches='tight', pad_inc
 
 # Variable Exploration
 # ---------------------------------------------
+fig = plt.figure(5, figsize=(14,14))
+fig.suptitle('Histogram of all readings')
+for i in range(0,len(df_small_readings.columns)):
+    ax = fig.add_subplot(6, 6, i+1)
+    ax.tick_params(axis='both', which='major', labelsize=8)
+    ax.hist(df_small_readings.iloc[:, i], bins=15 , color='#ffd700')
+    ax.annotate(df_small_readings.iloc[:, i].name, xy=(0.05, 0.05), xycoords='axes fraction', fontsize=8)
+
+plt.figure(5)
+plt.savefig('../plots/var_distribution.png', format='png', bbox_inches='tight', pad_inches=0.1,dpi=150)
 
 print('End Time : ', timer.getTime())
 
