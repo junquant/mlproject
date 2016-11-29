@@ -29,7 +29,7 @@ activity.name = 'predicted_activity'
 df = pd.concat([df,subject,activity], axis=1)
 
 # Get a subset of the data
-strat_split = StratifiedShuffleSplit(n_splits=1, train_size=0.9, test_size=0.1, random_state=2016)
+strat_split = StratifiedShuffleSplit(n_splits=1, train_size=0.999, test_size=0.001, random_state=2016)
 
 # stratify based on activity
 for train_index, test_index in strat_split.split(df,df['predicted_subj_activity']):
@@ -41,3 +41,26 @@ for train_index, test_index in strat_split.split(df,df['predicted_subj_activity'
 # --------------------------------------------------------
 # Work your plotting magic here
 # You can choose to use df_large or df_small
+
+x = df_small.as_matrix()
+print(x)
+print(x.shape)
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+plt.style.use("ggplot")
+
+fignum = 1
+fig = plt.figure(fignum,figsize=(10,10))
+ax = fig.add_subplot(1,1,1, projection='3d')
+plt.scatter(x[:,0], x[:,1], x[:,2], c=x[:,-5] ,marker='o')
+plt.show()
+
+# ax = fig.add_subplot(4, 4, axpos)
+# annotateStr = 'eps: %.1f | mins: %d \n# outliers: %d \n# clusters: %d \navg size of clusters: %.2f \nhomogeneity: %.2f \ncompleteness: %.2f' \
+#               % (e, mins, num_outliers, num_clusters, avg_size, homogeneity, completeness)
+# ax.annotate(annotateStr, xy=(0.05, 0.05), xycoords='axes fraction', fontsize=9)
+# ax.scatter(x[:, 0], x[:, 1], c=label, cmap=plt.cm.Accent)
+# axpos += 1
+
+fignum = 2
