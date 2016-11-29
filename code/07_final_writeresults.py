@@ -10,7 +10,7 @@ from utilities import Timer, MetaData, ResultsWriter
 
 # file properties
 # -----------------------------------------------------
-filePath = '../data/consolidated_clean_101.txt'
+filePath = '../data/consolidated_clean_all.txt'
 resultsPath = '../data/results.txt'
 
 metadata = MetaData()
@@ -83,5 +83,6 @@ predicted_subj_activity.rename(columns={0:'predicted_activity_subj'}, inplace=Tr
 
 result = pd.concat([df_test.ix[:,1:], predicted_subj_activity],axis=1)
 
+print('Output results ... ')
 result.to_csv(resultsPath, header=True, index=None, sep=',')
 
