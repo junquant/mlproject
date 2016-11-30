@@ -73,20 +73,41 @@ The full data set exists in 9 separate .dat files, one for each subject, of 54 c
 
 ### Univariate Exploration
 
-** Univariate Distributions**
+**Univariate Distributions**
 
 ![Univariate Distributions](../plots/var_distribution.png)
 
 It can be observed that the `heartrate_bpm`, and temperature readings such as `hand_temp_c`, `chest_temp_c` and `ankle_temp_c`, and the magnetometer readings have a greater variance in their distributions as compared to the accelerometer and gyroscopic readings. As such, we would expect these variables to have a greater impact on the classification models.
 
+---
+
+### Bivariate Exploration
+
+**Pair-wise Correlation Plot**
+
+![Pair-wise Correlations](../plots/correlation.png)
+
+The correlation shows a strong correlations between several variables, some of which are:
+
+* `chest_temp_c` and `hand_temp_c`
+* `chest_3d_magnetometer` and `chest_3d_accel`
+* `ankle_3d_magnetometer` and `chest_3d_magnetometer`
+
+The correlations between several of these variables are relatively strong (around 0.5 and above). As such, it would be interesting to reduce dimensionality based on correlation, using PCA, to further explore.
+
+---
 
 ### PCA
 
 PCA was conducted on the dataset to reduce dimensionality and the 2 variables `subject` and `activity_id` were concatenated into one target variable `subj_activity` for easier visualisation.
 
+![PCA Table](../exploration/pca_table.png)
+
 ** First Principal Component (PC1) **
 
-(Insert table of top 3 pcs)
+PC1 has a strongest correlation with `chest_temp_c` (negative), `hand_temp_c` (negative), and `ankle_temp_c` (negative).
+
+This implies that PC1 increases with declines in temperatures in the chest, hand, and ankles, as well as decreased movements in the ankle.
 
 ![Top 2 Principal Components](../plots/pca_2components.png)
 ![Top 3 Principal Components](../plots/pca_3components.png)
@@ -97,18 +118,52 @@ PCA was conducted on the dataset to reduce dimensionality and the 2 variables `s
 
 ## Model Comparison
 
-structure
-- rationale for model
-- model parameters
-- comparison of results
+> structure
+> - rationale for model
+> - model parameters
+> - comparison of results
+
+Given the classification problems and methodologies. We used several models to classify the dataset. In choosing the best model, we applied the following criteria:
+
+* Accuracy: Number of correctly predicted classes over total number of actual classes.
+* Computational Complexity: The amount of time taken, or estimated amount of time taken if not successfully run, was used as a proxy.
+
+The classifiers used were the following:
+
+* Stochastic Gradient Descent (SGD) Classifier with Linear SVM
+* Gaussian Naive Bayes
+* Gaussian Naive Bayes Multi-output Classifier
+
+The approach taken can be generalized as such, based on the methodology above:
+
+1. Split data using Stratified Shuffle Split
+2. Perform PCA to reduce dimensionality
+3. Train model (Time recorded)
+4. Predict and score
+5. Repeat for 3 methods:
+  * Subject > Activity (S > A)
+  * Activity > Subject (A > S)
+  * Both
 
 ### Initial Comparison
-* SGD SVM
-  * StratifiedShuffleSplit
-* PCA GNB
-  * StratifiedShuffleSplit
-* GNB with scaling
-  * StratifiedShuffleSplit
+
+Due to the large sample size, SVM using SGD learning was our first model. Being an efficient model, runtime would be fast and we would get a quick feel of how the model performed. The results of running the model using the 3 methods are as follows:
+
+Method | Accuracy | Time Taken (seconds)
+--- | ---
+S > A | 0.50 | 0.62, 0.58
+A > S | 0.50 | 16.71, 11.80
+Both | 0.64 | 105.12
+
+Next, we used Gaussian Naive Bayes.
+
+Method | Accuracy | Time Taken (seconds)
+--- | ---
+S > A |  |
+A > S |  |
+Both |  | 
+
+In achieving efficiency and reduced model complexity, the model traded off accuracy.
 
 ### Final Comparison
 * GNB MultiOutputClassifier with scaling

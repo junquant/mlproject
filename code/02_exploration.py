@@ -55,11 +55,12 @@ dftr = pca.fit_transform(scaled_data)
 features = [x[0] for x in dataType][:-2]
 pca_table = pd.DataFrame(data=pca.components_[:3]).transpose()
 from pandas.tools.plotting import table
-plt.figure(figsize=(10,8))
-ax = plt.subplot(111, frame_on=False)
+fig = plt.figure(2, figsize=(10,10))
+ax = fig.add_subplot(1,1,1)
+ax = plt.subplot(frame_on=False)
 ax.xaxis.set_visible(False)
 ax.yaxis.set_visible(False)
 table(ax, pca_table, loc='center', colLabels=('PC1','PC2','PC3'), rowLabels=features)
-plt.savefig('../exploration/pca_table.png')
+plt.savefig('../exploration/pca_table.png', format='png', bbox_inches='tight', pad_inches=0.1,dpi=150)
 
 pc1 = sorted(pca.components_[0], reverse=True)
