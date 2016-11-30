@@ -1,6 +1,12 @@
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import StratifiedShuffleSplit
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.decomposition import PCA
+
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
 from utilities import Timer, MetaData, ResultsWriter
 
 # file properties
@@ -38,33 +44,46 @@ for train_index, test_index in strat_split.split(df,df['predicted_subj_activity'
     print('Size of large data set: ', len(train_index))
     print('Size of small data set: ', len(test_index))
 
+df_small_readings = df_small.iloc[:,:-6]
+df_small_act_subj = df_small.iloc[:,-6]
+df_small_act_activity = df_small.iloc[:,-5]
+df_small_act_subj_activity = df_small.iloc[:,-4]
+
+df_small_pred_subj = df_small.iloc[:,-3]
+df_small_pred_activity = df_small.iloc[:,-2]
+df_small_pred_subj_activity = df_small.iloc[:,-1]
+
 # --------------------------------------------------------
-# Work your plotting magic here
-# You can choose to use df_large or df_small
+# Correct vs Incorrect Plots
 
-x = df_small.as_matrix()
-print(x)
-print(x.shape)
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
+minmax_scaler = MinMaxScaler()
+scaled_data = minmax_scaler.fit_transform(df_small_readings)
 
-plt.style.use("ggplot")
+print('Plotting PCA 2 components ...')
 
-# plt.figure(figsize=(10, 10))
-# fig = plt.subplot(1, 1, 1, projection='3d')
-# fig.scatter(x[:, 0], x[:, 1], x[:, 2], c=x[:,- 5], cmap=plt.cm.Spectral)
-# fig.view_init(10, -72)
-# plt.show()
+pca = PCA()
 
-fignum = 1
-fig = plt.figure(fignum,figsize=(10,10))
+dftr = pca.fit_transform(scaled_data)
+dftr = np.column_stack((dftr[:,0:3],df_small_activity))
+
+fig = plt.figure(2, figsize=(10,10))
+ax = fig.add_subplot(1,1,1)
+ax.set_xlabel('Principal Component 1')
+ax.set_ylabel('Principal Component 2')
+plt.title('Top 2 Principal Components')
+plt.scatter(dftr[:,0], dftr[:,1], c=dftr[:,3], alpha=0.5, cmap=plt.cm.prism)
+
+
+plt.savefig('../plots/pca_2components.png', format='png', bbox_inches='tight', pad_inches=0.1,dpi=150)
+
+print('Plotting PCA 3 components ...')
+
+fig = plt.figure(3, figsize=(10,10))
 ax = fig.add_subplot(1,1,1, projection='3d')
-ax.scatter(x[:,0], x[:,1], x[:,2], c=x[:,-5] ,marker='o')
-plt.show()
+ax.set_xlabel('Principal Component 1')
+ax.set_ylabel('Principal Component 2')
+ax.set_zlabel('Principal Component 3')
+plt.title('Top 3 Principal Components')
+ax.scatter(dftr[:,0], dftr[:,1], dftr[:,2], c=dftr[:,3],marker='o', cmap=plt.cm.prism)
 
-# ax = fig.add_subplot(4, 4, axpos)
-# annotateStr = 'eps: %.1f | mins: %d \n# outliers: %d \n# clusters: %d \navg size of clusters: %.2f \nhomogeneity: %.2f \ncompleteness: %.2f' \
-#               % (e, mins, num_outliers, num_clusters, avg_size, homogeneity, completeness)
-# ax.annotate(annotateStr, xy=(0.05, 0.05), xycoords='axes fraction', fontsize=9)
-# ax.scatter(x[:, 0], x[:, 1], c=label, cmap=plt.cm.Accent)
-# axpos += 1
+plt.savefig('../plots/pca_3components.png', format='png', bbox_inches='tight', pad_inches=0.1,dpi=150)

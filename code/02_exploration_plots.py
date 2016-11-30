@@ -113,15 +113,21 @@ plt.savefig('../plots/pca_3components.png', format='png', bbox_inches='tight', p
 
 print('Plotting Scree Plot ...')
 
-comp = pca.components_
-evr = pca.explained_variance_ratio_
+scaled_data_full = minmax_scaler.fit_transform(readings)
+
+pca_full = PCA()
+pca_full.fit_transform(scaled_data_full)
+
+comp = pca_full.components_
+evr = pca_full.explained_variance_ratio_
 
 pc = np.arange(len(comp)) + 1
-plt.figure(4, figsize=(12, 9))
-plt.title('Scree Plot')
-plt.xlabel('Principal Component')
-plt.ylabel('% of Variance Explained')
-plt.plot(pc, evr)
+fig = plt.figure(4, figsize=(12, 9))
+fig.suptitle('Scree Plot')
+ax = fig.add_subplot(111)
+ax.set_xlabel('Principal Component')
+ax.set_ylabel('% of Variance Explained')
+ax.plot(pc, evr)
 
 plt.savefig('../plots/screeplot.png', format='png', bbox_inches='tight', pad_inches=0.1,dpi=150)
 
