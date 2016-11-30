@@ -66,7 +66,7 @@ for i in range(100):
     parameters = [
         {'loss':['hinge'],'alpha':[0.0001,0.001,0.01,0.1,1]}]
 
-    clf_both = GridSearchCV(SGDClassifier(random_state=2016), parameters, cv=2)
+    clf_both = GridSearchCV(SGDClassifier(parameters, cv=2)
     time_bgn = time.time()
     clf_both.fit(readings_train, subj_activity_train)
     dur_train_both = time.time() - time_bgn
@@ -79,7 +79,8 @@ for i in range(100):
 
     # step 3 - printing results
     subj_activity_test = df_test.ix[:,-1]
-
+    print(clf_both.best_params_)
+    print(clf_both.best_estimator_)
     ResultsWriter.write_to_file('results_junquan.txt', model='svm_gridsearch_run_' + str(i + 1),
                                 y_train_actual=subj_activity_train, y_train_predicted=predicted_subj_activity_train,
                                 y_test_actual=subj_activity_test, y_test_predicted=predicted_subj_activity_test,
