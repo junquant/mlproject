@@ -107,21 +107,13 @@ PCA was conducted on the dataset to reduce dimensionality and the 2 variables `s
 
 PC1 has a strongest correlation with `chest_temp_c` (negative), `hand_temp_c` (negative), and `ankle_temp_c` (negative).
 
-This implies that PC1 increases with declines in temperatures in the chest, hand, and ankles, as well as decreased movements in the ankle.
 
 ![Top 2 Principal Components](../plots/pca_2components.png)
 ![Top 3 Principal Components](../plots/pca_3components.png)
 ![Scree Plot](../plots/screeplot.png)
 
 
-
-
 ## Model Comparison
-
-> structure
-> - rationale for model
-> - model parameters
-> - comparison of results
 
 Given the classification problems and methodologies. We used several models to classify the dataset. In choosing the best model, we applied the following criteria:
 
@@ -130,7 +122,7 @@ Given the classification problems and methodologies. We used several models to c
 
 The classifiers used were the following:
 
-* Stochastic Gradient Descent (SGD) Classifier with Linear SVM
+* SVM with Stochastic Gradient Descent (SGD)
 * Gaussian Naive Bayes
 * Gaussian Naive Bayes Multi-output Classifier
 
@@ -151,29 +143,46 @@ Due to the large sample size, SVM using SGD learning was our first model. Being 
 
 Method | Accuracy | Time Taken (seconds)
 --- | ---
-S > A | 0.50 | 0.62, 0.58
-A > S | 0.50 | 16.71, 11.80
-Both | 0.64 | 105.12
+S > A | 0.51 | 15.97, 12.53
+A > S | 0.46 | 15.92, 12.93
+Both | 0.59 | 113.75
 
-Next, we used Gaussian Naive Bayes.
+Next, we used Gaussian Naive Bayes with scaling and PCA.
 
 Method | Accuracy | Time Taken (seconds)
 --- | ---
-S > A |  |
-A > S |  |
-Both |  | 
+S > A | 0.40 | 0.63, 0.63
+A > S | 0.50 | 0.63, 0.59
+Both | 0.64 | 0.95
 
-In achieving efficiency and reduced model complexity, the model traded off accuracy.
+Lastly, we used Gaussian Naive Bayes with scaling, but without PCA.
+
+Method | Accuracy | Time Taken (seconds)
+--- | ---
+S > A | 0.54 | 1.36, 1.27
+A > S | 0.54 | 1.43, 1.48
+Both | 0.96 | 1.81
+
+It is observed that Gaussian Naive Bayes with scaling and without PCA outperformed the one with PCA and the SVM model with SGD in general. Further, the Gaussian Naive Bayes model with PCA also generally outperformed the SVM model with SGD.
+
+
+
 
 ### Final Comparison
-* GNB MultiOutputClassifier with scaling
-  * StratifiedShuffleSplit
-* GNB with scaling
-  * StratifiedKFold
+
+Gaussian Naive Bayes with Multi-output Classifier
+
+Method | Accuracy | Time Taken (seconds)
+--- | ---
+Both | 0.54 | 2.75
+
+
 
 ## Results Interpretation
 
 - reasons for superiority
+
+
 
 ## Conclusion
 
