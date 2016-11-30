@@ -3,6 +3,7 @@ import pandas as pd
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import StratifiedShuffleSplit
+from sklearn.neighbors.kde import KernelDensity
 
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
@@ -73,8 +74,8 @@ for big_index, small_index in strat_split.split(df,subj_activity):
     print('Size of test data set: ', len(small_index))
 
 df_small_readings = df_small.iloc[:,:-3]
-df_small_subject = df_small.iloc[:,-2]
-df_small_activity = df_small.iloc[:,-1]
+df_small_subject = df_small.iloc[:,-3]
+df_small_activity = df_small.iloc[:,-2]
 
 # PCA Exploration
 # ---------------------------------------------
@@ -112,20 +113,28 @@ plt.savefig('../plots/pca_3components.png', format='png', bbox_inches='tight', p
 
 print('Plotting Scree Plot ...')
 
-comp = pca.components_
-evr = pca.explained_variance_ratio_
+scaled_data_full = minmax_scaler.fit_transform(readings)
+
+pca_full = PCA()
+pca_full.fit_transform(scaled_data_full)
+
+comp = pca_full.components_
+evr = pca_full.explained_variance_ratio_
 
 pc = np.arange(len(comp)) + 1
-plt.figure(4, figsize=(12, 9))
-plt.title('Scree Plot')
-plt.xlabel('Principal Component')
-plt.ylabel('% of Variance Explained')
-plt.plot(pc, evr)
+fig = plt.figure(4, figsize=(12, 9))
+fig.suptitle('Scree Plot')
+ax = fig.add_subplot(111)
+ax.set_xlabel('Principal Component')
+ax.set_ylabel('% of Variance Explained')
+ax.plot(pc, evr)
 
 plt.savefig('../plots/screeplot.png', format='png', bbox_inches='tight', pad_inches=0.1,dpi=150)
 
 # Variable Exploration
 # ---------------------------------------------
+print('Plotting Distribution ...')
+
 fig = plt.figure(5, figsize=(14,14))
 fig.suptitle('Histogram of all readings')
 for i in range(0,len(df_small_readings.columns)):
@@ -137,6 +146,124 @@ for i in range(0,len(df_small_readings.columns)):
 plt.figure(5)
 plt.savefig('../plots/var_distribution.png', format='png', bbox_inches='tight', pad_inches=0.1,dpi=150)
 
+# Density for each activity
+# ---------------------------------------------
+print('Plotting Density of each activity...')
+
+# Get each unique activity and assign colours from the cmap
+uniques = np.unique(df_small_activity)
+numcolors = len(uniques)
+cm = plt.get_cmap('terrain')
+colors = []
+
+for i in range(numcolors):
+    colors.append(cm(1. * i / numcolors))
+
+# Create the figure
+fig = plt.figure(6, figsize=(12, 10))
+fig.suptitle('Density of All Activities')
+fig.text(x=0.1, y=0.5, s='Density of activities', rotation='vertical')
+
+# Create the gaussian kernel
+kde = KernelDensity(kernel='gaussian', bandwidth=10)
+
+# For each column, tranform using gaussian kernel and plot the density
+for i in range(0, len(df_small_readings.columns)):
+    main_hist_data = df_small_readings.ix[:, i]
+
+    # Calculate the density
+    kde.fit(main_hist_data[:, np.newaxis])
+    pdf_data = np.linspace(min(main_hist_data) - abs(min(main_hist_data) * 2),
+                           max(main_hist_data) + abs(max(main_hist_data) * 2), 100)
+    pdf = np.exp(kde.score_samples(pdf_data[:, np.newaxis]))
+
+    # Annotate the plt and format it
+    ax = fig.add_subplot(7, 5, i + 1)
+    ax.tick_params(axis='both', which='major', labelsize=8)
+    ax.set_yticklabels([])
+    ax.set_xticklabels([])
+    ax.annotate(df_small_readings.iloc[:, i].name, xy=(0.05, 0.9), xycoords='axes fraction', fontsize=8)
+
+    # Plot the main density
+    ax.plot(pdf_data, pdf, lw=1, c='red', fillstyle='bottom')
+    ax.fill_between(pdf_data, pdf, alpha=.1, zorder=5, antialiased=True, color="#E01B6A")
+
+    # Plot the density for each activity
+    for j in range(0, len(uniques)):
+        stacked = np.column_stack((main_hist_data, df_small_activity))
+        activity_hist_data = stacked[stacked[:, 1] == uniques[j], 0]
+
+        # Calculate the density for each activity
+        kde.fit(activity_hist_data[:, np.newaxis])
+        pdf_data = np.linspace(min(activity_hist_data) - abs(min(activity_hist_data) * 2),
+                               max(activity_hist_data) + abs(max(activity_hist_data) * 2), 100)
+        pdf = np.exp(kde.score_samples(pdf_data[:, np.newaxis]))
+
+        # Plot the density
+        ax.plot(pdf_data, pdf, lw=1, c=colors[j], label=uniques[j])
+
+plt.figure(6)
+plt.savefig('../plots/activities_distribution.png', format='png', bbox_inches='tight', pad_inches=0.1, dpi=150)
+
+# Density for each subject
+# ---------------------------------------------
+print('Plotting Density of each subject...')
+
+# Get each unique activity and assign colours from the cmap
+uniques = np.unique(df_small_subject)
+numcolors = len(uniques)
+cm = plt.get_cmap('terrain')
+colors = []
+
+for i in range(numcolors):
+    colors.append(cm(1. * i / numcolors))
+
+# Create the figure
+fig = plt.figure(7, figsize=(12, 10))
+fig.suptitle('Density of All Subjects')
+fig.text(x=0.1, y=0.5, s='Density of subjects', rotation='vertical')
+
+# Create the gaussian kernel
+kde = KernelDensity(kernel='gaussian', bandwidth=10)
+
+# For each column, tranform using gaussian kernel and plot the density
+for i in range(0, len(df_small_readings.columns)):
+    main_hist_data = df_small_readings.ix[:, i]
+
+    # Calculate the density
+    kde.fit(main_hist_data[:, np.newaxis])
+    pdf_data = np.linspace(min(main_hist_data) - abs(min(main_hist_data) * 2),
+                           max(main_hist_data) + abs(max(main_hist_data) * 2), 100)
+    pdf = np.exp(kde.score_samples(pdf_data[:, np.newaxis]))
+
+    # Annotate the plt and format it
+    ax = fig.add_subplot(7, 5, i + 1)
+    ax.tick_params(axis='both', which='major', labelsize=8)
+    ax.set_yticklabels([])
+    ax.set_xticklabels([])
+    ax.annotate(df_small_readings.iloc[:, i].name, xy=(0.05, 0.9), xycoords='axes fraction', fontsize=8)
+
+    # Plot the main density
+    ax.plot(pdf_data, pdf, lw=1, c='red', fillstyle='bottom')
+    ax.fill_between(pdf_data, pdf, alpha=.1, zorder=5, antialiased=True, color="#E01B6A")
+
+    # Plot the density for each subject
+    for j in range(0, len(uniques)):
+        stacked = np.column_stack((main_hist_data, df_small_subject))
+        subject_hist_data = stacked[stacked[:, 1] == uniques[j], 0]
+
+        # Calculate the density for each subject
+        kde.fit(subject_hist_data[:, np.newaxis])
+        pdf_data = np.linspace(min(subject_hist_data) - abs(min(subject_hist_data) * 2),
+                               max(subject_hist_data) + abs(max(subject_hist_data) * 2), 100)
+        pdf = np.exp(kde.score_samples(pdf_data[:, np.newaxis]))
+
+        # Plot the density
+        ax.plot(pdf_data, pdf, lw=1, c=colors[j], label=uniques[j])
+
+plt.figure(7)
+plt.savefig('../plots/subject_distribution.png', format='png', bbox_inches='tight', pad_inches=0.1, dpi=150)
+
 print('End Time : ', timer.getTime())
 
-plt.show()
+# plt.show()

@@ -4,7 +4,6 @@ import time
 from sklearn.model_selection import StratifiedShuffleSplit
 from sklearn.multioutput import MultiOutputClassifier
 from sklearn.naive_bayes import GaussianNB
-from sklearn.preprocessing import scale
 
 from utilities import Timer, MetaData, ResultsWriter
 
@@ -26,6 +25,7 @@ print('------------------------------------------------------------')
 # http://docs.scipy.org/doc/numpy/user/basics.rec.html
 data = np.genfromtxt(filePath, delimiter = ',', skip_header = 1, dtype=dataType)
 df = pd.DataFrame(data)
+df.ix[:,:31] = (df.ix[:,:31] - df.ix[:,:31].mean()) / (df.ix[:,:31].max() - df.ix[:,:31].min())
 
 subj = df.ix[:,-2]
 activity = df.ix[:,-1]
@@ -37,9 +37,7 @@ df.rename(columns={0:'activity_subj'}, inplace=True)
 # ---------------------
 strat_split = StratifiedShuffleSplit(n_splits=1, train_size=0.75, test_size=0.25, random_state=2016)
 
-# Scale data
 readings = df.ix[:,:-3]
-readings = scale(readings)
 
 # stratify based on subj_activity
 for train_index, test_index in strat_split.split(readings,subj_activity):
@@ -97,7 +95,7 @@ actual_subj = df_test.ix[:,-3]
 actual_activity = df_test.ix[:,-2]
 actual_subj_activity = (100*actual_subj) + actual_activity
 
-ResultsWriter.write_to_file('results_junquan.txt',model='gnb_no_pca_multioutput',
+ResultsWriter.write_to_file('results_thomas.txt',model='gnb_no_pca_multioutput',
                             y_actual=actual_subj_activity,y_predicted=predicted_subj_activity,
                             dur_train_activity=0, dur_train_subj=0, dur_train_both=dur_train_both,
                             method='both') # method = both / as / sa

@@ -71,28 +71,122 @@ The full data set exists in 9 separate .dat files, one for each subject, of 54 c
 
 ## Data Exploration
 
+### Univariate Exploration
+
+**Univariate Distributions**
+
+![Univariate Distributions](../plots/var_distribution.png)
+
+It can be observed that the `heartrate_bpm`, and temperature readings such as `hand_temp_c`, `chest_temp_c` and `ankle_temp_c`, and the magnetometer readings have a greater variance in their distributions as compared to the accelerometer and gyroscopic readings. As such, we would expect these variables to have a greater impact on the classification models.
+
+---
+
+### Bivariate Exploration
+
+**Pair-wise Correlation Plot**
+
+![Pair-wise Correlations](../plots/correlation.png)
+
+The correlation shows a strong correlations between several variables, some of which are:
+
+* `chest_temp_c` and `hand_temp_c`
+* `chest_3d_magnetometer` and `chest_3d_accel`
+* `ankle_3d_magnetometer` and `chest_3d_magnetometer`
+
+The correlations between several of these variables are relatively strong (around 0.5 and above). As such, it would be interesting to reduce dimensionality based on correlation, using PCA, to further explore.
+
+---
+
+### PCA
+
+PCA was conducted on the dataset to reduce dimensionality and the 2 variables `subject` and `activity_id` were concatenated into one target variable `subj_activity` for easier visualisation.
+
+![PCA Table](../exploration/pca_table.png)
+
+** First Principal Component (PC1) **
+
+PC1 has a strongest correlation with `chest_temp_c` (negative), `hand_temp_c` (negative), and `ankle_temp_c` (negative).
+
+
+![Top 2 Principal Components](../plots/pca_2components.png)
+![Top 3 Principal Components](../plots/pca_3components.png)
+![Scree Plot](../plots/screeplot.png)
+
 
 ## Model Comparison
 
+Given the classification problems and methodologies. We used several models to classify the dataset. In choosing the best model, we applied the following criteria:
+
+* Accuracy: Number of correctly predicted classes over total number of actual classes.
+* Computational Complexity: The amount of time taken, or estimated amount of time taken if not successfully run, was used as a proxy.
+
+The classifiers used were the following:
+
+* SVM with Stochastic Gradient Descent (SGD)
+* Gaussian Naive Bayes
+* Gaussian Naive Bayes Multi-output Classifier
+
+The approach taken can be generalized as such, based on the methodology above:
+
+1. Split data using Stratified Shuffle Split
+2. Perform PCA to reduce dimensionality
+3. Train model (Time recorded)
+4. Predict and score
+5. Repeat for 3 methods:
+  * Subject > Activity (S > A)
+  * Activity > Subject (A > S)
+  * Both
+
 ### Initial Comparison
-* SGD SVM
-  * StratifiedShuffleSplit
-* PCA GNB
-  * StratifiedShuffleSplit
-* GNB with scaling
-  * StratifiedShuffleSplit
+
+Due to the large sample size, SVM using SGD learning was our first model. Being an efficient model, runtime would be fast and we would get a quick feel of how the model performed. The results of running the model using the 3 methods are as follows:
+
+Method | Accuracy | Time Taken (seconds)
+--- | ---
+S > A | 0.51 | 15.97, 12.53
+A > S | 0.46 | 15.92, 12.93
+Both | 0.59 | 113.75
+
+Next, we used Gaussian Naive Bayes with scaling and PCA.
+
+Method | Accuracy | Time Taken (seconds)
+--- | ---
+S > A | 0.40 | 0.63, 0.63
+A > S | 0.50 | 0.63, 0.59
+Both | 0.64 | 0.95
+
+Lastly, we used Gaussian Naive Bayes with scaling, but without PCA.
+
+Method | Accuracy | Time Taken (seconds)
+--- | ---
+S > A | 0.54 | 1.36, 1.27
+A > S | 0.54 | 1.43, 1.48
+Both | 0.96 | 1.81
+
+It is observed that Gaussian Naive Bayes with scaling and without PCA outperformed the one with PCA and the SVM model with SGD in general. Further, the Gaussian Naive Bayes model with PCA also generally outperformed the SVM model with SGD.
+
+
+
 
 ### Final Comparison
-* GNB MultiOutputClassifier with scaling
-  * StratifiedShuffleSplit
-* GNB with scaling
-  * StratifiedKFold
+
+Gaussian Naive Bayes with Multi-output Classifier
+
+Method | Accuracy | Time Taken (seconds)
+--- | ---
+Both | 0.54 | 2.75
+
+
 
 ## Results Interpretation
+
+- reasons for superiority
+
 
 
 ## Conclusion
 
+- generalise to comparing 3 classification methods, in sequence (both directions) vs concatenation (one variable)
 
 ## Discussion
 
