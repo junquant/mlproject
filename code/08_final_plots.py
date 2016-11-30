@@ -29,7 +29,7 @@ activity.name = 'predicted_activity'
 df = pd.concat([df,subject,activity], axis=1)
 
 # Get a subset of the data
-strat_split = StratifiedShuffleSplit(n_splits=1, train_size=0.999, test_size=0.001, random_state=2016)
+strat_split = StratifiedShuffleSplit(n_splits=1, train_size=0.98, test_size=0.02, random_state=2016)
 
 # stratify based on activity
 for train_index, test_index in strat_split.split(df,df['predicted_subj_activity']):
@@ -50,10 +50,16 @@ from mpl_toolkits.mplot3d import Axes3D
 
 plt.style.use("ggplot")
 
+# plt.figure(figsize=(10, 10))
+# fig = plt.subplot(1, 1, 1, projection='3d')
+# fig.scatter(x[:, 0], x[:, 1], x[:, 2], c=x[:,- 5], cmap=plt.cm.Spectral)
+# fig.view_init(10, -72)
+# plt.show()
+
 fignum = 1
 fig = plt.figure(fignum,figsize=(10,10))
 ax = fig.add_subplot(1,1,1, projection='3d')
-plt.scatter(x[:,0], x[:,1], x[:,2], c=x[:,-5] ,marker='o')
+ax.scatter(x[:,0], x[:,1], x[:,2], c=x[:,-5] ,marker='o')
 plt.show()
 
 # ax = fig.add_subplot(4, 4, axpos)
@@ -62,5 +68,3 @@ plt.show()
 # ax.annotate(annotateStr, xy=(0.05, 0.05), xycoords='axes fraction', fontsize=9)
 # ax.scatter(x[:, 0], x[:, 1], c=label, cmap=plt.cm.Accent)
 # axpos += 1
-
-fignum = 2
