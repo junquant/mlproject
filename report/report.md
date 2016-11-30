@@ -71,8 +71,36 @@ The full data set exists in 9 separate .dat files, one for each subject, of 54 c
 
 ## Data Exploration
 
+### Univariate Exploration
+
+** Univariate Distributions**
+
+![Univariate Distributions](../plots/var_distribution.png)
+
+It can be observed that the `heartrate_bpm`, and temperature readings such as `hand_temp_c`, `chest_temp_c` and `ankle_temp_c`, and the magnetometer readings have a greater variance in their distributions as compared to the accelerometer and gyroscopic readings. As such, we would expect these variables to have a greater impact on the classification models.
+
+
+### PCA
+
+PCA was conducted on the dataset to reduce dimensionality and the 2 variables `subject` and `activity_id` were concatenated into one target variable `subj_activity` for easier visualisation.
+
+** First Principal Component (PC1) **
+
+(Insert table of top 3 pcs)
+
+![Top 2 Principal Components](../plots/pca_2components.png)
+![Top 3 Principal Components](../plots/pca_3components.png)
+![Scree Plot](../plots/screeplot.png)
+
+
+
 
 ## Model Comparison
+
+structure
+- rationale for model
+- model parameters
+- comparison of results
 
 ### Initial Comparison
 * SGD SVM
@@ -90,9 +118,11 @@ The full data set exists in 9 separate .dat files, one for each subject, of 54 c
 
 ## Results Interpretation
 
+- reasons for superiority
 
 ## Conclusion
 
+- generalise to comparing 3 classification methods, in sequence (both directions) vs concatenation (one variable)
 
 ## Discussion
 
