@@ -124,7 +124,7 @@ The classifiers used were the following:
 
 * SVM with Stochastic Gradient Descent (SGD)
 * Gaussian Naive Bayes
-* Gaussian Naive Bayes Multi-output Classifier
+* Multi-output Classifier using the best model from initial comparison
 
 The approach taken can be generalized as such, based on the methodology above:
 
@@ -139,7 +139,9 @@ The approach taken can be generalized as such, based on the methodology above:
 
 ### Initial Comparison
 
-Due to the large sample size, SVM using SGD learning was our first model. Being an efficient model, runtime would be fast and we would get a quick feel of how the model performed. The results of running the model using the 3 methods are as follows:
+Due to the large sample size, SVM using SGD learning was our first model. Being an efficient model, runtime would be fast and we would get a quick feel of how the model performed. Note that PCA was not carried out in this case. It has been proven that RBF kernel is not suitable in cases where the number of features is large - a linear kernel would be more suitable[1].
+
+The models were first ran at a fixed alpha of 0.1 to get a benchmark. The results of running the model using the 3 methods are as follows:
 
 Method | Accuracy | Time Taken (seconds)
 --- | ---
@@ -147,7 +149,11 @@ S > A | 0.51 | 15.97, 12.53
 A > S | 0.46 | 15.92, 12.93
 Both | 0.59 | 113.75
 
-Next, we used Gaussian Naive Bayes with scaling and PCA.
+We can see that predicting both targets together produced best results. We took this further and used Grid Search Cross Validation was used to find the level of smoothing that produced the best results under the 'Both' condition.
+
+The best model selected from the Grid Search produced an accuracy of **0.65** at `alpha = 0.01`, which took **50.1** seconds to train.
+
+The Gaussian Naive Bayes is generative model that is based on very simplistic calculations to calculate posterior probability. As such, it would be very efficient. Further, it is well-known that Gaussian Naive Bayes has been performant in real-world situations despite its unrealistic assumption of conditional independence. Therefore, we next used Gaussian Naive Bayes with scaling and PCA. The choice to scale prior to conducting PCA was because the variables were measured on different scales (e.g. Heartrate in beats per minute vs. Chest temperature in Celsius). Also, scaling before PCA has been shown to produce better results[2].
 
 Method | Accuracy | Time Taken (seconds)
 --- | ---
@@ -155,7 +161,11 @@ S > A | 0.40 | 0.63, 0.63
 A > S | 0.50 | 0.63, 0.59
 Both | 0.64 | 0.95
 
-Lastly, we used Gaussian Naive Bayes with scaling, but without PCA.
+The efficiency of the model is evident in the time taken to train and test the model. It is more than 10 times faster than the SVM model in the S > A and A > S conditions and over 100 times faster under the 'Both' condition. Interestingly, Gaussian Naive Bayes does not necessarily outperform the tuned SVM model with SGD. However when we account for the efficiency of the model, it puts Gaussian Naive Bayes slightly ahead as its accuracy is almost on par to that of the SVM model.
+
+However, it is also important to note that Gaussian Naive Bayes is considered relatively immune to the 'Curse of Dimensionality'. This is largely due to its simplicity. Given this, it would be interesting to observe the model's performance using the original data, without PCA.
+
+As such, we ran Gaussian Naive Bayes model with scaling, but without PCA.
 
 Method | Accuracy | Time Taken (seconds)
 --- | ---
@@ -163,33 +173,36 @@ S > A | 0.54 | 1.36, 1.27
 A > S | 0.54 | 1.43, 1.48
 Both | 0.96 | 1.81
 
-It is observed that Gaussian Naive Bayes with scaling and without PCA outperformed the one with PCA and the SVM model with SGD in general. Further, the Gaussian Naive Bayes model with PCA also generally outperformed the SVM model with SGD.
+The model under the 'Both' condition produced a whopping 0.96 accuracy with a slight drop in efficiency compared to its counterpart with PCA, presumably due to the increase in number of features used for training. The decrease in efficiency is not significant when compared to the increase in accuracy. This disproportionate trade-off in favour of accuracy has made this model an attractive one for our case.
 
-
+As such, we selected this model to be our final model to be compared with a multi-output classifier shipped with Scikit-learn.
 
 
 ### Final Comparison
 
-Gaussian Naive Bayes with Multi-output Classifier
+In this comparison, the main objective is to compare the performance of two algorithms that theoretically aim to do the same thing. The difference is in the details where the 'Both' condition predicts a concatenated target variable, essentially converting the problem into a binary classification problem, while the Multi-output Classifier still considers multiple target variables (in this case 2) and predicts them together.
 
-Method | Accuracy | Time Taken (seconds)
---- | ---
-Both | 0.54 | 2.75
+The Gaussian Naive Bayes model with Multi-output Classifier produced an accuracy of **0.54** which took a duration of **2.75** seconds. This is significantly less performant than the standard classifier.
 
+The difference in performance could simply be the difference between the strategy adopted by the Multi-output Classifier inherent in the code.
 
+### Misc
 
-## Results Interpretation
-
-- reasons for superiority
-
-
+An interesting point to note is that the 'Both' condition consistently performed better than the other two methods across all models. Upon close consideration, this can be said to be an expected result. When predicting one target variable after the other, the errors made in predictions stack up. For example, in the case of S > A, the errors made in first predicting `'subject'` would then be carried over to wrongly predict `'activity_id'` as `'subject'` becomes part of the variable used to predict A.
 
 ## Conclusion
 
-- generalise to comparing 3 classification methods, in sequence (both directions) vs concatenation (one variable)
+Generalising this beyond the context of this dataset, this study has shown a few key points in comparing methods of classifying multi-output problems.
 
-## Discussion
+* Gaussian Naive Bayes model without PCA tends to perform better, in terms of both accuracy and efficiency. This is especially so when sample size is large.
 
+* Concatenating the multiple outputs into one target variable with more unique levels performs better than trying to predict the target variables as standalone outputs.
+
+
+## References
+
+[1] Hsu, et al (2016), [*A Practical Guide to Support Vector Classification*](http://www.csie.ntu.edu.tw/~cjlin/papers/guide/guide.pdf)
+[2] Raschka S. (2014), [*About Feature Scaling and Normalization*](http://sebastianraschka.com/Articles/2014_about_feature_scaling.html)
 
 ---
 
