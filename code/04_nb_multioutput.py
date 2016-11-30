@@ -75,6 +75,12 @@ clf_multi = MultiOutputClassifier(clf)
 time_bgn = time.time()
 clf_multi.fit(readings_train, subj_activity_train)
 dur_train_both = time.time() - time_bgn
+predicted_subj_activity_train = clf_multi.predict(readings_train)
+predicted_subj_activity_train = pd.DataFrame({'subject': predicted_subj_activity_train[:,1],
+                                        'activity_id': predicted_subj_activity_train[:,0]})
+predicted_subj = predicted_subj_activity_train.ix[:,1]
+predicted_activity = predicted_subj_activity_train.ix[:,0]
+predicted_subj_activity_train = (100*predicted_subj) + predicted_activity
 
 # step 2.1 - get the readings data (from data stratified using subject)
 readings_test = df_test.ix[:,:-3]
@@ -85,17 +91,20 @@ subj_activity_test = pd.DataFrame({'subject': subj_test, 'activity_id': activity
 # step 2.2 - predict subject activity
 print('Predicting subject activity ... ')
 predicted_subj_activity = clf_multi.predict(readings_test)
-predicted_subj_activity = pd.DataFrame({'subject': predicted_subj_activity[:,1], 'activity_id': predicted_subj_activity[:,0]})
+predicted_subj_activity = pd.DataFrame({'subject': predicted_subj_activity[:,1],
+                                        'activity_id': predicted_subj_activity[:,0]})
 predicted_subj = predicted_subj_activity.ix[:,1]
 predicted_activity = predicted_subj_activity.ix[:,0]
-predicted_subj_activity = (100*predicted_subj) + predicted_activity
+predicted_subj_activity_test = (100*predicted_subj) + predicted_activity
 
 # step 3 - printing results
 actual_subj = df_test.ix[:,-3]
 actual_activity = df_test.ix[:,-2]
-actual_subj_activity = (100*actual_subj) + actual_activity
+subj_activity_test = (100*actual_subj) + actual_activity
+subj_activity_train = (100*subj_train) + activity_train
 
-ResultsWriter.write_to_file('results_thomas.txt',model='gnb_no_pca_multioutput',
-                            y_actual=actual_subj_activity,y_predicted=predicted_subj_activity,
+ResultsWriter.write_to_file('results_junquan.txt',model='gnb_multioutput',
+                            y_train_actual=subj_activity_train, y_train_predicted=predicted_subj_activity_train,
+                            y_test_actual=subj_activity_test,y_test_predicted=predicted_subj_activity_test,
                             dur_train_activity=0, dur_train_subj=0, dur_train_both=dur_train_both,
                             method='both') # method = both / as / sa

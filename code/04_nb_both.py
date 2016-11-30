@@ -67,17 +67,20 @@ time_bgn = time.time()
 clf_both.fit(readings_train, subj_activity_train)
 dur_train_both = time.time() - time_bgn
 
+predicted_subj_activity_train = clf_both.predict(readings_train)
+
 # step 2.1 - get the readings data (from data stratified using subject)
 readings_test = df_test.ix[:,:-3]
 
 # step 2.3 - predict subject activity
 print('Predicting subject activity ... ')
-predicted_subj_activity = clf_both.predict(readings_test)
+predicted_subj_activity_test = clf_both.predict(readings_test)
 
 # step 3 - printing results and writing to results to file
-actual_subj_activity = df_test.ix[:,-1]
+subj_activity_test = df_test.ix[:,-1]
 
-ResultsWriter.write_to_file('results_thomas.txt',model='gnb_no_pca',
-                            y_actual=actual_subj_activity,y_predicted=predicted_subj_activity,
+ResultsWriter.write_to_file('results_junquan.txt',model='gnb_no_pca',
+                            y_train_actual=subj_activity_train, y_train_predicted=predicted_subj_activity_train,
+                            y_test_actual=subj_activity_test,y_test_predicted=predicted_subj_activity_test,
                             dur_train_activity=0, dur_train_subj=0, dur_train_both=dur_train_both,
                             method='both') # method = both / as / sa

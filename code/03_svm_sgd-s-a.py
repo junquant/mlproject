@@ -86,6 +86,12 @@ time_bgn = time.time()
 clf_activity.fit(readings_subj_train, activity_train)
 dur_train_activity = time.time() - time_bgn
 
+subj_train_for_result = subj_train
+activity_train_for_result = activity_train
+predicted_subj_train = clf_subject.predict(readings_train)
+predicted_activity_train = clf_activity.predict(readings_subj_train)
+
+
 # step 3.1 - predict subject and join it to the readings data
 print('Predicting subject ... ')
 readings_test = df_test_s.ix[:,:-2]
@@ -99,11 +105,14 @@ predicted_activity = clf_activity.predict(readings_subject_test)
 # step 4 - printing results
 actual_activity_test = df_test_s.ix[:,-1]
 actual_subject_test = df_test_s.ix[:,-2]
-actual_subj_activity = np.array((100*actual_subject_test) + actual_activity_test)
-predicted_subj_activity = (100*predicted_subject) + predicted_activity
+subj_activity_test = np.array((100*actual_subject_test) + actual_activity_test)
+predicted_subj_activity_test = (100*predicted_subject) + predicted_activity
+
+subj_activity_train = (100*subj_train_for_result) + activity_train_for_result
+predicted_subj_activity_train = (100*predicted_subj_train) + predicted_activity_train
 
 ResultsWriter.write_to_file('results_junquan.txt',model='svm_sgd',
-                            y_actual=actual_subj_activity,y_predicted=predicted_subj_activity,
-                            dur_train_activity=dur_train_activity, dur_train_subj=dur_train_subj,
-                            dur_train_both=0,
+                            y_train_actual=subj_activity_train, y_train_predicted=predicted_subj_activity_train,
+                            y_test_actual=subj_activity_test,y_test_predicted=predicted_subj_activity_test,
+                            dur_train_activity=dur_train_activity, dur_train_subj=dur_train_subj, dur_train_both=0,
                             method='sa') # method = both / as / sa

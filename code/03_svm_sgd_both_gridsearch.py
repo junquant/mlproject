@@ -55,32 +55,33 @@ print(verify)
 # ---------------------
 # Subject and Activity
 # ---------------------
-all_results = [] # to store all method results
-method_results = {} # to store individual method results
-
 # step 1.1 - get the readings data (from data stratified using activity)
 readings_train = df_train.ix[:,:-3]
 subj_activity_train = df_train.ix[:,-1]
 
-# step 1.2 - fit the model to predict subject
-print('Fitting model to predict subject and activity...')
-parameters = [
-    {'loss':['hinge'],'alpha':[0.0001,0.001,0.01,0.1,1]}]
+for i in range(100):
 
-clf_both = GridSearchCV(SGDClassifier(random_state=2016), parameters, cv=2)
-time_bgn = time.time()
-clf_both.fit(readings_train, subj_activity_train)
-dur_train_both = time.time() - time_bgn
+    # step 1.2 - fit the model to predict subject
+    print('Fitting model to predict subject and activity...')
+    parameters = [
+        {'loss':['hinge'],'alpha':[0.0001,0.001,0.01,0.1,1]}]
 
-# step 2.1 - get the readings data (from data stratified using subject)
-print('Predicting subject activity ... ')
-readings_test = df_test.ix[:,:-3]
-predicted_subj_activity = clf_both.predict(readings_test)
+    clf_both = GridSearchCV(SGDClassifier(random_state=2016), parameters, cv=2)
+    time_bgn = time.time()
+    clf_both.fit(readings_train, subj_activity_train)
+    dur_train_both = time.time() - time_bgn
+    predicted_subj_activity_train = clf_both.predict(readings_train)
 
-# step 3 - printing results
-actual_subj_activity = df_test.ix[:,-1]
+    # step 2.1 - get the readings data (from data stratified using subject)
+    print('Predicting subject activity ... ')
+    readings_test = df_test.ix[:,:-3]
+    predicted_subj_activity_test = clf_both.predict(readings_test)
 
-ResultsWriter.write_to_file('results_junquan.txt',model='svm_sgd_gridsearch',
-                            y_actual=actual_subj_activity,y_predicted=predicted_subj_activity,
-                            dur_train_activity=0, dur_train_subj=0, dur_train_both=dur_train_both,
-                            method='both') # method = both / as / sa
+    # step 3 - printing results
+    subj_activity_test = df_test.ix[:,-1]
+
+    ResultsWriter.write_to_file('results_junquan.txt', model='svm_gridsearch_run_' + str(i + 1),
+                                y_train_actual=subj_activity_train, y_train_predicted=predicted_subj_activity_train,
+                                y_test_actual=subj_activity_test, y_test_predicted=predicted_subj_activity_test,
+                                dur_train_activity=0, dur_train_subj=0, dur_train_both=dur_train_both,
+                                method='both')  # method = both / as / sa

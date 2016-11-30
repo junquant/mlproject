@@ -20,33 +20,46 @@ class Timer:
 class ResultsWriter:
 
     _methods_dict = {'sa':'subject then activity',
-               'as':'activity then subject',
-               'both':'both at the same time'}
+                     'as':'activity then subject',
+                     'both':'both at the same time'}
 
-    def write_to_file(results_file, model, y_actual, y_predicted,
+    def write_to_file(results_file, model, y_train_actual, y_train_predicted, y_test_actual, y_test_predicted,
                       dur_train_activity, dur_train_subj, dur_train_both, method):
-        precision = precision_score(y_actual, y_predicted, average='weighted')
-        recall = recall_score(y_actual, y_predicted, average='weighted')
-        accuracy = accuracy_score(y_actual, y_predicted)
+
+        precision_train = precision_score(y_train_actual, y_train_predicted, average='weighted')
+        recall_train = recall_score(y_train_actual, y_train_predicted, average='weighted')
+        accuracy_train = accuracy_score(y_train_actual, y_train_predicted)
+
+        precision_test = precision_score(y_test_actual, y_test_predicted, average='weighted')
+        recall_test = recall_score(y_test_actual, y_test_predicted, average='weighted')
+        accuracy_test = accuracy_score(y_test_actual, y_test_predicted)
 
         method = ResultsWriter._methods_dict[method]
 
         dur_train_activity = '{0:.2f}'.format(dur_train_activity)
         dur_train_subj = '{0:.2f}'.format(dur_train_subj)
         dur_train_both = '{0:.2f}'.format(dur_train_both)
-        precision = '{0:.2f}'.format(precision)
-        recall = '{0:.2f}'.format(recall)
-        accuracy = '{0:.2f}'.format(accuracy)
+
+        precision_train = '{0:.2f}'.format(precision_train)
+        recall_train = '{0:.2f}'.format(recall_train)
+        accuracy_train = '{0:.2f}'.format(accuracy_train)
+
+        precision_test = '{0:.2f}'.format(precision_test)
+        recall_test = '{0:.2f}'.format(recall_test)
+        accuracy_test = '{0:.2f}'.format(accuracy_test)
 
         record = [Timer.getFormattedTime(), model, dur_train_activity, dur_train_subj, dur_train_both,
-                  precision, recall, accuracy, method]
+                  precision_train, recall_train, accuracy_train,
+                  precision_test, recall_test, accuracy_test, method]
 
         if not os.path.isfile('../result/'+results_file):
             output_file = open('../result/' + results_file, 'a')
             data_writer = csv.writer(output_file, delimiter=",", quoting=csv.QUOTE_NONE)
 
             header = ['record_time','model','dur_train_activity','dur_train_subj','dur_train_both',
-                      'precision','recall','accuracy','method']
+                      'precision_train','recall_train','accuracy_train',
+                      'precision_test','recall_test','accuracy_test','method']
+
             data_writer.writerow(header)
             data_writer.writerow(record)
 
@@ -57,8 +70,13 @@ class ResultsWriter:
 
         output_file.close()
 
-        print(classification_report(y_actual, y_predicted))
-        print('accuracy score: ', accuracy)
+        print('Training scores -----------------------------------')
+        print(classification_report(y_train_actual, y_train_predicted))
+        print('accuracy score: ', accuracy_train)
+        print('Test scores ---------------------------------------')
+        print(classification_report(y_test_actual, y_test_predicted))
+        print('accuracy score: ', accuracy_test)
+        print('Durations -----------------------------------------')
         print('duration train activity: ', dur_train_activity,'seconds')
         print('duration train subject: ', dur_train_subj,'seconds')
         print('duration train both: ', dur_train_both ,'seconds')

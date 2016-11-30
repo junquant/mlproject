@@ -101,6 +101,11 @@ time_bgn = time.time()
 clf_subject.fit(readings_act_train, subj_train)
 dur_train_subj = time.time() - time_bgn
 
+subj_train_for_result = subj_train
+activity_train_for_result = activity_train
+predicted_activity_train = clf_activity.predict(readings_train)
+predicted_subj_train = clf_subject.predict(readings_act_train)
+
 # step 3.1 - get the readings data (from data stratified using subject) and do PCA
 readings_test = df_test_s.ix[:,:-2]
 readings_test = minmax_scaler.fit_transform(readings_test)
@@ -119,11 +124,14 @@ print(predicted_subject)
 # step 4 - printing results
 actual_activity_test = df_test_s.ix[:,-1]
 actual_subject_test = df_test_s.ix[:,-2]
-actual_subj_activity = np.array((100*actual_subject_test) + actual_activity_test)
-predicted_subj_activity = (100*predicted_subject) + predicted_activity
+subj_activity_test = np.array((100*actual_subject_test) + actual_activity_test)
+predicted_subj_activity_test = (100*predicted_subject) + predicted_activity
 
-ResultsWriter.write_to_file('results_junquan.txt',model='pca_gnb',
-                            y_actual=actual_subj_activity,y_predicted=predicted_subj_activity,
-                            dur_train_activity=dur_train_activity, dur_train_subj=dur_train_subj,
-                            dur_train_both=0,
+subj_activity_train = (100*subj_train_for_result) + activity_train_for_result
+predicted_subj_activity_train = (100*predicted_subj_train) + predicted_activity_train
+
+ResultsWriter.write_to_file('results_junquan.txt',model='gnb_pca',
+                            y_train_actual=subj_activity_train, y_train_predicted=predicted_subj_activity_train,
+                            y_test_actual=subj_activity_test,y_test_predicted=predicted_subj_activity_test,
+                            dur_train_activity=dur_train_activity, dur_train_subj=dur_train_subj, dur_train_both=0,
                             method='as') # method = both / as / sa
