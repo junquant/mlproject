@@ -89,3 +89,10 @@ record_time,model,dur_train_activity,dur_train_subj,dur_train_both,precision_tra
 2016-12-01 14:54,svm_sgd_run_87,0.00,0.00,262.04,0.69,0.61,0.61,0.69,0.61,0.61,both at the same time
 2016-12-01 14:58,svm_sgd_run_88,0.00,0.00,259.62,0.70,0.61,0.61,0.70,0.61,0.61,both at the same time
 2016-12-01 15:03,svm_sgd_run_89,0.00,0.00,255.98,0.74,0.66,0.66,0.74,0.66,0.66,both at the same time
+2016-12-01 15:07,svm_sgd_run_90,0.00,0.00,254.54,0.71,0.65,0.65,0.71,0.65,0.65,both at the same time
+2016-12-01 15:12,svm_sgd_run_91,0.00,0.00,248.83,0.73,0.63,0.63,0.73,0.63,0.63,both at the same time
+2016-12-01 15:16,svm_sgd_run_92,0.00,0.00,260.23,0.72,0.62,0.62,0.71,0.62,0.62,both at the same time
+2016-12-01 15:21,svm_sgd_run_93,0.00,0.00,260.19,0.72,0.64,0.64,0.72,0.64,0.64,both at the same time
+2016-12-01 15:25,svm_sgd_run_94,0.00,0.00,237.76,0.70,0.65,0.65,0.70,0.65,0.65,both at the same time
+2016-12-01 15:29,svm_sgd_run_95,0.00,0.00,222.76,0.72,0.60,0.60,0.72,0.60,0.60,both at the same time
+2016-12-01 15:34,svm_sgd_run_96,0.00,0.00,269.10,0.71,0.62,0.62,0.71,0.62,0.62,both at the same time
