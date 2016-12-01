@@ -27,10 +27,10 @@ data = np.loadtxt(filePath, delimiter = ',', skiprows = 1, dtype=dataType)
 df = pd.DataFrame(data)
 
 # Separating the subject and activity
-subject = df.ix[:,-1]%100
-subject.name = 'predicted_subj'
-activity = (df.ix[:,-1] - subject) / 100
+activity = df.ix[:,-1]%100
 activity.name = 'predicted_activity'
+subject = (df.ix[:,-1] - activity) / 100
+subject.name = 'predicted_subj'
 
 df = pd.concat([df,subject,activity], axis=1)
 
