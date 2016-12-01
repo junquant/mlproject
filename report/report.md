@@ -173,7 +173,7 @@ The best model selected from the Grid Search produced an accuracy of **0.65** at
 The Gaussian Naive Bayes is generative model that is based on very simplistic calculations to calculate posterior probability. As such, it would be very efficient. Further, it is well-known that Gaussian Naive Bayes has been performant in real-world situations despite its unrealistic assumption of conditional independence. Therefore, we next used Gaussian Naive Bayes with scaling and PCA. The choice to scale prior to conducting PCA was because the variables were measured on different scales (e.g. Heartrate in beats per minute vs. Chest temperature in Celsius). Also, scaling before PCA has been shown to produce better results[2].
 
 Method | Accuracy | Time Taken (seconds)
---- | ---
+--- | --- | ---
 S > A | 0.40 | 0.63 + 0.63
 A > S | 0.50 | 0.63 + 0.59
 Both | 0.64 | 0.95
@@ -183,7 +183,7 @@ The efficiency of the model is evident in the time taken to train and test the m
 However, it is also important to note that Gaussian Naive Bayes is considered relatively immune to the 'Curse of Dimensionality'. This is largely due to its simplicity. Given this, it would be interesting to observe the model's performance using the original data, without PCA. As such, we ran Gaussian Naive Bayes model again, but without PCA.
 
 Method | Accuracy | Time Taken (seconds)
---- | ---
+--- | --- | ---
 S > A | 0.54 | 1.36, 1.27
 A > S | 0.54 | 1.43, 1.48
 Both | 0.96 | 1.81
@@ -197,7 +197,7 @@ As such, we selected this model to be our final model to be compared with a mult
 In this comparison, the main objective is to compare the performance of two algorithms that theoretically aim to do the same thing. The difference is in the details where the 'Both' condition predicts a concatenated target variable, essentially converting the problem into a binary classification problem, while the Multi-output Classifier still considers multiple target variables (in this case 2) and predicts them together. The multi-output classifier classifies by fitting 1 classifier per target. In our case, 1 classifier will be fitted to predict Activity and 1 classifier will be fitted to predict Subject. The result of multi-output is shown below. 
 
 Method | Accuracy | Time Taken (seconds)
---- | ---
+--- | --- | ---
 Multi-Output | 0.96 | 1.81
 
 The Gaussian Naive Bayes model with Multi-output Classifier produced an accuracy of **0.54** which took a duration of **2.75** seconds. This is significantly less performant than the standard classifier.
