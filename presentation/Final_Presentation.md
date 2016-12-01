@@ -21,6 +21,7 @@
 
 - Activities:
     
+	Method | Accuracy | Time Taken (seconds) | Activity
 	--- | --- | --- | ---
     Lying | Sitting | Standing | Ironing
  	Vacuuming | Walking upstairs | Walking downstairs | Normal walk
