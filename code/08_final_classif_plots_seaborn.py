@@ -60,6 +60,7 @@ ax = sns.heatmap(ct_data, annot=True,
                  fmt='.3f', annot_kws={"size": 8})
 
 ax.tick_params(axis='both', which='major', labelsize=8)
+ax.set(xlabel='Actual', ylabel='Predicted')
 
 plt.savefig('../plots/class_act_vs_pred_subj_seaborn.png', format='png', bbox_inches='tight', pad_inches=0.1,dpi=150)
 
@@ -81,7 +82,7 @@ ax = sns.heatmap(ct_data, annot=True,
                  fmt='.3f', annot_kws={"size": 8})
 
 ax.tick_params(axis='both', which='major', labelsize=8)
-
+ax.set(xlabel='Actual', ylabel='Predicted')
 plt.savefig('../plots/class_act_vs_pred_acti_seaborn.png', format='png', bbox_inches='tight', pad_inches=0.1,dpi=150)
 
 # --------------------------------------------------------
@@ -102,6 +103,7 @@ ax = sns.heatmap(ct_data, annot=False, linewidth=1,
                  fmt='.3f', annot_kws={"size": 8})
 
 ax.tick_params(axis='both', which='major', labelsize=8)
+ax.set(xlabel='Actual', ylabel='Predicted')
 plt.xticks(rotation=90)
 plt.yticks(rotation=0)
 
