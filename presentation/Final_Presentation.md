@@ -76,7 +76,22 @@ Strong correlations between several variables:
 
 ##SVN with SGD
 
+- linear kernel
+- 100 times training
 
+Method | Accuracy (mean) | Accuracy (max) | Accuracy (min) | Average Time Taken (seconds)
+--- | --- | --- | --- | ---
+S -> A | 0.48 | 0.44 | 0.52 | (S+A) 11.11 + 14.54 = 25.65
+A -> S | 0.48 | 0.43 | 0.53 | (A+S) 15.19, 11.28 = 26.47
+Both | 0.63 | 0.58 | 0.67 | 113.79
+
+- Grid Search 
+- Cross Validation
+- 60 times training
+
+Method | Accuracy (mean) | Accuracy (max) | Accuracy (min) | Average Time Taken (seconds)
+--- | --- | --- | --- | ---
+Both | 0.63 | 0.49 | 0.68 | 621.75
 
 ##Gaussian Naive Bayes
 
