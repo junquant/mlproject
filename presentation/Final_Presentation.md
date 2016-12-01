@@ -32,7 +32,22 @@
 
 # Data Preparation
 
-
-# Data Preparation
+**Missing Values** - Back fill or Forward fill the empty value
+**Invalid Data** - Acceleration of ±6g is saturated
+**Derived Subject-Activity** - Concatenate subject and activity 
 
 # Data Exploration
+
+**Univariate Distributions**
+
+![Univariate Distributions](../plots/var_distribution.png)
+
+**Pair-wise Correlation Plot**
+
+![Pair-wise Correlations](../plots/correlation.png)
+
+**Principal Component Analysis**
+
+![Top 2 Principal Components](../plots/pca_2components.png)
+
+![Top 3 Principal Components](../plots/pca_3components.png)
