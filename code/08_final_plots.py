@@ -77,7 +77,7 @@ plt.title('Top 2 Principal Components')
 plt.scatter(dftr[accurate][:,0], dftr[accurate][:,1],
             c=dftr[accurate][:,3], alpha=0.5, cmap=plt.cm.prism, marker='o')
 plt.scatter(dftr[~accurate][:,0], dftr[~accurate][:,1],
-            c=dftr[~accurate][:,3], alpha=1, cmap=plt.cm.prism, marker='v')
+            c=dftr[~accurate][:,3], alpha=1, cmap=plt.cm.prism, marker='v', s= 50)
 
 plt.savefig('../plots/pca_2components_classified.png', format='png', bbox_inches='tight', pad_inches=0.1,dpi=150)
 

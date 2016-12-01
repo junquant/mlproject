@@ -225,7 +225,7 @@ visualized with the classes predicted.
 * Circles denote correctly predicted classes
 * Inverted triangles denote incorrectly predicted classes
 
-![Scree Plot](../plots/screeplot.png)
+
 
 ## Conclusion
 
