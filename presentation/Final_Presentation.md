@@ -19,11 +19,10 @@
 - 1 heart rate monitor:
    - sampling frequency: ~9Hz
 
-- Activities:
-    --- | --- | --- | ---
+- Activities:,
     Lying | Sitting | Standing | Ironing
  	Vacuuming | Walking upstairs | Walking downstairs | Normal walk
-	Nordic walk | Cycling, Running
+	Nordic walk | Cycling | Running |
 
 # Model Construction Methods
 
