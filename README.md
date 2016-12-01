@@ -1,6 +1,6 @@
 # Applied Machine Learning Repo
 
-*Lets rock. I hope*
+*We rocked*
 
 **code** - This is the directory for all data processing and learning codes.
 
@@ -13,6 +13,8 @@
 
 **data_codebook** - UCI data codebooks
 
+**plots** - All plots output
+
 **presentation** - Use this directory to put our presentations
 
 **references** - cheatsheets and references
@@ -20,12 +22,3 @@
 **report** - proposal and report in md format
 
 **results** - output of the individual models should come in here in this format using a dictionary
-* model: gaussian naive bayes
-* accuracy: 0.98
-* precision: 0.95
-* recall: 0.88
-* dur_train_activity: 0.5
-* dur_train_subj: 0.4
-* dur_train_both: 0.9
-* method:activity then subject / subject then activity / both
-
