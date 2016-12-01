@@ -32,9 +32,11 @@
 
 # Data Preparation
 
-**Missing Values** - Back fill or Forward fill the empty value
-**Invalid Data** - Acceleration of ±6g is saturated
-**Derived Subject-Activity** - Concatenate subject and activity 
+* **Missing Values** - Back fill or Forward fill the empty value
+
+* **Invalid Data** - Acceleration of ±6g is saturated
+
+* **Derived Subject-Activity** - Concatenate subject and activity 
 
 # Data Exploration
 
@@ -42,12 +44,24 @@
 
 ![Univariate Distributions](../plots/var_distribution.png)
 
+`heartrate_bpm`, `hand_temp_c`, `chest_temp_c` and `ankle_temp_c`, and `*_magnetometer_*` have greater variance
+
 **Pair-wise Correlation Plot**
 
 ![Pair-wise Correlations](../plots/correlation.png)
+
+strong correlations between several variables:
+
+* `chest_temp_c` and `hand_temp_c`
+* `chest_3d_magnetometer` and `chest_3d_accel`
+* `ankle_3d_magnetometer` and `chest_3d_magnetometer`
 
 **Principal Component Analysis**
 
 ![Top 2 Principal Components](../plots/pca_2components.png)
 
 ![Top 3 Principal Components](../plots/pca_3components.png)
+
+* PC1 has the strongest correlations with `chest_temp_c` , `hand_temp_c` , and `ankle_temp_c`
+* PC2 has the strongest correlations with `heartrate_bpm`
+* PC2 has the strongest correlations with `ankle_temp_c`
