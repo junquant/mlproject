@@ -116,3 +116,18 @@ Both | 0.96 | 1.81
 Method | Accuracy | Time Taken (seconds)
 --- | --- | ---
 Multi-Output | 0.96 | 1.81
+
+#Visualizing the Classifications
+
+**Gaussian Naive Bayes**
+* Colors denote the various subject - activities
+* Circles denote correctly predicted classes
+* Inverted triangles denote incorrectly predicted classes
+
+![PCA Table](../plots/pca_3components_classified.png)
+
+![subject plot](../plots/class_act_vs_pred_subj_seaborn.png)
+
+![activity plot](../plots/class_act_vs_pred_acti_seaborn.png)
+
+![both plot](../plots/class_act_vs_pred_subj_acti_seaborn.png)
