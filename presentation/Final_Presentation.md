@@ -40,23 +40,23 @@
 
 # Data Exploration
 
-**Univariate Distributions**
+##Univariate Distributions
 
 ![Univariate Distributions](../plots/var_distribution.png)
 
 `heartrate_bpm`, `hand_temp_c`, `chest_temp_c` and `ankle_temp_c`, and `*_magnetometer_*` have greater variance
 
-**Pair-wise Correlation Plot**
+##Pair-wise Correlation Plot
 
 ![Pair-wise Correlations](../plots/correlation.png)
 
-strong correlations between several variables:
+Strong correlations between several variables:
 
 * `chest_temp_c` and `hand_temp_c`
 * `chest_3d_magnetometer` and `chest_3d_accel`
 * `ankle_3d_magnetometer` and `chest_3d_magnetometer`
 
-**Principal Component Analysis**
+##Principal Component Analysis
 
 ![Top 2 Principal Components](../plots/pca_2components.png)
 
@@ -65,3 +65,39 @@ strong correlations between several variables:
 * PC1 has the strongest correlations with `chest_temp_c` , `hand_temp_c` , and `ankle_temp_c`
 * PC2 has the strongest correlations with `heartrate_bpm`
 * PC2 has the strongest correlations with `ankle_temp_c`
+
+# Model Comparison
+
+**Accuracy** and **Computational Complexity**: The classifiers used were the following:
+
+* SVM with Stochastic Gradient Descent (SGD)
+* Gaussian Naive Bayes
+* Multi-output Classifier using the best model from initial comparison
+
+##SVN with SGD
+
+
+
+##Gaussian Naive Bayes
+
+- with PCA
+
+Method | Accuracy | Time Taken (seconds)
+--- | --- | ---
+S > A | 0.40 | 0.63 + 0.63
+A > S | 0.50 | 0.63 + 0.59
+Both | 0.64 | 0.95
+
+- without PCA
+
+Method | Accuracy | Time Taken (seconds)
+--- | --- | ---
+S > A | 0.54 | 1.36, 1.27
+A > S | 0.54 | 1.43, 1.48
+Both | 0.96 | 1.81
+
+##Multi-output Classifier using the best model from initial comparison
+
+Method | Accuracy | Time Taken (seconds)
+--- | --- | ---
+Multi-Output | 0.96 | 1.81
