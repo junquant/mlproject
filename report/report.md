@@ -117,7 +117,7 @@ We can see from the Scree Plot that most of the variance can be explained by the
 
 The top 3 principal components along with their correlation with the original variables are shown in the table below.
 
-![PCA Table](../exploration/pca_table.png)
+![PCA Table](../plots/pca_table.png)
 
 **First Principal Component (PC1)**
 
@@ -169,33 +169,41 @@ The approach taken can be generalized as such, based on the methodology above:
   * Activity -> Subject (A -> S)
   * Both
 
+All results are output in `result` folder in the file `result_final.txt`. Models were ran on 2 machines. 
+1. Machine A - 4GHz Intel Core i7, 16GB RAM
+2. Machine B - 2.53 GHz Intel Core 2 Duo, 8GB RAM
+
+All durations were taken from Machine A, unless otherwise stated. 
+
 #### Support Vector Machines
 
 Due to the large sample size, SVM using SGD learning was our first model. Being an efficient model, runtime would be fast and we would get a quick feel of how the model performed. Note that PCA was not carried out in this case. It has been proven that RBF kernel is not suitable in cases where the number of features is large - a linear kernel would be more suitable[1].
 
 SVM without using SGD with a linear kernel was also ran to have a gauge of the time needed to train the model.
 
-Fitting the model took upwards of 5 hours on a machine with xxxxx core and did not complete successfully.   
+Fitting the model took upwards of 5 hours on Machine A and did not complete successfully.   
 
 SVM using SGD algorithm were first ran at a fixed alpha of 0.1 to get a benchmark. The models were trained for a 100 times each due to the fact that SGD may encounter a local minima. The mean, maximum and minimum accuracy scores are shown for each of the methods are shown below.
 
 Method | Accuracy (mean) | Accuracy (max) | Accuracy (min) | Average Time Taken (seconds)
 --- | --- | --- | --- | ---
-S -> A | 0.xx | 0.00 | 0.00 | 15.97 + 12.53 =
-A -> S | 0.xx | 0.00 | 0.00 | 15.92, 12.93 =
-Both | 0.xx | 0.00 | 0.00 | 113.75
+S -> A | 0.48 | 0.44 | 0.52 | (S+A) 11.11 + 14.54 = 25.65
+A -> S | 0.48 | 0.43 | 0.53 | (A+S) 15.19, 11.28 = 26.47
+Both | 0.63 | 0.58 | 0.67 | 113.79
+
+Training the model to predict both at the same time was significantly slower than training to predict subject then activity or vice versa. 
 
 We can see that predicting both targets together produced best results. We took this further and used Grid Search Cross Validation was used to find the level of smoothing that produced the best results under the 'Both' condition.
 
-Similarly, the model was trained for a 100 times. Furthermore, a 2-fold cross validation was done during training. The mean, maximum and minimum accuracy scores are shown for each of the methods are shown below.
+The model was trained for 60 times as we now have a sense of the accuracy of the model from above. Furthermore, a 2-fold cross validation was done during training. The mean, maximum and minimum accuracy scores are shown for each of the methods are shown below.
 
 Method | Accuracy (mean) | Accuracy (max) | Accuracy (min) | Average Time Taken (seconds)
 --- | --- | --- | --- | ---
-S -> A | 0.xx | 0.00 | 0.00 | 15.97 + 12.53 =
-A -> S | 0.xx | 0.00 | 0.00 | 15.92, 12.93 =
-Both | 0.xx | 0.00 | 0.00 | 113.75
+Both | 0.63 | 0.49 | 0.68 | 621.75
 
-The best model selected from the Grid Search produced an accuracy of **0.65** at `alpha = 0.01`, which took **50.1** seconds to train.
+The best model selected from the Grid Search produced an accuracy of **0.68** at `alpha = 0.1`, which took **621.75** seconds to train. Training time include training with the various parameters provided to Grid Search. The parameters are `{'loss':['hinge'],'alpha':[0.0001,0.001,0.01,0.1,1]}`
+
+The long time taken to train the model was primarily due to cross-validation and training with the different alphas.  
 
 #### Gaussian Naive Bayes
 

@@ -63,8 +63,7 @@ for i in range(100):
 
     # step 1.2 - fit the model to predict subject
     print('Fitting model to predict subject and activity...')
-    parameters = [
-        {'loss':['hinge'],'alpha':[0.0001,0.001,0.01,0.1,1]}]
+    parameters = [{'loss':['hinge'],'alpha':[0.0001,0.001,0.01,0.1,1]}]
 
     clf_both = GridSearchCV(SGDClassifier(random_state=i), parameters, cv=2)
     time_bgn = time.time()
