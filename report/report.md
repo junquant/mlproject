@@ -191,7 +191,7 @@ S -> A | 0.48 | 0.44 | 0.52 | (S+A) 11.11 + 14.54 = 25.65
 A -> S | 0.48 | 0.43 | 0.53 | (A+S) 15.19, 11.28 = 26.47
 Both | 0.63 | 0.58 | 0.67 | 113.79
 
-Training the model to predict both at the same time was significantly slower than training to predict subject then activity or vice versa. 
+Training the model to predict both at the same time was significantly slower than training to predict subject then activity or vice versa. This is due to the additional number of classes (different subject-activity combinition). 
 
 We can see that predicting both targets together produced best results. We took this further and used Grid Search Cross Validation was used to find the level of smoothing that produced the best results under the 'Both' condition.
 
@@ -211,21 +211,19 @@ The Gaussian Naive Bayes is generative model that is based on very simplistic ca
 
 Method | Accuracy | Time Taken (seconds)
 --- | --- | ---
-S > A | 0.40 | 0.63 + 0.63
-A > S | 0.50 | 0.63 + 0.59
-Both | 0.64 | 0.95
+S -> A | 0.4 | 0.5 + 0.52
+A -> S | 0.5 | 0.52 + 0.48
+Both | 0.64 | 0.74
 
-The efficiency of the model is evident in the time taken to train and test the model. It is more than 10 times faster than the SVM model in the S > A and A > S conditions and over 100 times faster under the 'Both' condition. Interestingly, Gaussian Naive Bayes does not necessarily outperform the tuned SVM model with SGD. However when we account for the efficiency of the model, it puts Gaussian Naive Bayes slightly ahead as its accuracy is almost on par to that of the SVM model.
+The efficiency of the model is evident in the time taken to train and test the model. It is more than 10 times faster than the SVM model in the S -> A and A -> S conditions and over 100 times faster under the 'Both' condition. Interestingly, Gaussian Naive Bayes does not necessarily outperform the tuned SVM model with SGD. However when we account for the efficiency of the model, it puts Gaussian Naive Bayes slightly ahead as its accuracy is almost on par to that of the SVM model.
 
-However, it is also important to note that Gaussian Naive Bayes is considered relatively immune to the 'Curse of Dimensionality'. This is largely due to its simplicity. Given this, it would be interesting to observe the model's performance using the original data, without PCA. As such, we ran Gaussian Naive Bayes model again, but without PCA.
+However, it is also important to note that Gaussian Naive Bayes is considered relatively immune to the 'Curse of Dimensionality'. This is largely due to its simplicity. Given this, it would be interesting to observe the model's performance using all dimensions in the original data, without PCA. As such, we ran Gaussian Naive Bayes model again, but without PCA. Both subject and activity were predicted at the same time as it is the best method.
 
 Method | Accuracy | Time Taken (seconds)
 --- | --- | ---
-S > A | 0.54 | 1.36, 1.27
-A > S | 0.54 | 1.43, 1.48
-Both | 0.96 | 1.81
+Both | 0.96 | 1.48
 
-The model under the 'Both' condition produced an accuracy of 0.96 with a slight drop in efficiency compared to its counterpart with PCA, presumably due to the increase in number of features used for training. The decrease in efficiency is not significant when compared to the increase in accuracy. This disproportionate trade-off in favour of accuracy has made this model an attractive one for our case.
+The model under the 'Both' condition produced an accuracy of 0.96 with a slight drop in efficiency compared to its counterpart with PCA, presumably due to the increase in number of features used for training. The decrease in efficiency is not significant when compared to the increase in accuracy. This disproportionate trade-off in favour of accuracy has made this model an attractive one for our case. Accuracy for training is the same at 0.96 and does not does the presence of overfitting. 
 
 As such, we selected this model to be our final model to be compared with a multi-output classifier shipped with `sklearn`.
 
@@ -235,9 +233,9 @@ In this comparison, the main objective is to compare the performance of two algo
 
 Method | Accuracy | Time Taken (seconds)
 --- | --- | ---
-Multi-Output | 0.96 | 1.81
+Multi-Output | 0.54 | 2.28
 
-The Gaussian Naive Bayes model with Multi-output Classifier produced an accuracy of **0.54** which took a duration of **2.75** seconds. This is significantly less performant than the standard classifier.
+The Gaussian Naive Bayes model with Multi-output Classifier produced an accuracy of **0.54** which took a duration of **2.28** seconds. This is significantly less performant than the standard classifier in terms of accuracy and duration. 
 
 The difference in performance could simply be the difference between the strategy adopted by the Multi-Output
 Classifier.
@@ -248,7 +246,7 @@ The k-fold cross validation was also performed to evaluate the Gaussian Naive Ba
 
  10-fold cross validation was used and the average accuracy of the Gaussian Naive Bayes model predicting both Subject and Activity at the same time is:
 
- This is similar to the results earlier.
+The average accuracy of the Gaussian Naive Bayes model predicting both subject and activity at the same time as an average accuracy of **0.9363**. The accuracy does not indicate the presence of overfitting.
 
 #### Visualizing the Classifications
 
@@ -258,16 +256,34 @@ To understand how the Gaussian Naive Bayes classify the data set, the principal 
 * Circles denote correctly predicted classes
 * Inverted triangles denote incorrectly predicted classes
 
+![PCA Table](../plots/pca_3components_classified.png)
 
+It seems that the classifier was quite good at predicting the points that are close together (shown in the PCA plot). Similar observations were made in the Hand Chest Ankle Temperature plot. 
+
+![hca plot](../plots/hca_temp_classified.png)
+
+Next we look at how well the classifier perform in classifying the subjects, activities and both subject-activity. 
+
+![subject plot](../plots/class_act_vs_pred_subj_seaborn.png)
+
+![activity plot](../plots/class_act_vs_pred_acti_seaborn.png)
+
+It seems that the classifier has problems classifying activities 12 and 13 which corresponds to Ascending Stairs and Descending Stairs. We can imagine these 2 activities to be quite similar which explains the error in classification. Lastly, we plot the subject-activity classification. 
+
+![both plot](../plots/class_act_vs_pred_subj_acti_seaborn.png)
+
+Similarly, we notice that the error tend to be predicting activities 12 and 13. 
 
 ## Conclusion
 
+Our study has also shown that:
 
-## Discussions
-
-Generalising this beyond the context of this dataset, this study has shown a few key points in comparing methods of classifying multi-output problems.
 * Gaussian Naive Bayes model without PCA tends to perform better, in terms of both accuracy and efficiency. This is especially so when sample size is large.
+* Linear SVM without SGD was very slow to train on this data set. 
+* SVM with SGD provided a performance boost, but could not compare with Gaussian Naive Bayes in terms of accuracy. 
+* The selected classifier (Gaussian Naive Bayes) have problems classifying Ascending and Descending Stairs. 
 * Concatenating the multiple outputs into one target variable with more unique levels performs better than trying to predict the target variables as standalone outputs.
+* In the application of machine learning algorithms, different trade offs such as accuracy, time taken to train needs to be considered.
 
 An interesting point to note is that the 'Both' condition consistently performed better than the other two methods across all models. Upon close consideration, this can be said to be an expected result. When predicting one target variable after the other, the errors made in predictions stack up. For example, in the case of S > A, the errors made in first predicting `'subject'` would then be carried over to wrongly predict `'activity_id'` as `'subject'` becomes part of the variable used to predict A.
 

@@ -69,7 +69,7 @@ pca = PCA()
 dftr = pca.fit_transform(scaled_data)
 dftr = np.column_stack((dftr[:,0:3],df_small_true_subj_activity))
 
-fig = plt.figure(2, figsize=(10,10))
+fig = plt.figure(1, figsize=(10,10))
 ax = fig.add_subplot(1,1,1)
 ax.set_xlabel('Principal Component 1')
 ax.set_ylabel('Principal Component 2')
@@ -83,7 +83,7 @@ plt.savefig('../plots/pca_2components_classified.png', format='png', bbox_inches
 
 print('Plotting PCA 3 components ...')
 
-fig = plt.figure(3, figsize=(10,10))
+fig = plt.figure(2, figsize=(10,10))
 ax = fig.add_subplot(1,1,1, projection='3d')
 ax.set_xlabel('Principal Component 1')
 ax.set_ylabel('Principal Component 2')
@@ -105,17 +105,17 @@ print('Hand, Chest, Ankle plot ...')
 df_hca = df_small_readings.as_matrix()
 df_tsa = df_small_true_subj_activity.as_matrix()
 
-fig = plt.figure(4, figsize=(10,10))
+fig = plt.figure(3, figsize=(10,10))
 ax = fig.add_subplot(1,1,1, projection='3d')
 ax.set_xlabel('hand_temp_c')
 ax.set_ylabel('chest_temp_c')
 ax.set_zlabel('ankle_temp_c')
-ax.view_init(92,50)
+ax.view_init(36,-66)
 plt.title('Hand Chest Ankle Temperature')
 ax.scatter(df_hca[accurate][:,1], df_hca[accurate][:,11], df_hca[accurate][:,21],
            c=df_tsa[accurate],cmap=plt.cm.prism, marker='o', alpha=.1)
 ax.scatter(df_hca[~accurate][:,1], df_hca[~accurate][:,11], df_hca[~accurate][:,21],
-           c=df_tsa[~accurate],cmap=plt.cm.prism, marker='v', alpha=1, s= 50)
+           c=df_tsa[~accurate],cmap=plt.cm.prism, marker='v', alpha=1, s= 150)
 
 plt.savefig('../plots/hca_temp_classified.png', format='png', bbox_inches='tight', pad_inches=0.1,dpi=150)
 
