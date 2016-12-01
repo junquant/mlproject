@@ -3,23 +3,21 @@
 
 ## Introduction
 
-Wearable technologies are getting more and more common and machine learning plays an important role in enabling the machine to recognize a person's activity. With some physical parameters measurement of human body, a computer is smart enough to tell the activity carried out by a person, i.e. sitting, running or climbing up stairs. The constructed model may be deployed in a health care setting, to monitor a patient's activities. With the ability to differentiate the activities and the person performing it, it also opens up the possibility of sharing the wearable device. Typical machine learning projects seeks to classify the activity performed, this project attempts to go a step further and aims to develop a model to best classify the activity and the person performing the activity. Using the T,P,E framework, the problem can be summarized into:
+A common machine learning problem would be to classify specific activities performed by human subjects. This project seeks to go a step further and classify both the activity and the subject performing the activity.
+
+Using the T,P,E framework, the problem can be summarized into:
 
 * **Task** - Predict the activity *and* the person performing the activity
 * **Performance** - Percentage of actions *and* person performing the activity correctly classified
 * **Experience** - PAMAP2 data set of labeled IMU readings available from the UCI Machine Learning Repository
 
-## Objective
+**Objective**
 
 The objective of our project is to evaluate empirically the performance of various machine learning algorithms in terms of the time taken to train the model, accuracy, precision and recall. Our project also aims to empirically evaluate the performance of methodology used to predict both the activity and subject. We will be using Gaussian Naive Bayes and Support Vector Machines in this project. The reasons for these choices will be explained below.
 
-## Approach
+**Methodology**
 
-Detailed exploration will be done to understand the data set in terms of the distribution of data and the components
-that explain the most variance. 3 different model construction approaches will then be compared in the classification of human activity and the person performing it. The 3 model construction methods that will be compared are summarised
- as follows:
-
-**Model Construction Methods**
+Detailed exploration will be done to understand the data set in terms of the distribution of data and the component that explain the most variance. 3 different model construction approaches will then be compared in the classification of human activity and the person performing it. The 3 model construction methods that will be compared are summarised as follows:
 
 1. Classify Subject (Person) --> Feed subject back into model to classify action of the subject
 2. Classify Action --> Feed action back into model to the classify subject
@@ -27,15 +25,15 @@ that explain the most variance. 3 different model construction approaches will t
 
 The model will be selected based on accuracy, precision and recall as well as the computational complexity of training the model. Computational complexity is often an important factor in deploying a model. Supervised learning methods will explored and used to construct the model. The model will then be interpreted to extract insights on how are the actions and subjects classified.
 
-Hold-out and k-fold cross validation were used for model validation. Source control will be done using Github.
+Hold-out and k-fold cross validations were used for model validation. Github was used for source control.
 
 ## About the Data Set
 
-The PAMAP2 data set available from UCI Machine Learning Repository [(Link)](https://archive.ics.uci.edu/ml/datasets/PAMAP2+Physical+Activity+Monitoring) consist the data collected from 9 subjects (persons). These 9 subjects are mainly employees or students at German Research Center for Artificial Intelligence (DFKI) and each subject performs 12 different physical activities such as sitting, lying, walking and running in a controlled environment - all went through the exact same sequence of activities. In addition, 6 optional activities were performed by some of the subjects. In this project optional activities will be out of the scope. The activities performed by each subject is summarized into the table below.
+The PAMAP2 data set available from UCI Machine Learning Repository [(Link)](https://archive.ics.uci.edu/ml/datasets/PAMAP2+Physical+Activity+Monitoring) consists of data collected from 9 human subjects. Each subject performed 18 different physical activities in a controlled environment and in the exact same sequence of activities, 7 of which were optional activities. These 7 activities were considered out of the scope of this project. The activities performed by each subject is summarized into the table below.
 
 ![Activity Summary](../plots/subj_summary.png)
 
-The 11 activities in scope for this projects are:
+The 11 activities in scope for this projects were:
 * Lying
 * Sitting
 * Standing
@@ -48,28 +46,17 @@ The 11 activities in scope for this projects are:
 * Cycling
 * Running
 
-It is noted that all above 11 activities are the most commonly daily activities, except Nordic walk which requires a person to walk with specially designed walking poles. The data are collected via a heart rate monitor and 3 Colibri wireless inertial measurement units (IMUs) attached to each subject's body: one over the wrist, one on the chest and one on ankle.
-
-The heart rate monitor has sampling rate of 9Hz and each IMU generate following data with 17 columns:
-
-* 1 temperature (°C)
-* 2-4 3D-acceleration data (ms<sup>-2</sup>), scale: ±16g, resolution: 13-bit
-* 5-7 3D-acceleration data (ms<sup>-2</sup>), scale: ±6g, resolution: 13-bit
-* 8-10 3D-gyroscope data (rad/s)
-* 11-13 3D-magnetometer data (μT)
-* 14-17 orientation
+All above 11 activities are common daily activities, except Nordic walk which requires a person to walk with specially designed walking poles. The data were collected via a heart rate monitor and 3 Colibri wireless inertial measurement units (IMUs) attached to each subject's body: one over the wrist, one on the chest and one on ankle. The heart rate monitor has sampling rate of 9Hz and each IMU generates data that is split over 17 columns with self-explanatory labels.
 
 ## Data Preparation
 
-As the data set exists in 9 separate .dat files a script was prepared to read the data and consolidate it into one .txt file for easier processing. As an one-time filtering, activities that are performed by less than 6 subjects and activities performed for only a few seconds (i.e 24 - Rope Jumping) were removed. Optional activities resides in separate data files and are not read. Each of the record was also labeled with the subject performing the activity as part of the initial and consolidation.
+As the data set exists in 9 separate `.dat` files, a script was prepared to read the data and consolidate it into one `.txt` file for easier processing. Activities that are performed by less than 6 subjects and activities performed for only a few seconds (i.e 24 - Rope Jumping) were removed. Optional activities reside in separate data files and are not read. Each of the records was also labeled with the subject performing the activity as part of the initial and consolidated data.
 
 **Missing Values** - The missing values were either caused by the lost of signals or the different frequencies the monitors record the data. As such, missing values are populated with the last valid value for the subject and if there is no valid value before, the first valid value after the record was used. This was done for each subject's data.
 
 **Invalid Data** - Orientation is not valid in this data set as stated in the code book and was removed. Accelerometer data for with the scale of ±6g was also removed from the data set as recommended by the code book as readings are saturated for high impact movements such as running.
 
-**Derived Subject-Activity** - An additional variable was created to concatenate subject and activity such that
-subject-activity is made up of 5 digits with the formula `(100 * subject) + activity`. For example a person with
-subject 101 performing activity 12 will be derived as (100*101) + 12 = 10112.
+**Derived Subject-Activity** - An additional variable was created to concatenate subject and activity such that subject-activity is made up of 5 digits with the formula `(100 * subject) + activity`. For example a person with subject 101 performing activity 12 will be derived as (100*101) + 12 = 10112.
 
 After data cleansing and preparation, the total records used for training and testing the model is 1,893,511.
 
@@ -169,11 +156,11 @@ The approach taken can be generalized as such, based on the methodology above:
   * Activity -> Subject (A -> S)
   * Both
 
-All results are output in `result` folder in the file `result_final.txt`. Models were ran on 2 machines. 
+All results are output in `result` folder in the file `result_final.txt`. Models were ran on 2 machines.
 1. Machine A - 4GHz Intel Core i7, 16GB RAM
 2. Machine B - 2.53 GHz Intel Core 2 Duo, 8GB RAM
 
-All durations were taken from Machine A, unless otherwise stated. 
+All durations were taken from Machine A, unless otherwise stated.
 
 #### Support Vector Machines
 
@@ -191,7 +178,7 @@ S -> A | 0.48 | 0.44 | 0.52 | (S+A) 11.11 + 14.54 = 25.65
 A -> S | 0.48 | 0.43 | 0.53 | (A+S) 15.19, 11.28 = 26.47
 Both | 0.63 | 0.58 | 0.67 | 113.79
 
-Training the model to predict both at the same time was significantly slower than training to predict subject then activity or vice versa. This is due to the additional number of classes (different subject-activity combinition). 
+Training the model to predict both at the same time was significantly slower than training to predict subject then activity or vice versa. This is due to the additional number of classes (different subject-activity combination).
 
 We can see that predicting both targets together produced best results. We took this further and used Grid Search Cross Validation was used to find the level of smoothing that produced the best results under the 'Both' condition.
 
@@ -203,11 +190,11 @@ Both | 0.63 | 0.49 | 0.68 | 621.75
 
 The best model selected from the Grid Search produced an accuracy of **0.68** at `alpha = 0.1`, which took **621.75** seconds to train. Training time include training with the various parameters provided to Grid Search. The parameters are `{'loss':['hinge'],'alpha':[0.0001,0.001,0.01,0.1,1]}`
 
-The long time taken to train the model was primarily due to cross-validation and training with the different alphas.  
+The lengthy time taken to train the model was primarily due to cross-validation and training with the different alphas.  
 
 #### Gaussian Naive Bayes
 
-The Gaussian Naive Bayes is generative model that is based on very simplistic calculations to calculate posterior probability. As such, it would be very efficient. Further, it is well-known that Gaussian Naive Bayes has been performant in real-world situations despite its unrealistic assumption of conditional independence. Therefore, we next used Gaussian Naive Bayes with scaling and PCA. The choice to scale prior to conducting PCA was because the variables were measured on different scales (e.g. Heartrate in beats per minute vs. Chest temperature in Celsius). Also, scaling before PCA has been shown to produce better results[2].
+The Gaussian Naive Bayes is a generative model that is based on very simplistic calculations to calculate posterior probability. As such, it would be very efficient, even on large datasets. Further, it is well-known that Gaussian Naive Bayes has been performant in real-world situations despite its unrealistic assumption of conditional independence. Therefore, we next used Gaussian Naive Bayes with scaling and PCA. The choice to scale prior to conducting PCA was because the variables were measured on different scales (e.g. Heartrate in beats per minute vs. Chest temperature in Celsius). Also, scaling before PCA has been shown to produce better results[2].
 
 Method | Accuracy | Time Taken (seconds)
 --- | --- | ---
@@ -223,7 +210,7 @@ Method | Accuracy | Time Taken (seconds)
 --- | --- | ---
 Both | 0.96 | 1.48
 
-The model under the 'Both' condition produced an accuracy of 0.96 with a slight drop in efficiency compared to its counterpart with PCA, presumably due to the increase in number of features used for training. The decrease in efficiency is not significant when compared to the increase in accuracy. This disproportionate trade-off in favour of accuracy has made this model an attractive one for our case. Accuracy for training is the same at 0.96 and does not does the presence of overfitting. 
+The model under the 'Both' condition produced an accuracy of 0.96 with a slight drop in efficiency compared to its counterpart with PCA, presumably due to the increase in number of features used for training. The decrease in efficiency is not significant when compared to the increase in accuracy. This disproportionate trade-off in favour of accuracy has made this model an attractive one for our case. Accuracy for training is the same at 0.96 and does not does the presence of overfitting.
 
 As such, we selected this model to be our final model to be compared with a multi-output classifier shipped with `sklearn`.
 
@@ -235,7 +222,7 @@ Method | Accuracy | Time Taken (seconds)
 --- | --- | ---
 Multi-Output | 0.54 | 2.28
 
-The Gaussian Naive Bayes model with Multi-output Classifier produced an accuracy of **0.54** which took a duration of **2.28** seconds. This is significantly less performant than the standard classifier in terms of accuracy and duration. 
+The Gaussian Naive Bayes model with Multi-output Classifier produced an accuracy of **0.54** which took a duration of **2.28** seconds. This is significantly less performant than the standard classifier in terms of accuracy and duration.
 
 The difference in performance could simply be the difference between the strategy adopted by the Multi-Output
 Classifier.
@@ -258,30 +245,30 @@ To understand how the Gaussian Naive Bayes classify the data set, the principal 
 
 ![PCA Table](../plots/pca_3components_classified.png)
 
-It seems that the classifier was quite good at predicting the points that are close together (shown in the PCA plot). Similar observations were made in the Hand Chest Ankle Temperature plot. 
+It seems that the classifier was quite good at predicting the points that are close together (shown in the PCA plot). Similar observations were made in the Hand Chest Ankle Temperature plot.
 
 ![hca plot](../plots/hca_temp_classified.png)
 
-Next we look at how well the classifier perform in classifying the subjects, activities and both subject-activity. 
+Next we look at how well the classifier perform in classifying the subjects, activities and both subject-activity.
 
 ![subject plot](../plots/class_act_vs_pred_subj_seaborn.png)
 
 ![activity plot](../plots/class_act_vs_pred_acti_seaborn.png)
 
-It seems that the classifier has problems classifying activities 12 and 13 which corresponds to Ascending Stairs and Descending Stairs. We can imagine these 2 activities to be quite similar which explains the error in classification. Lastly, we plot the subject-activity classification. 
+It seems that the classifier has problems classifying activities 12 and 13 which corresponds to Ascending Stairs and Descending Stairs. We can imagine these 2 activities to be quite similar which explains the error in classification. Lastly, we plot the subject-activity classification.
 
 ![both plot](../plots/class_act_vs_pred_subj_acti_seaborn.png)
 
-Similarly, we notice that the error tend to be predicting activities 12 and 13. 
+Similarly, we notice that the error tend to be predicting activities 12 and 13.
 
 ## Conclusion
 
 Our study has also shown that:
 
 * Gaussian Naive Bayes model without PCA tends to perform better, in terms of both accuracy and efficiency. This is especially so when sample size is large.
-* Linear SVM without SGD was very slow to train on this data set. 
-* SVM with SGD provided a performance boost, but could not compare with Gaussian Naive Bayes in terms of accuracy. 
-* The selected classifier (Gaussian Naive Bayes) have problems classifying Ascending and Descending Stairs. 
+* Linear SVM without SGD was very slow to train on this data set.
+* SVM with SGD provided a performance boost, but could not compare with Gaussian Naive Bayes in terms of accuracy.
+* The selected classifier (Gaussian Naive Bayes) have problems classifying Ascending and Descending Stairs.
 * Concatenating the multiple outputs into one target variable with more unique levels performs better than trying to predict the target variables as standalone outputs.
 * In the application of machine learning algorithms, different trade offs such as accuracy, time taken to train needs to be considered.
 
