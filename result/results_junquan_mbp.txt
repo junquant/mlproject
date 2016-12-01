@@ -96,3 +96,11 @@ record_time,model,dur_train_activity,dur_train_subj,dur_train_both,precision_tra
 2016-12-01 15:25,svm_sgd_run_94,0.00,0.00,237.76,0.70,0.65,0.65,0.70,0.65,0.65,both at the same time
 2016-12-01 15:29,svm_sgd_run_95,0.00,0.00,222.76,0.72,0.60,0.60,0.72,0.60,0.60,both at the same time
 2016-12-01 15:34,svm_sgd_run_96,0.00,0.00,269.10,0.71,0.62,0.62,0.71,0.62,0.62,both at the same time
+2016-12-01 15:38,svm_sgd_run_97,0.00,0.00,252.10,0.72,0.67,0.67,0.72,0.67,0.67,both at the same time
+2016-12-01 15:43,svm_sgd_run_98,0.00,0.00,250.44,0.71,0.64,0.64,0.71,0.64,0.64,both at the same time
+2016-12-01 15:47,svm_sgd_run_99,0.00,0.00,250.60,0.72,0.60,0.60,0.72,0.60,0.60,both at the same time
+2016-12-01 15:53,svm_sgd_run_100,0.00,0.00,294.84,0.70,0.62,0.62,0.71,0.62,0.62,both at the same time
+2016-12-01 16:02,svm_sgd_0,32.42,26.14,0.00,0.52,0.49,0.49,0.52,0.50,0.50,subject then activity
+2016-12-01 16:08,svm_sgd_0,34.59,26.79,0.00,0.53,0.50,0.50,0.53,0.50,0.50,subject then activity
+2016-12-01 16:10,svm_sgd_1,48.66,30.90,0.00,0.55,0.50,0.50,0.54,0.50,0.50,subject then activity
+2016-12-01 16:11,svm_sgd_2,34.89,26.92,0.00,0.47,0.46,0.46,0.47,0.46,0.46,subject then activity

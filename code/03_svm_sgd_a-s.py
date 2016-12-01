@@ -62,59 +62,60 @@ print(verify)
 # ---------------------
 # Activity and then Subject
 # ---------------------
-# step 1.1 - get the readings data (from data stratified using activity)
-readings_train = df_train_a.ix[:,:-2]
-activity_train = df_train_a.ix[:,-1]
+    for i in range(100):
+    # step 1.1 - get the readings data (from data stratified using activity)
+    readings_train = df_train_a.ix[:,:-2]
+    activity_train = df_train_a.ix[:,-1]
 
-# step 1.2 - fit the model to predict activity
-print('Fitting model to predict activity ...')
-clf_activity = SGDClassifier(alpha=0.1)
-time_bgn = time.time()
-clf_activity.fit(readings_train, activity_train)
-dur_train_activity = time.time() - time_bgn
+    # step 1.2 - fit the model to predict activity
+    print('Fitting model to predict activity ...')
+    clf_activity = SGDClassifier(alpha=0.1)
+    time_bgn = time.time()
+    clf_activity.fit(readings_train, activity_train)
+    dur_train_activity = time.time() - time_bgn
 
-# step 2.1 - get the readings data with activity
-readings_train = df_train_s.ix[:,:-2]
-activity_train = df_train_s.ix[:,-1]
-readings_act_train = np.column_stack((readings_train, activity_train))
-subj_train = df_train_s.ix[:,-2]
+    # step 2.1 - get the readings data with activity
+    readings_train = df_train_s.ix[:,:-2]
+    activity_train = df_train_s.ix[:,-1]
+    readings_act_train = np.column_stack((readings_train, activity_train))
+    subj_train = df_train_s.ix[:,-2]
 
-# step 2.2 - join activity for training and fit the model to predict subject
-print('Fitting model to predict subject ...')
-clf_subject = SGDClassifier(alpha=0.1)
-time_bgn = time.time()
-clf_subject.fit(readings_act_train, subj_train)
-dur_train_subj = time.time() - time_bgn
-
-
-subj_train_for_result = subj_train
-activity_train_for_result = activity_train
-predicted_activity_train = clf_activity.predict(readings_train)
-predicted_subj_train = clf_subject.predict(readings_act_train)
+    # step 2.2 - join activity for training and fit the model to predict subject
+    print('Fitting model to predict subject ...')
+    clf_subject = SGDClassifier(alpha=0.1)
+    time_bgn = time.time()
+    clf_subject.fit(readings_act_train, subj_train)
+    dur_train_subj = time.time() - time_bgn
 
 
-# step 3.1 - predict activity and join it to the readings data
-print('Predicting activity ... ')
-readings_test = df_test_s.ix[:,:-2]
-predicted_activity = clf_activity.predict(readings_test)
-readings_activity_test = np.column_stack((readings_test,predicted_activity))
+    subj_train_for_result = subj_train
+    activity_train_for_result = activity_train
+    predicted_activity_train = clf_activity.predict(readings_train)
+    predicted_subj_train = clf_subject.predict(readings_act_train)
 
-# step 3.2 - predict subject
-print('Predicting subject ... ')
-predicted_subject = clf_subject.predict(readings_activity_test)
-print(predicted_subject)
 
-# step 4 - printing results
-actual_activity_test = df_test_s.ix[:,-1]
-actual_subject_test = df_test_s.ix[:,-2]
-subj_activity_test = np.array((100*actual_subject_test) + actual_activity_test)
-predicted_subj_activity_test = (100*predicted_subject) + predicted_activity
+    # step 3.1 - predict activity and join it to the readings data
+    print('Predicting activity ... ')
+    readings_test = df_test_s.ix[:,:-2]
+    predicted_activity = clf_activity.predict(readings_test)
+    readings_activity_test = np.column_stack((readings_test,predicted_activity))
 
-subj_activity_train = (100*subj_train_for_result) + activity_train_for_result
-predicted_subj_activity_train = (100*predicted_subj_train) + predicted_activity_train
+    # step 3.2 - predict subject
+    print('Predicting subject ... ')
+    predicted_subject = clf_subject.predict(readings_activity_test)
+    print(predicted_subject)
 
-ResultsWriter.write_to_file('results_junquan.txt',model='svm_sgd',
-                            y_train_actual=subj_activity_train, y_train_predicted=predicted_subj_activity_train,
-                            y_test_actual=subj_activity_test,y_test_predicted=predicted_subj_activity_test,
-                            dur_train_activity=dur_train_activity, dur_train_subj=dur_train_subj, dur_train_both=0,
-                            method='as') # method = both / as / sa
+    # step 4 - printing results
+    actual_activity_test = df_test_s.ix[:,-1]
+    actual_subject_test = df_test_s.ix[:,-2]
+    subj_activity_test = np.array((100*actual_subject_test) + actual_activity_test)
+    predicted_subj_activity_test = (100*predicted_subject) + predicted_activity
+
+    subj_activity_train = (100*subj_train_for_result) + activity_train_for_result
+    predicted_subj_activity_train = (100*predicted_subj_train) + predicted_activity_train
+
+    ResultsWriter.write_to_file('results_junquan.txt',model='svm_sgd_' + str(i+1),
+                                y_train_actual=subj_activity_train, y_train_predicted=predicted_subj_activity_train,
+                                y_test_actual=subj_activity_test,y_test_predicted=predicted_subj_activity_test,
+                                dur_train_activity=dur_train_activity, dur_train_subj=dur_train_subj, dur_train_both=0,
+                                method='as') # method = both / as / sa

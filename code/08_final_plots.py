@@ -55,6 +55,7 @@ df_small_pred_subj_activity = df_small.ix[:,-3]
 
 accurate = np.array(df_small_true_subj_activity == df_small_pred_subj_activity)
 
+plt.style.use('ggplot')
 # --------------------------------------------------------
 # Correct vs Incorrect Plots
 
@@ -93,6 +94,9 @@ ax.scatter(dftr[accurate][:,0], dftr[accurate][:,1], dftr[accurate][:,2],
            c=dftr[accurate][:,3],cmap=plt.cm.prism, marker='o', alpha=.4)
 ax.scatter(dftr[~accurate][:,0], dftr[~accurate][:,1], dftr[~accurate][:,2],
            c=dftr[~accurate][:,3],cmap=plt.cm.prism, marker='v', alpha=1, s= 50)
+
+handles, labels = ax.get_legend_handles_labels()
+ax.legend(handles, labels)
 
 plt.savefig('../plots/pca_3components_classified.png', format='png', bbox_inches='tight', pad_inches=0.1,dpi=150)
 

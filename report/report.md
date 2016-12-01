@@ -141,9 +141,7 @@ The approach taken can be generalized as such, based on the methodology above:
   * Activity -> Subject (A -> S)
   * Both
 
-#### Initial Comparison
-
-##### Support Vector Machines
+#### Support Vector Machines
 
 Due to the large sample size, SVM using SGD learning was our first model. Being an efficient model, runtime would be fast and we would get a quick feel of how the model performed. Note that PCA was not carried out in this case. It has been proven that RBF kernel is not suitable in cases where the number of features is large - a linear kernel would be more suitable[1]. 
 
@@ -170,7 +168,7 @@ Both | 0.xx | 0.00 | 0.00 | 113.75
 
 The best model selected from the Grid Search produced an accuracy of **0.65** at `alpha = 0.01`, which took **50.1** seconds to train.
 
-##### Gaussian Naive Bayes
+#### Gaussian Naive Bayes
 
 The Gaussian Naive Bayes is generative model that is based on very simplistic calculations to calculate posterior probability. As such, it would be very efficient. Further, it is well-known that Gaussian Naive Bayes has been performant in real-world situations despite its unrealistic assumption of conditional independence. Therefore, we next used Gaussian Naive Bayes with scaling and PCA. The choice to scale prior to conducting PCA was because the variables were measured on different scales (e.g. Heartrate in beats per minute vs. Chest temperature in Celsius). Also, scaling before PCA has been shown to produce better results[2].
 
@@ -194,7 +192,7 @@ The model under the 'Both' condition produced an accuracy of 0.96 with a slight 
 
 As such, we selected this model to be our final model to be compared with a multi-output classifier shipped with Scikit-learn. 
 
-##### Comparison with Multi-Output Classifier 
+#### Comparison with Multi-Output Classifier 
 
 In this comparison, the main objective is to compare the performance of two algorithms that theoretically aim to do the same thing. The difference is in the details where the 'Both' condition predicts a concatenated target variable, essentially converting the problem into a binary classification problem, while the Multi-output Classifier still considers multiple target variables (in this case 2) and predicts them together. The multi-output classifier classifies by fitting 1 classifier per target. In our case, 1 classifier will be fitted to predict Activity and 1 classifier will be fitted to predict Subject. The result of multi-output is shown below. 
 
@@ -204,44 +202,44 @@ Multi-Output | 0.96 | 1.81
 
 The Gaussian Naive Bayes model with Multi-output Classifier produced an accuracy of **0.54** which took a duration of **2.75** seconds. This is significantly less performant than the standard classifier.
 
-The difference in performance could simply be the difference between the strategy adopted by the Multi-output 
+The difference in performance could simply be the difference between the strategy adopted by the Multi-Output 
 Classifier. 
 
-### Misc
+#### k-fold Cross Validation
 
-An interesting point to note is that the 'Both' condition consistently performed better than the other two methods across all models. Upon close consideration, this can be said to be an expected result. When predicting one target variable after the other, the errors made in predictions stack up. For example, in the case of S > A, the errors made in first predicting `'subject'` would then be carried over to wrongly predict `'activity_id'` as `'subject'` becomes part of the variable used to predict A.
+The k-fold cross validation was also performed to evaluate the Gaussian Naive Bayes model in addition to the hold-out
+ method used earlier. k-fold was used in addition to the hold-out method due to the fact that with k-fold, the 
+ evaluation of the model is less impacted by how the data is divided. StratifiedKFold from sklearn was used due to 
+ the unbalanced classes we are trying to predict. 
+ 
+ 10-fold cross validation was used and the average accuracy of the Gaussian Naive Bayes model predicting both Subject and Activity at the same time is: 
+ 
+ This is similar to the results earlier. 
+
+#### Visualizing the Classifications
+
+To understand how the Gaussian Naive Bayes classify the data set, the principal components and the temperatures were 
+visualized with the classes predicted. 
+
+* Colors denote the various subject - activities
+* Circles denote correctly predicted classes
+* Inverted triangles denote incorrectly predicted classes
+
+![Scree Plot](../plots/screeplot.png)
 
 ## Conclusion
 
+
+## Discussions
+
 Generalising this beyond the context of this dataset, this study has shown a few key points in comparing methods of classifying multi-output problems.
-
 * Gaussian Naive Bayes model without PCA tends to perform better, in terms of both accuracy and efficiency. This is especially so when sample size is large.
-
 * Concatenating the multiple outputs into one target variable with more unique levels performs better than trying to predict the target variables as standalone outputs.
 
+An interesting point to note is that the 'Both' condition consistently performed better than the other two methods across all models. Upon close consideration, this can be said to be an expected result. When predicting one target variable after the other, the errors made in predictions stack up. For example, in the case of S > A, the errors made in first predicting `'subject'` would then be carried over to wrongly predict `'activity_id'` as `'subject'` becomes part of the variable used to predict A.
 
 ## References
 
 [1] Hsu, et al (2016), [*A Practical Guide to Support Vector Classification*](http://www.csie.ntu.edu.tw/~cjlin/papers/guide/guide.pdf)
 
 [2] Raschka S. (2014), [*About Feature Scaling and Normalization*](http://sebastianraschka.com/Articles/2014_about_feature_scaling.html)
-
----
-
-Things that came up during discussions with prof
-
-Potential Techniques
-* Potential techniques not required in proposal yet
-* Principle Component Analysis
-* Decision Trees (may some ensemble?)
-* SVM ?
-
-Things to do
-* Predict the person
-* Predict the activity
-* Make the prediction 2 layers
-* first layer to classify the person
-* second layer to classify the activity
-* can also do a joint classifier
-* Need to interpret classifier (eg. speed to determine whether person is walking or running)
-* for eg. what dimension needs to

@@ -35,7 +35,7 @@ df.rename(columns={0:'activity_subj'}, inplace=True)
 
 # split data set into test and train using K-Fold (for both subj and activity)
 # ---------------------
-skf = StratifiedKFold(n_splits=3, shuffle=False, random_state=2016)
+skf = StratifiedKFold(n_splits=10, shuffle=False, random_state=2016)
 
 # Scale data
 readings = df.ix[:,:-3]
