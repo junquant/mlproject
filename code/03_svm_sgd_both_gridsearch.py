@@ -66,7 +66,7 @@ for i in range(100):
     parameters = [
         {'loss':['hinge'],'alpha':[0.0001,0.001,0.01,0.1,1]}]
 
-    clf_both = GridSearchCV(SGDClassifier(parameters, cv=2)
+    clf_both = GridSearchCV(SGDClassifier(random_state=i), parameters, cv=2)
     time_bgn = time.time()
     clf_both.fit(readings_train, subj_activity_train)
     dur_train_both = time.time() - time_bgn

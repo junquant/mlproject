@@ -60,6 +60,8 @@ plt.xlim(0,len(lang_names))
 plt.ylim(0,len(lang_names))
 plt.gcf().subplots_adjust(bottom=0.25, left=0.25)
 
+plt.savefig('../plots/class_act_vs_pred_subj.png', format='png', bbox_inches='tight', pad_inches=0.1,dpi=150)
+
 # --------------------------------------------------------
 # Correct vs Incorrect Plots (Activity)
 ct_data = pd.crosstab(true_activity, pred_activity, normalize='index')
@@ -77,6 +79,8 @@ plt.yticks(tick_indices, lang_names)
 plt.xlim(0,len(lang_names))
 plt.ylim(0,len(lang_names))
 plt.gcf().subplots_adjust(bottom=0.25, left=0.25)
+
+plt.savefig('../plots/class_act_vs_pred_acti.png', format='png', bbox_inches='tight', pad_inches=0.1,dpi=150)
 
 
 # --------------------------------------------------------
@@ -97,3 +101,7 @@ plt.xlim(0,len(lang_names))
 plt.ylim(0,len(lang_names))
 plt.gcf().subplots_adjust(bottom=0.25, left=0.25)
 
+
+plt.savefig('../plots/class_act_vs_pred_subj_acti.png', format='png', bbox_inches='tight', pad_inches=0.1,dpi=150)
+
+plt.show()

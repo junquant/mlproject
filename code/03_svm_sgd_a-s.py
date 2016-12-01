@@ -62,7 +62,7 @@ print(verify)
 # ---------------------
 # Activity and then Subject
 # ---------------------
-    for i in range(100):
+for i in range(100):
     # step 1.1 - get the readings data (from data stratified using activity)
     readings_train = df_train_a.ix[:,:-2]
     activity_train = df_train_a.ix[:,-1]
@@ -114,7 +114,7 @@ print(verify)
     subj_activity_train = (100*subj_train_for_result) + activity_train_for_result
     predicted_subj_activity_train = (100*predicted_subj_train) + predicted_activity_train
 
-    ResultsWriter.write_to_file('results_junquan.txt',model='svm_sgd_' + str(i+1),
+    ResultsWriter.write_to_file('results_junquan.txt',model='svm_sgd_run_' + str(i+1),
                                 y_train_actual=subj_activity_train, y_train_predicted=predicted_subj_activity_train,
                                 y_test_actual=subj_activity_test,y_test_predicted=predicted_subj_activity_test,
                                 dur_train_activity=dur_train_activity, dur_train_subj=dur_train_subj, dur_train_both=0,
