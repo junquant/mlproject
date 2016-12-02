@@ -1,0 +1,1 @@
+pandoc proposal.md -f markdown -t docx -o output.docx

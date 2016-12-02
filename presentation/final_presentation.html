@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Human Activity Recognition using Machine Learning Techniques">
+  <title>Machine Learning Project</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="reveal.js/css/reveal.css">
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="reveal.js/css/theme/night.css" id="theme">
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'reveal.js/css/print/pdf.css' : 'reveal.js/css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+  <!--[if lt IE 9]>
+  <script src="reveal.js/lib/js/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section>
+  <h1 class="title">Machine Learning Project</h1>
+  <p class="author">Human Activity Recognition using Machine Learning Techniques</p>
+</section>
+
+<section id="about-our-project" class="slide level2">
+<h2>About Our Project</h2>
+<ul>
+<li><p><strong>Task</strong> : Predict the activity <strong>and</strong> the person performing the activity</p></li>
+<li><p><strong>Performance</strong>: Percentage of actions and person performing the activity correctly classified</p></li>
+<li><p><strong>Experience</strong>: PAMAP2 data set of labeled IMU readings available from the UCI Machine Learning Repository</p></li>
+</ul>
+</section>
+<section id="pamap2-data-set" class="slide level2">
+<h2>PAMAP2 Data Set</h2>
+<ul>
+<li>A Physical Activity Monitoring Dataset</li>
+<li>3 wireless inertial measurement units (IMU):
+<ul>
+<li>sampling frequency: 100Hz on wrist, chest and ankle</li>
+<li>records temperature, acceleration, 3D-magnetometer data, 3D-gyroscope data, orientation etc...</li>
+</ul></li>
+<li>1 heart rate monitor with sampling frequency of ~9Hz</li>
+</ul>
+</section>
+<section id="activities-include-..." class="slide level2">
+<h2>Activities Include ...</h2>
+<p>Lying, Sitting, Standing, Ironing, Vacuuming, Walking Upstairs Walking Downstairs, Normal Walk, Nordic Walk, Cycling, Running</p>
+</section>
+<section id="model-construction-methods" class="slide level2">
+<h2>Model Construction Methods</h2>
+<ol type="1">
+<li>Classify Subject (Person) --&gt; Classify Action of the Subject</li>
+</ol>
+<p><img src="img/classifier-sa-s.png" alt="Drawing" style="height: 200px; border:0px;"/> <img src="img/classifier-sa-a.png" alt="Drawing" style="height: 200px; border:0px;"/></p>
+<p><img src="img/classifier-sa.png" alt="Drawing" style="border:0px;"/></p>
+</section>
+<section id="model-construction-methods-1" class="slide level2">
+<h2>Model Construction Methods</h2>
+<ol start="2" type="1">
+<li>Classify Action --&gt; Classify Subject(Person)</li>
+</ol>
+<p><img src="img/classifier-as-a.png" alt="Drawing" style="height: 200px; border:0px;"/> <img src="img/classifier-as-s.png" alt="Drawing" style="height: 200px; border:0px;"/></p>
+<p><img src="img/classifier-as.png" alt="Drawing" style="border:0px;"/></p>
+</section>
+<section id="model-construction-methods-2" class="slide level2">
+<h2>Model Construction Methods</h2>
+<ol start="3" type="1">
+<li>Classify Both Subject and Action Simultaneously</li>
+</ol>
+<p><img src="img/classifier-both.png" alt="Drawing" style="height: 200px; border:0px;"/></p>
+<p><img src="img/classifier-both-p.png" alt="Drawing" style="border:0px;"/></p>
+</section>
+<section id="data-preparation" class="slide level2">
+<h2>Data Preparation</h2>
+<ul>
+<li><p><strong>Missing Values</strong> - Missing values caused by different frequencies. Back fill or Forward fill the empty value</p></li>
+<li><p><strong>Invalid Data</strong> - Acceleration of ±6g is saturated</p></li>
+<li><p><strong>Derived Subject-Activity</strong> - Concatenate subject and activity</p></li>
+</ul>
+</section>
+<section id="data-exploration" class="slide level2">
+<h2>Data Exploration</h2>
+<p><img src="../plots/var_distribution.png" alt="Drawing" style="border:0px; height:600px;"/></p>
+</section>
+<section class="slide level2">
+
+<p>These variables were have greater variance</p>
+<ul>
+<li><code>heartrate_bpm</code></li>
+<li><code>hand_temp_c</code></li>
+<li><code>chest_temp_c</code></li>
+<li><code>ankle_temp_c</code></li>
+<li><code>*_magnetometer_*</code></li>
+</ul>
+<p>We will return to the after fitting the models</p>
+</section>
+<section class="slide level2">
+
+<p><img src="../plots/correlation.png" alt="Drawing" style="border:0px; height:600px;"/></p>
+</section>
+<section class="slide level2">
+
+<p>Strong correlations between several variables:</p>
+<ul>
+<li><code>chest_temp_c</code> and <code>hand_temp_c</code></li>
+<li><code>chest_3d_magnetometer</code> and <code>chest_3d_accel</code></li>
+<li><code>ankle_3d_magnetometer</code> and <code>chest_3d_magnetometer</code></li>
+</ul>
+</section>
+<section id="principal-component-analysis" class="slide level2">
+<h2>Principal Component Analysis</h2>
+<p>Most of the variance can be explained by the first 3 components</p>
+<p><img src="../plots/screeplot.png" alt="Drawing" style="border:0px; height:450px;"/></p>
+</section>
+<section class="slide level2">
+
+<ul>
+<li>PC1 has the strongest correlations with <code>chest_temp_c</code> , <code>hand_temp_c</code> , and <code>ankle_temp_c</code></li>
+<li>PC2 has the strongest correlations with <code>heartrate_bpm</code></li>
+<li>PC2 has the strongest correlations with <code>ankle_temp_c</code></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p><img src="../plots/pca_3components.png" alt="Drawing" style="border:0px; height:600px;"/></p>
+</section>
+<section id="model-comparison" class="slide level2">
+<h2>Model Comparison</h2>
+<ul>
+<li><p><strong>Accuracy</strong> and <strong>Computational Complexity</strong> were the primary considerations</p></li>
+<li>The classifiers used were the following:
+<ul>
+<li>SVM with Stochastic Gradient Descent (SGD)</li>
+<li>Gaussian Naive Bayes</li>
+<li>Multi-output Classifier using the best model from initial comparison</li>
+</ul></li>
+<li><p>SVM without SGD (Linear Kernel) was ran but model fitting took more than 5 hours and did not complete.</p></li>
+</ul>
+</section>
+<section id="svm-with-sgd" class="slide level2">
+<h2>SVM with SGD</h2>
+<ul>
+<li>May be stuck in a local optima.</li>
+<li>Hence model fitted 100 times.</li>
+<li>Results are shown below.</li>
+</ul>
+<table style="width:28%;">
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Accuracy (mean)</th>
+<th>Accuracy (max)</th>
+<th>Accuracy (min)</th>
+<th>Average Time Taken (seconds)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>S -&gt; A</td>
+<td>0.48</td>
+<td>0.44</td>
+<td>0.52</td>
+<td>(S+A) 11.11 + 14.54 = 25.65</td>
+</tr>
+<tr class="even">
+<td>A -&gt; S</td>
+<td>0.48</td>
+<td>0.43</td>
+<td>0.53</td>
+<td>(A+S) 15.19 + 11.28 = 26.47</td>
+</tr>
+<tr class="odd">
+<td>Both</td>
+<td>0.63</td>
+<td>0.58</td>
+<td>0.67</td>
+<td>113.79</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="svm-with-sgd-1" class="slide level2">
+<h2>SVM with SGD</h2>
+<ul>
+<li>To find optimal smoothing parameter alpha, Grid Search was used</li>
+<li>Alpha values tried <code>0.0001,0.001,0.01,0.1,1</code></li>
+<li>2-fold Cross Validation was used with Grid Search</li>
+<li>Model fitted 60 times (took more than 12 hours)</li>
+<li>Best alpha at 0.1</li>
+<li>Results are shown below</li>
+</ul>
+<table style="width:28%;">
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Accuracy (mean)</th>
+<th>Accuracy (max)</th>
+<th>Accuracy (min)</th>
+<th>Average Time Taken (seconds)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Both</td>
+<td>0.63</td>
+<td>0.49</td>
+<td>0.68</td>
+<td>621.75</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="gaussian-naive-bayes" class="slide level2">
+<h2>Gaussian Naive Bayes</h2>
+<ul>
+<li>Chosen as it is performant in real-world situations</li>
+<li>Variables are scaled as measurements were in different scales</li>
+<li>PCA was done for initial model</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Accuracy</th>
+<th>Time Taken (seconds)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>S -&gt; A</td>
+<td>0.40</td>
+<td>(S+A) 0.50 + 0.52 = 1.02</td>
+</tr>
+<tr class="even">
+<td>A -&gt; S</td>
+<td>0.50</td>
+<td>(A+S) 0.63 + 0.59 = 1.21</td>
+</tr>
+<tr class="odd">
+<td>Both</td>
+<td>0.64</td>
+<td>0.74</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section class="slide level2">
+
+<ul>
+<li>10 times faster than the SVM model in the S -&gt; A and A -&gt; S conditions</li>
+<li>Over 100 times faster under the 'Both' condition.</li>
+<li>Another Gaussian Naive Bayes model was fitted, but this time without PCA</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<ul>
+<li>Accuracy increased to 0.96 with all variables</li>
+<li>Takes more than double the time to train (1.81s vs 0.74s)</li>
+<li>Time to train traded off for accuracy</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Accuracy</th>
+<th>Time Taken (seconds)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>S -&gt; A</td>
+<td>0.54</td>
+<td>(S+A) 1.36 + 1.27 = 2.63</td>
+</tr>
+<tr class="even">
+<td>A -&gt; S</td>
+<td>0.54</td>
+<td>(A+S) 1.43 + 1.48 = 2.91</td>
+</tr>
+<tr class="odd">
+<td>Both</td>
+<td>0.96</td>
+<td>1.81</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="multi-output-classifier-comparison" class="slide level2">
+<h2>Multi-output Classifier Comparison</h2>
+<ul>
+<li><code>sklearn</code>'s multi-output classifier used with Gaussian Naive Bayes</li>
+<li>Less performant than the standard classifier in terms of accuracy and duration.</li>
+<li>Classifies by fitting 1 classifier per target.</li>
+<li>1 classifier will be fitted to predict Activity and 1 classifier will be fitted to predict Subject.</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>Accuracy</th>
+<th>Time Taken (seconds)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Multi-Output</td>
+<td>0.54</td>
+<td>2.28</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="k-fold-cross-validation" class="slide level2">
+<h2>k-fold Cross Validation</h2>
+<ul>
+<li>10 fold cross validation was ran</li>
+<li>The average accuracy for the 10 folder is 0.9363</li>
+<li>Does not show any indications of overfitting</li>
+</ul>
+</section>
+<section id="visualizing-the-classifications" class="slide level2">
+<h2>Visualizing the Classifications</h2>
+<ul>
+<li>Colors denote the various subject - activities</li>
+<li>Circles denote correctly predicted classes</li>
+<li>Inverted triangles denote incorrectly predicted classes</li>
+</ul>
+<p><img src="../plots/pca_3components_classified.png" alt="Drawing" style="border:0px; height:450px;"/></p>
+</section>
+<section id="visualizing-the-classifications-1" class="slide level2">
+<h2>Visualizing the Classifications</h2>
+<p><img src="../plots/hca_temp_classified.png" alt="Drawing" style="border:0px; height:550px;"/></p>
+</section>
+<section id="visualizing-the-classifications-2" class="slide level2">
+<h2>Visualizing the Classifications</h2>
+<p><img src="../plots/class_act_vs_pred_subj_seaborn.png" alt="Drawing" style="border:0px; height:550px;"/></p>
+</section>
+<section id="visualizing-the-classifications-3" class="slide level2">
+<h2>Visualizing the Classifications</h2>
+<p><img src="../plots/class_act_vs_pred_acti_seaborn.png" alt="Drawing" style="border:0px; height:550px;"/></p>
+</section>
+<section class="slide level2">
+
+<ul>
+<li>Classifier has problems classifying activities 12 and 13</li>
+<li>Corresponds to Ascending Stairs and Descending Stairs</li>
+<li>These 2 activities to be quite similar which explains the error in classification</li>
+<li>Lastly, we plot the subject-activity classification</li>
+</ul>
+</section>
+<section class="slide level2">
+
+<p><img src="../plots/class_act_vs_pred_subj_acti_seaborn.png" alt="Drawing" style="border:0px; height:650px;"/></p>
+</section>
+<section id="key-takeaways" class="slide level2">
+<h2>Key Takeaways</h2>
+<ul>
+<li><p>The selected classifier (Gaussian Naive Bayes) have problems classifying Ascending and Descending Stairs.</p></li>
+<li><p>Gaussian Naive Bayes model without PCA tends to perform better, in terms of both accuracy and efficiency.</p></li>
+<li><p>Especially so when sample size is large</p></li>
+<li><p>Linear SVM without SGD was very slow to train on this data set.</p></li>
+<li><p>SVM with SGD provided a performance boost, but could not compare with Gaussian Naive Bayes in terms of accuracy</p></li>
+</ul>
+</section>
+<section id="key-takeaways-1" class="slide level2">
+<h2>Key Takeaways</h2>
+<ul>
+<li><p>Concatenating the multiple outputs into one target variable with more unique levels performs better than trying to predict the target variables as standalone outputs.</p></li>
+<li><p>In the application of machine learning algorithms, different trade offs such as accuracy, time taken to train needs to be considered.</p></li>
+</ul>
+</section>
+<section class="slide level2">
+
+<blockquote>
+<p>Why did the naive Bayesian suddenly feel patriotic when he heard fireworks?</p>
+<p>&quot;He assumed independence.&quot;</p>
+</blockquote>
+</section>
+    </div>
+  </div>
+
+  <script src="reveal.js/lib/js/head.min.js"></script>
+  <script src="reveal.js/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true },
+              { src: 'reveal.js/plugin/notes/notes.js', async: true }
+        ]
+      });
+    </script>
+    </body>
+</html>

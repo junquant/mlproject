@@ -1,18 +1,29 @@
-% Eating Habits
-% John Doe
-% March 22, 2005
+% My Presentation Title
+% Tom
+% November 27, 2012
 
-# In the morning
+# First Slide, Section1
 
-- Eat eggs
-- Drink coffee
+## First Slide, Section1, Subsection1
 
-# In the evening
+- first point
+- second point
 
-- Eat spaghetti
-- Drink wine
+## First Slide, Section1, Subsection2
 
-# Conclusion
+- first point in subsection2
+- second point in subsection2
 
-- And the answer is...
-- $f(x)=\sum_{n=0}^\infty\frac{f^{(n)}(a)}{n!}(x-a)^n$    
+# First Slide, Section2
+
+## First Slide, Section2, Subsection1
+
+- first point
+- second point
+
+-----------------
+
+## Second Slide, Section1
+
+- first point
+- second point
