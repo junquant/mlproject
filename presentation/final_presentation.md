@@ -248,7 +248,7 @@ Multi-Output | 0.54 | 2.28
 
 * Classifier has problems classifying activities 12 and 13 
 * Corresponds to Ascending Stairs and Descending Stairs
-* These 2 activities to be quite similar which explains the error in classification
+* These 2 activities appears to be quite similar which explains the error in classification
 * Lastly, we plot the subject-activity classification
 
 ---------------------------
@@ -283,3 +283,6 @@ Multi-Output | 0.54 | 2.28
 > 
 > "He assumed independence."
 
+<a href='https://github.com/junquant/mlproject' target='_blank'>View on Github</a>
+
+`www.github.com/junquant/mlproject`
