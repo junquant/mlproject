@@ -3,7 +3,7 @@
 
 ---------------------------
 
-## About Our Project 
+## About Our Project
 
 - **Task** : Predict the activity **and** the person performing the activity
 
@@ -19,16 +19,16 @@
 - 3 wireless inertial measurement units (IMU):
     - sampling frequency: 100Hz  on wrist, chest and ankle
     - records temperature, acceleration, 3D-magnetometer data, 3D-gyroscope data, orientation etc...
-   
+
 - 1 heart rate monitor with sampling frequency of ~9Hz
 
 ---------------------------
 
-## Activities Include ... 
+## Activities Include ...
 
-Lying, Sitting, Standing, Ironing, Vacuuming, 
+Lying, Sitting, Standing, Ironing, Vacuuming,
 Walking Upstairs
-Walking Downstairs, Normal Walk, Nordic Walk, 
+Walking Downstairs, Normal Walk, Nordic Walk,
 Cycling, Running
 
 ---------------------------
@@ -71,20 +71,20 @@ Cycling, Running
 
 * **Invalid Data** - Acceleration of ±6g is saturated
 
-* **Derived Subject-Activity** - Concatenate subject and activity 
+* **Derived Subject-Activity** - Concatenate subject and activity
 
 ---------------------------
 
 ## Data Exploration
 
-<img src="../plots/var_distribution.png" alt="Drawing" style="border:0px; height:600px;"/>
+<img src="img/var_distribution.png" alt="Drawing" style="border:0px; height:600px;"/>
 
 ---------------------------
 
 These variables were have greater variance
- 
-* `heartrate_bpm` 
-* `hand_temp_c` 
+
+* `heartrate_bpm`
+* `hand_temp_c`
 * `chest_temp_c`
 * `ankle_temp_c`
 * `*_magnetometer_*`
@@ -93,7 +93,7 @@ We will return to the after fitting the models
 
 ---------------------------
 
-<img src="../plots/correlation.png" alt="Drawing" style="border:0px; height:600px;"/>
+<img src="img/correlation.png" alt="Drawing" style="border:0px; height:600px;"/>
 
 ---------------------------
 
@@ -109,7 +109,7 @@ Strong correlations between several variables:
 
 Most of the variance can be explained by the first 3 components
 
-<img src="../plots/screeplot.png" alt="Drawing" style="border:0px; height:450px;"/>
+<img src="img/screeplot.png" alt="Drawing" style="border:0px; height:450px;"/>
 
 ---------------------------
 
@@ -119,7 +119,7 @@ Most of the variance can be explained by the first 3 components
 
 ---------------------------
 
-<img src="../plots/pca_3components.png" alt="Drawing" style="border:0px; height:600px;"/>
+<img src="img/pca_3components.png" alt="Drawing" style="border:0px; height:600px;"/>
 
 ---------------------------
 
@@ -138,9 +138,9 @@ Most of the variance can be explained by the first 3 components
 
 ## SVM with SGD
 
-* May be stuck in a local optima. 
-* Hence model fitted 100 times. 
-* Results are shown below. 
+* May be stuck in a local optima.
+* Hence model fitted 100 times.
+* Results are shown below.
 
 Method | Accuracy (mean) | Accuracy (max) | Accuracy (min) | Average Time Taken (seconds)
 --- | --- | --- | --- | ---
@@ -152,7 +152,7 @@ Both | 0.63 | 0.58 | 0.67 | 113.79
 
 ## SVM with SGD
 
-* To find optimal smoothing parameter alpha, Grid Search was used 
+* To find optimal smoothing parameter alpha, Grid Search was used
 * Alpha values tried `0.0001,0.001,0.01,0.1,1`
 * 2-fold Cross Validation was used with Grid Search
 * Model fitted 60 times (took more than 12 hours)
@@ -179,8 +179,8 @@ Both | 0.64 | 0.74
 
 ---------------------------
 
-* 10 times faster than the SVM model in the S -> A and A -> S conditions 
-* Over 100 times faster under the 'Both' condition. 
+* 10 times faster than the SVM model in the S -> A and A -> S conditions
+* Over 100 times faster under the 'Both' condition.
 * Another Gaussian Naive Bayes model was fitted, but this time without PCA
 
 ---------------------------
@@ -201,8 +201,8 @@ Both | 0.96 | 1.81
 
 * `sklearn`'s multi-output classifier used with Gaussian Naive Bayes
 * Less performant than the standard classifier in terms of accuracy and duration.
-* Classifies by fitting 1 classifier per target. 
-* 1 classifier will be fitted to predict Activity and 1 classifier will be fitted to predict Subject. 
+* Classifies by fitting 1 classifier per target.
+* 1 classifier will be fitted to predict Activity and 1 classifier will be fitted to predict Subject.
 
 Method | Accuracy | Time Taken (seconds)
 --- | --- | ---
@@ -213,7 +213,7 @@ Multi-Output | 0.54 | 2.28
 ## k-fold Cross Validation
 
 * 10 fold cross validation was ran
-* The average accuracy for the 10 folder is 0.9363 
+* The average accuracy for the 10 folder is 0.9363
 * Does not show any indications of overfitting
 
 ---------------------------
@@ -224,36 +224,36 @@ Multi-Output | 0.54 | 2.28
 * Circles denote correctly predicted classes
 * Inverted triangles denote incorrectly predicted classes
 
-<img src="../plots/pca_3components_classified.png" alt="Drawing" style="border:0px; height:450px;"/>
+<img src="img/pca_3components_classified.png" alt="Drawing" style="border:0px; height:450px;"/>
 
 ---------------------------
 
 ## Visualizing the Classifications
 
-<img src="../plots/hca_temp_classified.png" alt="Drawing" style="border:0px; height:550px;"/>
+<img src="img/hca_temp_classified.png" alt="Drawing" style="border:0px; height:550px;"/>
 
 ---------------------------
 
 ## Visualizing the Classifications
 
-<img src="../plots/class_act_vs_pred_subj_seaborn.png" alt="Drawing" style="border:0px; height:550px;"/>
+<img src="img/class_act_vs_pred_subj_seaborn.png" alt="Drawing" style="border:0px; height:550px;"/>
 
 ---------------------------
 
 ## Visualizing the Classifications
 
-<img src="../plots/class_act_vs_pred_acti_seaborn.png" alt="Drawing" style="border:0px; height:550px;"/>
+<img src="img/class_act_vs_pred_acti_seaborn.png" alt="Drawing" style="border:0px; height:550px;"/>
 
 ---------------------------
 
-* Classifier has problems classifying activities 12 and 13 
+* Classifier has problems classifying activities 12 and 13
 * Corresponds to Ascending Stairs and Descending Stairs
 * These 2 activities appears to be quite similar which explains the error in classification
 * Lastly, we plot the subject-activity classification
 
 ---------------------------
 
-<img src="../plots/class_act_vs_pred_subj_acti_seaborn.png" alt="Drawing" style="border:0px; height:650px;"/>
+<img src="img/class_act_vs_pred_subj_acti_seaborn.png" alt="Drawing" style="border:0px; height:650px;"/>
 
 ---------------------------
 
@@ -261,7 +261,7 @@ Multi-Output | 0.54 | 2.28
 
 * The selected classifier (Gaussian Naive Bayes) have problems classifying Ascending and Descending Stairs.
 
-* Gaussian Naive Bayes model without PCA tends to perform better, in terms of both accuracy and efficiency. 
+* Gaussian Naive Bayes model without PCA tends to perform better, in terms of both accuracy and efficiency.
 
 * Especially so when sample size is large
 
@@ -280,7 +280,7 @@ Multi-Output | 0.54 | 2.28
 ---------------------------
 
 > Why did the naive Bayesian suddenly feel patriotic when he heard fireworks?
-> 
+>
 > "He assumed independence."
 
 <a href='https://github.com/junquant/mlproject' target='_blank'>View on Github</a>
